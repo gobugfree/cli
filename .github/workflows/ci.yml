@@ -1,0 +1,40 @@
+name: CI
+
+# The committed api package must match a fresh generation from openapi.json,
+# and the command must vet, test, and cross-compile for every release target.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Generated code matches openapi.json
+        run: make drift
+
+      - name: Vet and test
+        run: make check
+
+      - name: Cross-compile every release target
+        run: make build-all

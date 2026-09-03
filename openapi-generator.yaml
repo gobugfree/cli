@@ -1,0 +1,14 @@
+# openapi-generator configuration for the api package (make generate),
+# generated from openapi.json; CI fails when the committed output drifts.
+generatorName: go
+packageName: api
+gitHost: github.com
+gitUserId: gobugfree
+gitRepoId: cli/v3/api
+additionalProperties:
+  hideGenerationTimestamp: true
+  enumClassPrefix: true
+  structPrefix: true
+  generateInterfaces: false
+  withGoMod: false
+  disallowAdditionalPropertiesIfNotPresent: false
