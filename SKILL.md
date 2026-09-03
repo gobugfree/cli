@@ -13,11 +13,11 @@ every action is recorded under their identity.
 
 This file ships inside `gbf` and in its repository
 (https://github.com/gobugfree/cli). Install it where your agent loads skills
-from, for example `~/.claude/skills/gbf/SKILL.md` for Claude Code, and run
-the same command again after updating `gbf`:
+from (`--agent claude`, the default, `cursor`, or `codex`; `--dir DIR` for
+any other place), and run the same command again after updating `gbf`:
 
 ```bash
-gbf skill --install
+gbf skill --install --agent claude
 ```
 
 ## The one rule that shapes everything: the document is the truth

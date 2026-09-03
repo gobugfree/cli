@@ -387,6 +387,42 @@ func TestSkillIsEmbeddedAndInstallable(t *testing.T) {
 	}
 }
 
+// --agent picks the user-level skills directory of the named agent under
+// the home directory; --dir wins over it, and an unknown agent is refused.
+func TestSkillInstallsForTheNamedAgent(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	for agent, dir := range map[string]string{"": ".claude", "claude": ".claude", "cursor": ".cursor", "codex": ".agents"} {
+		args := []string{"skill", "--install"}
+		if agent != "" {
+			args = append(args, "--agent", agent)
+		}
+		var out bytes.Buffer
+		if err := run(args, &out); err != nil {
+			t.Fatalf("%v: %v", args, err)
+		}
+		target := filepath.Join(home, dir, "skills", "gbf", "SKILL.md")
+		if _, err := os.Stat(target); err != nil {
+			t.Fatalf("%v: %v", args, err)
+		}
+		if !strings.Contains(out.String(), target) {
+			t.Fatalf("%v: output %q lacks %s", args, out.String(), target)
+		}
+	}
+	explicit := t.TempDir()
+	var out bytes.Buffer
+	if err := run([]string{"skill", "--install", "--agent", "cursor", "--dir", explicit}, &out); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(explicit, "gbf", "SKILL.md")); err != nil {
+		t.Fatalf("--dir ignored: %v", err)
+	}
+	err := run([]string{"skill", "--install", "--agent", "copilot"}, &out)
+	if err == nil || !strings.Contains(err.Error(), "unknown agent") {
+		t.Fatalf("unknown agent: %v", err)
+	}
+}
+
 func TestCloudflareAccessHeadersOnEveryRequest(t *testing.T) {
 	f := newFakePlatform(t)
 	loggedIn(t, f)

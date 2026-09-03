@@ -55,7 +55,7 @@ Usage:
   gbf call METHOD PATH [--json-body BODY] [--form KEY=VALUE]...
   gbf schema NAME
   gbf openapi [--refresh]
-  gbf skill [--install] [--dir DIR]
+  gbf skill [--install] [--agent claude|cursor|codex] [--dir DIR]
   gbf version
 
 The platform's live OpenAPI document, scoped to the logged-in user, is the
@@ -65,8 +65,10 @@ any request. Output is JSON when stdout is not a terminal or with --json as
 the first argument. login starts the device flow: open the printed URL, sign
 in, approve, and gbf continues; the URLs default to GBF_APP_URL and
 GBF_ISSUER_URL. skill prints the agent skill that ships with gbf (an
-installable SKILL.md); --install writes it to DIR/gbf/SKILL.md, DIR
-defaulting to ~/.claude/skills. Behind Cloudflare Access (Zero Trust), set
+installable SKILL.md); --install writes it to the skills directory of the
+agent named by --agent (claude: ~/.claude/skills, cursor: ~/.cursor/skills,
+codex: ~/.agents/skills; default claude), or to DIR. Behind Cloudflare
+Access (Zero Trust), set
 CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET to a service token: every
 request then carries the CF-Access-Client-Id and CF-Access-Client-Secret
 headers. The session (URLs, token, cached document) lives in
@@ -211,12 +213,21 @@ func (c *cli) status() error {
 	return nil
 }
 
+// skillDirs maps an agent to the user-level directory it loads skills from,
+// relative to the home directory.
+var skillDirs = map[string][]string{
+	"claude": {".claude", "skills"},
+	"cursor": {".cursor", "skills"},
+	"codex":  {".agents", "skills"},
+}
+
 // skill prints the agent skill that ships with gbf, or installs it where the
 // agent loads skills from. It needs no session and no network.
 func (c *cli) skill(args []string) error {
 	flags := newFlags("skill", c.out)
-	install := flags.Bool("install", false, "write the skill to DIR/gbf/SKILL.md instead of printing it")
-	dir := flags.String("dir", "", "skills directory for --install (default ~/.claude/skills)")
+	install := flags.Bool("install", false, "write the skill to the agent's skills directory instead of printing it")
+	agent := flags.String("agent", "claude", "agent to install for: claude, cursor, or codex")
+	dir := flags.String("dir", "", "skills directory for --install, instead of the agent's default")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -229,11 +240,15 @@ func (c *cli) skill(args []string) error {
 		return err
 	}
 	if *dir == "" {
+		parts, ok := skillDirs[*agent]
+		if !ok {
+			return fmt.Errorf("unknown agent %q: use claude, cursor, or codex", *agent)
+		}
 		home, err := os.UserHomeDir()
 		if err != nil {
 			return err
 		}
-		*dir = filepath.Join(home, ".claude", "skills")
+		*dir = filepath.Join(append([]string{home}, parts...)...)
 	}
 	target := filepath.Join(*dir, gbfcli.SkillName, "SKILL.md")
 	if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
