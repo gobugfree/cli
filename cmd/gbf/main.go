@@ -55,7 +55,8 @@ Usage:
   gbf call METHOD PATH [--json-body BODY] [--form KEY=VALUE]...
   gbf schema NAME
   gbf openapi [--refresh]
-  gbf skill [--install] [--agent claude|cursor|codex] [--dir DIR]
+  gbf skill [--install] [--agent claude|cursor|codex|lmstudio] [--dir DIR]
+  gbf completion bash|zsh|fish|powershell [--install]
   gbf version
 
 The platform's live OpenAPI document, scoped to the logged-in user, is the
@@ -67,8 +68,11 @@ in, approve, and gbf continues; the URLs default to GBF_APP_URL and
 GBF_ISSUER_URL. skill prints the agent skill that ships with gbf (an
 installable SKILL.md); --install writes it to the skills directory of the
 agent named by --agent (claude: ~/.claude/skills, cursor: ~/.cursor/skills,
-codex: ~/.agents/skills; default claude), or to DIR. Behind Cloudflare
-Access (Zero Trust), set
+codex: ~/.agents/skills, lmstudio: ~/.lmstudio/skills; default claude), or
+to DIR. completion prints the shell's completion script, or with --install
+writes it where the shell loads it; tab then completes commands, flags,
+operation ids, parameters, fields, and values from the cached document.
+Behind Cloudflare Access (Zero Trust), set
 CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET to a service token: every
 request then carries the CF-Access-Client-Id and CF-Access-Client-Secret
 headers. The session (URLs, token, cached document) lives in
@@ -97,6 +101,13 @@ func run(args []string, out io.Writer) error {
 		fmt.Fprint(out, usage)
 		return nil
 	}
+	if args[0] == "__complete" {
+		// the shell asks for candidates; "--" separates them from the words
+		if len(args) > 1 && args[1] == "--" {
+			args = args[1:]
+		}
+		return c.complete(args[1:])
+	}
 	if err := checkAccessEnv(); err != nil {
 		return err
 	}
@@ -124,6 +135,8 @@ func run(args []string, out io.Writer) error {
 		return c.openapi(ctx, args[1:])
 	case "skill":
 		return c.skill(args[1:])
+	case "completion":
+		return c.completionScript(args[1:])
 	case "version":
 		fmt.Fprintln(out, version)
 		return nil
@@ -171,6 +184,14 @@ func (c *cli) login(ctx context.Context, args []string) error {
 	}
 	_ = os.Remove(documentPath())
 	fmt.Fprintf(c.out, "Logged in to %s; session stored in %s\n", s.AppURL, sessionPath())
+	// cache the user's document right away, so ops and shell completion
+	// answer without a fetch; a failure here is not a failed login
+	doc, err := c.loadDocument(ctx, s, true)
+	if err != nil {
+		fmt.Fprintf(c.out, "The OpenAPI document could not be fetched yet (%v); gbf ops will retry\n", err)
+		return nil
+	}
+	fmt.Fprintf(c.out, "%d operations available; gbf ops lists them\n", len(doc.operations()))
 	return nil
 }
 
@@ -216,9 +237,10 @@ func (c *cli) status() error {
 // skillDirs maps an agent to the user-level directory it loads skills from,
 // relative to the home directory.
 var skillDirs = map[string][]string{
-	"claude": {".claude", "skills"},
-	"cursor": {".cursor", "skills"},
-	"codex":  {".agents", "skills"},
+	"claude":   {".claude", "skills"},
+	"cursor":   {".cursor", "skills"},
+	"codex":    {".agents", "skills"},
+	"lmstudio": {".lmstudio", "skills"},
 }
 
 // skill prints the agent skill that ships with gbf, or installs it where the
@@ -226,7 +248,7 @@ var skillDirs = map[string][]string{
 func (c *cli) skill(args []string) error {
 	flags := newFlags("skill", c.out)
 	install := flags.Bool("install", false, "write the skill to the agent's skills directory instead of printing it")
-	agent := flags.String("agent", "claude", "agent to install for: claude, cursor, or codex")
+	agent := flags.String("agent", "claude", "agent to install for: claude, cursor, codex, or lmstudio")
 	dir := flags.String("dir", "", "skills directory for --install, instead of the agent's default")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -242,7 +264,7 @@ func (c *cli) skill(args []string) error {
 	if *dir == "" {
 		parts, ok := skillDirs[*agent]
 		if !ok {
-			return fmt.Errorf("unknown agent %q: use claude, cursor, or codex", *agent)
+			return fmt.Errorf("unknown agent %q: use claude, cursor, codex, or lmstudio", *agent)
 		}
 		home, err := os.UserHomeDir()
 		if err != nil {

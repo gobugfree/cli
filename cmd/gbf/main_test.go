@@ -392,7 +392,7 @@ func TestSkillIsEmbeddedAndInstallable(t *testing.T) {
 func TestSkillInstallsForTheNamedAgent(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
-	for agent, dir := range map[string]string{"": ".claude", "claude": ".claude", "cursor": ".cursor", "codex": ".agents"} {
+	for agent, dir := range map[string]string{"": ".claude", "claude": ".claude", "cursor": ".cursor", "codex": ".agents", "lmstudio": ".lmstudio"} {
 		args := []string{"skill", "--install"}
 		if agent != "" {
 			args = append(args, "--agent", agent)
@@ -453,4 +453,119 @@ func readAll(r *http.Request) (string, error) {
 	var buf bytes.Buffer
 	_, err := buf.ReadFrom(r.Body)
 	return buf.String(), err
+}
+
+// __complete answers the shells from the cached document: commands, flags,
+// operation ids, parameter and field names, enum values, paths, schemas.
+func TestCompleteFromTheCachedDocument(t *testing.T) {
+	f := newFakePlatform(t)
+	loggedIn(t, f)
+	runJSON(t, "ops") // caches the document
+	fetched := f.documents
+
+	complete := func(words ...string) string {
+		var out bytes.Buffer
+		if err := run(append([]string{"__complete", "--"}, words...), &out); err != nil {
+			t.Fatalf("%v: %v", words, err)
+		}
+		return out.String()
+	}
+	values := func(words ...string) []string {
+		var vals []string
+		for _, line := range strings.Split(strings.TrimSpace(complete(words...)), "\n") {
+			if !strings.HasPrefix(line, ":") {
+				vals = append(vals, strings.SplitN(line, "\t", 2)[0])
+			}
+		}
+		return vals
+	}
+	tests := []struct {
+		words []string
+		want  []string
+	}{
+		{[]string{"r"}, []string{"run"}},
+		{[]string{"-"}, []string{"--json"}},
+		{[]string{"--json", "ru"}, []string{"run"}},
+		{[]string{"run", ""}, []string{"getEngagements", "postEngagementsSubmitDraft"}},
+		{[]string{"describe", "post"}, []string{"postEngagementsSubmitDraft"}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--"}, []string{"--dry-run", "--param", "--form"}},
+		{[]string{"run", "getEngagements", "--"}, []string{"--dry-run", "--query"}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--param", ""}, []string{"org_slug=", "engagement_slug="}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--param", "org_slug=acme", "--param", ""}, []string{"engagement_slug="}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--form", ""}, []string{"origin=", "title="}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--form", "origin="}, []string{"origin=human", "origin=ai_agent"}},
+		{[]string{"run", "postEngagementsSubmitDraft", "--form=ori"}, []string{"--form=origin="}},
+		{[]string{"run", "getEngagements", "--query", "kind="}, []string{"kind=bug_bounty", "kind=pentest"}},
+		{[]string{"ops", "--tag", ""}, []string{"engagements"}},
+		{[]string{"call", "p"}, nil},
+		{[]string{"call", "P"}, []string{"POST", "PUT", "PATCH"}},
+		{[]string{"call", "get", "/"}, []string{"/engagements"}},
+		{[]string{"schema", "E"}, []string{"EngagementListItemList", "Error"}},
+		{[]string{"skill", "--agent", ""}, []string{"claude", "cursor", "codex", "lmstudio"}},
+		{[]string{"completion", "z"}, []string{"zsh"}},
+	}
+	for _, tt := range tests {
+		if got := values(tt.words...); strings.Join(got, " ") != strings.Join(tt.want, " ") {
+			t.Errorf("%v: got %v, want %v", tt.words, got, tt.want)
+		}
+	}
+	if out := complete("skill", "--dir", ""); out != ":dirs\n" {
+		t.Errorf("--dir: %q", out)
+	}
+	if out := complete("run", "getEngagements", "--"); !strings.HasSuffix(out, ":nofile\n") || !strings.Contains(out, "--dry-run\tprint the request") {
+		t.Errorf("descriptions and directive: %q", out)
+	}
+	if f.documents != fetched {
+		t.Fatalf("completion fetched the document")
+	}
+
+	// without a cache, static words still complete and nothing fails
+	t.Setenv("GBF_SESSION_FILE", filepath.Join(t.TempDir(), "session.json"))
+	if got := values("run", ""); got != nil {
+		t.Errorf("no cache: %v", got)
+	}
+	if got := values("sk"); strings.Join(got, " ") != "skill" {
+		t.Errorf("no cache commands: %v", got)
+	}
+}
+
+func TestCompletionScripts(t *testing.T) {
+	for _, shell := range []string{"bash", "zsh", "fish", "powershell"} {
+		var out bytes.Buffer
+		if err := run([]string{"completion", shell}, &out); err != nil || !strings.Contains(out.String(), "__complete") {
+			t.Fatalf("%s: %v %q", shell, err, out.String())
+		}
+	}
+	var out bytes.Buffer
+	if err := run([]string{"completion", "ksh"}, &out); err == nil || !strings.Contains(err.Error(), "unknown shell") {
+		t.Fatalf("ksh: %v", err)
+	}
+}
+
+// --install writes the script where the shell loads it by itself.
+func TestCompletionInstall(t *testing.T) {
+	data, config := t.TempDir(), t.TempDir()
+	t.Setenv("XDG_DATA_HOME", data)
+	t.Setenv("XDG_CONFIG_HOME", config)
+	for shell, target := range map[string]string{
+		"bash": filepath.Join(data, "bash-completion", "completions", "gbf"),
+		"zsh":  filepath.Join(data, "zsh", "site-functions", "_gbf"),
+		"fish": filepath.Join(config, "fish", "completions", "gbf.fish"),
+	} {
+		var out bytes.Buffer
+		if err := run([]string{"completion", shell, "--install"}, &out); err != nil {
+			t.Fatalf("%s: %v", shell, err)
+		}
+		installed, err := os.ReadFile(target)
+		if err != nil || !strings.Contains(string(installed), "__complete") {
+			t.Fatalf("%s: %v %q", shell, err, installed)
+		}
+		if !strings.Contains(out.String(), target) {
+			t.Fatalf("%s: output %q", shell, out.String())
+		}
+	}
+	var out bytes.Buffer
+	if err := run([]string{"completion", "powershell", "--install"}, &out); err == nil || !strings.Contains(err.Error(), "$PROFILE") {
+		t.Fatalf("powershell: %v", err)
+	}
 }

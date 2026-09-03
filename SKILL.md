@@ -13,8 +13,9 @@ every action is recorded under their identity.
 
 This file ships inside `gbf` and in its repository
 (https://github.com/gobugfree/cli). Install it where your agent loads skills
-from (`--agent claude`, the default, `cursor`, or `codex`; `--dir DIR` for
-any other place), and run the same command again after updating `gbf`:
+from (`--agent claude`, the default, `cursor`, `codex`, or `lmstudio`;
+`--dir DIR` for any other place), and run the same command again after
+updating `gbf`:
 
 ```bash
 gbf skill --install --agent claude

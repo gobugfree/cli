@@ -83,10 +83,38 @@ directory, no login or network needed:
 | Claude Code (default) | `gbf skill --install` | `~/.claude/skills/gbf/SKILL.md` |
 | Cursor | `gbf skill --install --agent cursor` | `~/.cursor/skills/gbf/SKILL.md` |
 | Codex | `gbf skill --install --agent codex` | `~/.agents/skills/gbf/SKILL.md` |
+| LM Studio | `gbf skill --install --agent lmstudio` | `~/.lmstudio/skills/gbf/SKILL.md` |
 
 `--dir DIR` installs to `DIR/gbf/SKILL.md` for any other agent or for a
 project-level skills directory. Re-run the install after updating `gbf`; the
 skill is stamped with the version and a content hash.
+
+## Shell completion
+
+Tab completes commands, flags, operation ids, path and query parameters,
+form fields, enum values, request paths, tags, and schema names, all from
+the document cached at login, so it is instant and never touches the
+network. Install it once for your shell:
+
+```bash
+gbf completion bash --install    # or zsh, fish
+```
+
+That writes the script where the shell loads it by itself: bash-completion's
+user directory (`~/.local/share/bash-completion/completions/gbf`, picked up
+on the first tab in every new shell), `~/.local/share/zsh/site-functions/_gbf`
+(add that directory to `fpath` before `compinit`), or
+`~/.config/fish/completions/gbf.fish`. Without `--install` the script is
+printed, for `eval "$(gbf completion bash)"` in a shell without
+bash-completion, or, in PowerShell,
+`gbf completion powershell | Out-String | Invoke-Expression` in `$PROFILE`.
+
+```
+$ gbf run postRetestsVerdict --form <TAB>
+notes=    outcome=
+$ gbf run postRetestsVerdict --form outcome=<TAB>
+passed  failed
+```
 
 ## Develop
 
