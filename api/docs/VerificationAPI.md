@@ -5,7 +5,7 @@ All URIs are relative to *http://localhost:3000*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetVerification**](VerificationAPI.md#GetVerification) | **Get** /verification | The researcher&#39;s verification level, latest attempt, and available methods
-[**PostVerificationBackgroundCheck**](VerificationAPI.md#PostVerificationBackgroundCheck) | **Post** /verification/background-check | Request a background check; staff will contact you to run the manual review
+[**PostVerificationBackgroundCheck**](VerificationAPI.md#PostVerificationBackgroundCheck) | **Post** /verification/background-check | Request a background check; you will be contacted for the manual review
 [**PostVerificationBackgroundCheckCancel**](VerificationAPI.md#PostVerificationBackgroundCheckCancel) | **Post** /verification/background-check/cancel | Cancel a requested background check
 
 
@@ -71,7 +71,7 @@ Other parameters are passed through a pointer to a apiGetVerificationRequest str
 
 > PostVerificationBackgroundCheck(ctx).Execute()
 
-Request a background check; staff will contact you to run the manual review
+Request a background check; you will be contacted for the manual review
 
 ### Example
 

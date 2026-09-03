@@ -1,15 +1,15 @@
 ---
 name: gbf
-description: Work the GObugfree bug bounty platform on behalf of your user through the gbf command. Use when asked to do anything on GObugfree (engagements, reports, triage, retests, payouts, organization or backoffice work) or to call its API. Covers the device-flow login, discovering the operations the user may call, and performing them safely.
+description: Work the GObugfree bug bounty platform on behalf of your user, a security researcher, through the gbf command. Use when asked to do anything on GObugfree (engagements, reports, retests, payouts, profile, verification) or to call its API. Covers the device-flow login, discovering the operations the user may call, and performing them safely.
 ---
 
 # GObugfree Agent Skill
 
 You are an AI agent acting on behalf of a human user of GObugfree, a bug
-bounty platform. Your user may be a security researcher, a member of an
-organization that runs engagements, or platform staff. You authenticate as
-your user, you have exactly their permissions and nothing more, and every
-action is recorded under their identity.
+bounty platform. Your user is a security researcher who hunts on the
+platform's engagements and submits vulnerability reports. You authenticate
+as your user, you have exactly their permissions and nothing more, and
+every action is recorded under their identity.
 
 This file ships inside `gbf` and in its repository
 (https://github.com/gobugfree/cli). Install it where your agent loads skills
@@ -20,37 +20,35 @@ the same command again after updating `gbf`:
 gbf skill --install
 ```
 
-## The one rule that shapes everything: access is dynamic
+## The one rule that shapes everything: the document is the truth
 
-The API is the same set of routes the web UI uses, and what your user may
-call depends on their roles and memberships. The platform tells you exactly
-that: its OpenAPI document is scoped to the logged-in user and lists only
-the operations that user can perform, with parameters, fields, constraints,
-and response shapes. There is no fixed list of routes to learn. You work
-through the `gbf` command, which reads that document after login and drives
-the platform through it, so it never offers your user something they cannot
-do. If an operation is not in `gbf ops`, your user cannot do it: do not try
-other paths, other ids, or requests outside the document.
+The platform describes itself to the logged-in user: its OpenAPI document
+lists exactly the operations your user can perform today, with parameters,
+fields, constraints, and response shapes. There is no fixed list of routes
+to learn. You work through the `gbf` command, which reads that document
+after login and drives the platform through it, so it never offers your
+user something they cannot do. If an operation is not in `gbf ops`, your
+user cannot do it: do not try other paths, other ids, or requests outside
+the document.
 
 ## Ground rules
 
 - **Binding actions require your user's explicit go-ahead.** Anything that
-  submits, accepts, approves, rejects, publishes, pays, assigns, deletes, or
-  otherwise changes state that another party relies on is binding. Reads,
-  searches, and draft saves are not. Before a binding action, run it with
+  submits, accepts, declines, publishes, requests, deletes, or otherwise
+  changes state that another party relies on is binding. Reads, searches,
+  and draft saves are not. Before a binding action, run it with
   `--dry-run`, show your user exactly what will be sent, and proceed only
   after they confirmed. When in doubt whether an action is binding, ask.
 - Only test assets an engagement lists as in scope, and follow the
   engagement's rules of engagement and responsible disclosure.
-- Never fabricate findings, evidence, or decisions. A report must describe a
-  vulnerability your user actually verified; a triage decision must reflect
-  what your user decided.
+- Never fabricate findings, evidence, or verdicts. A report must describe a
+  vulnerability your user actually verified; a retest verdict must reflect
+  what your user actually observed.
 - Disclose your involvement where an operation asks for it (for example a
   report's origin field distinguishes human, AI-assisted, and AI-agent
   work). Answer truthfully.
-- A `404` means the resource does not exist for your user; resources of
-  other users or organizations are indistinguishable from nonexistent
-  ones. Do not probe.
+- A `404` means the resource does not exist for your user; other users'
+  resources are indistinguishable from nonexistent ones. Do not probe.
 
 ## Setup: the gbf command
 
@@ -71,11 +69,10 @@ for a service token and export it as `CF_ACCESS_CLIENT_ID` and
 `CF_ACCESS_CLIENT_SECRET` before any command, including `gbf skill`; gbf
 then sends the Access headers on every request. `login` prints a URL and a
 code: show them to your user, ask them to sign in and approve the login in
-their browser, and wait. The command continues on
-approval, stores the session privately, and refreshes the token by itself
-afterwards. Never ask for or handle a password. `whoami` tells you whom you
-act as and which groups (areas) they have, which is your first hint of the
-role.
+their browser, and wait. The command continues on approval, stores the
+session privately, and refreshes the token by itself afterwards. Never ask
+for or handle a password. `whoami` tells you whom you act as and when the
+token expires.
 
 When a command fails with `Session not active` or `the login has expired`,
 the platform session ended; nothing was sent. Do not stop: run `login`
@@ -85,57 +82,46 @@ new URL and code, wait for approval, and then repeat the command.
 
 ### Ids: which one an operation wants
 
-The platform uses several ids for the same person, and they are not
+The platform uses two ids for the same person, and they are not
 interchangeable:
 
 - the OIDC `subject` from `whoami` (a UUID) is an identity, never an API id;
-- the **user id** (a small integer) names a person in report fields such as
-  `assignee`, and in the audit log as `actorId`;
-- the **member id** from an organization's members list names the
-  membership, not the person, and is a different number.
+- the **user id** (a small integer) names a person in report fields and in
+  status history entries.
 
-When a field says "user id", pass the user id. Your user's own id is the
-`userId` of `gbf run getSettings`. For assigning a report, read the
-report's organization detail first: its `assignmentOptions` list every
-active member with the id the assign operation takes. The members list
-(`getOrganizationsMembers`, admins only) carries the same value as
-`userId`; its `id` is the membership, never pass that as a user id.
+Your user's own user id is the `userId` of `gbf run getSettings`.
 
-## Roles, and how the document shows them
+## Areas, and how the document shows them
 
-The same document serves three kinds of users; you recognize the role by
-the areas (tags) `gbf ops` lists, and a user may combine them:
+The document groups the operations by area (the tags `gbf ops` lists):
 
-- **Researchers** work on the root routes: `engagements` (directory,
-  detail, rules of engagement, submissions), `reports` (own reports,
-  drafts, evidence, collaborators), `retests`, `payouts`, `notifications`,
-  `profile`, `settings`, `badges`.
-- **Organization members** see the `organizations` tag: their engagements
-  and scope, the reports submitted to them (`getOrganizationsReports`,
-  `getOrganizationsEngagementsReports`), and the decisions on them
-  (accept, reject, request a retest, assign an internal owner).
-- **Operations staff** see the `backoffice` tag: the triage queue
-  (`postBackofficeTodosPickup`, `getBackofficeTodosByReportId`,
-  `postBackofficeTodosValidate`, `postBackofficeTodosRequestInfo`, bounty
-  proposals), engagement reviews, budgets, conduct cases, and badges.
+- `engagements`: the directory, engagement detail with scope and rules,
+  accepting the rules, and submitting a report or a draft;
+- `reports`: own reports, drafts, evidence files, the report thread,
+  bounty-split collaborators, and coordinated disclosure requests;
+- `retests`: the retest queue, starting an assigned retest, and its verdict;
+- `payouts`, `verification`, `onboarding`, `conduct`: the account side;
+- `profile`, `settings`, `badges`, `researchers`, `leaderboard`: the
+  public profile and how it shows;
+- `notifications`, `advisories`, `feedback`, `lists`, `docs`: the rest.
 
-Never assume a role from the user's words alone; `gbf ops` is the truth. A
-user without the `organizations` tag is not an organization member today,
-whatever they say, and the same goes for the backoffice.
+Never assume what your user may do from their words alone; `gbf ops` is
+the truth. An operation that is not listed is not available today,
+whatever your user says.
 
 ## Learn what your user can do
 
 ```bash
 gbf ops                          # every operation, with id, method, path, summary
-gbf ops --tag organizations      # one area; tags group the operations
-gbf ops --search report          # by id, path, or summary
-gbf ops --refresh                # fetch the document again (after a role change)
+gbf ops --tag reports            # one area; tags group the operations
+gbf ops --search retest          # by id, path, or summary
+gbf ops --refresh                # fetch the document again
 ```
 
 Read the summaries: they state what an operation does, its preconditions,
 and its outcomes ("required before submitting reports", "409 unless
-active"). They are the workflow documentation. Prefer reading an entity's
-detail operation before acting on it, and re-read after a change.
+assigned"). They are the workflow documentation. Prefer reading an
+entity's detail operation before acting on it, and re-read after a change.
 
 ## Understand an operation
 
@@ -155,24 +141,23 @@ response schema in full.
 ## Perform an operation
 
 ```bash
-# a researcher: discover, read, draft, then submit with the user's go-ahead
+# discover an engagement, read it, accept its rules, draft, then submit with the user's go-ahead
 gbf run getEngagements --query kind=pentest
 gbf run getEngagementsByOrgSlugAndEngagementSlug --param org_slug=acme --param engagement_slug=web-app
+gbf run postEngagementsRulesAccept --param org_slug=acme --param engagement_slug=web-app --dry-run
 gbf run postEngagementsSubmitDraft --param org_slug=acme --param engagement_slug=web-app --form title=...
-gbf run postEngagementsSubmit --param org_slug=acme --param engagement_slug=web-app \
+gbf run postReportsSubmit --param report_id=... \
   --form title=... --form description=... --form origin=ai_agent --dry-run
 
-# an organization member: review submitted reports, then decide
-gbf run getOrganizationsReports --param org_slug=acme --query status=validated
-gbf run getOrganizationsEngagementsReportsByReportId --param org_slug=acme \
-  --param engagement_slug=web-app --param report_id=...
-gbf run postOrganizationsEngagementsReportsAccept --param org_slug=acme \
-  --param engagement_slug=web-app --param report_id=... --dry-run
+# follow up on own reports: read one, answer an information request
+gbf run getReports --query status=validated
+gbf run getReportsByReportId --param report_id=...
+gbf run postReportsComments --param report_id=... --form body=... --dry-run
 
-# operations staff: pick up a report for triage and validate it
-gbf run postBackofficeTodosPickup --param report_id=...
-gbf run getBackofficeTodosByReportId --param report_id=...
-gbf run postBackofficeTodosValidate --param report_id=... --form ... --dry-run
+# a retest: start the assignment, then deliver the verdict
+gbf run getRetests
+gbf run postRetestsStart --param retest_id=... --dry-run
+gbf run postRetestsVerdict --param retest_id=... --form outcome=passed --form notes=... --dry-run
 ```
 
 - `run` fills the path from `--param`, the query from `--query`, and sends
@@ -199,9 +184,13 @@ gbf run postBackofficeTodosValidate --param report_id=... --form ... --dry-run
   below), change exactly one thing, and stop after a few attempts to tell
   your user what was tried, with the `requestId`s.
 - `gbf call METHOD PATH` sends any request for the rare case `run` does not
-  cover, for example a download.
+  cover, for example an evidence download.
 
 ## Submitting a report
+
+Accept the engagement's rules first (`postEngagementsRulesAccept`); the
+platform requires it before any submission and again after the engagement
+publishes a new version.
 
 The document marks only a few fields as required because the same fields
 serve the draft route. Submission runs a completeness validation that
@@ -212,50 +201,42 @@ error at a time:
 - `title`, `description`, and `poc` (the proof of concept, required even
   when it is short); `steps`, `impact`, and `vulnerabilityType` are
   optional, but a report your user would sign has them;
-- `scopeEntryId` from the engagement's live scope (`gbf run
-  getOrganizationsScopesEngagementsByEngagementSlug` for members, the
-  engagement detail for researchers) and `endpoint` as a plain URL;
+- `scopeEntryId` from the engagement's live scope (in the engagement
+  detail) and `endpoint` as a plain URL;
 - `severity`, or the CVSS metrics from which it derives;
 - `origin`: `ai_agent` when you wrote the report, `ai_assisted` when your
   user did with your help, `human` otherwise.
 
 Workflow: save a draft with `postEngagementsSubmitDraft` (not binding),
-show the draft to your user, then submit that same draft with
-`postReportsSubmit --param report_id=...` and the full field set, after a
-`--dry-run` and their go-ahead. Use `postEngagementsSubmit` only for a
-report that has no draft yet: it creates and submits in one call, counts
-against the engagement's pending-report budget, and leaves a new draft
-behind when that budget is exhausted. Never use it to retry a draft that
-already exists.
+attach evidence with `postReportsEvidence`, show the draft to your user,
+then submit that same draft with `postReportsSubmit --param report_id=...`
+and the full field set, after a `--dry-run` and their go-ahead. Use
+`postEngagementsSubmit` only for a report that has no draft yet: it
+creates and submits in one call, counts against the engagement's
+pending-report budget, and leaves a new draft behind when that budget is
+exhausted. Never use it to retry a draft that already exists.
 
-An engagement accepts drafts and reports only once it is live: while its
-only version is a draft, both routes return `404`. Read the engagement
-first and tell your user rather than retrying. Bringing an engagement
-live is the organization's job: add at least one in-scope entry to the
-draft version, send it to review with
-`postOrganizationsEngagementsSubmit` (a `400` says what the draft still
-lacks), and wait for the backoffice to approve and publish it.
+An engagement accepts drafts and reports only while it is live; otherwise
+both routes return `404`. Read the engagement first and tell your user
+rather than retrying.
 
 ## Working discipline
 
 - Start every session with `gbf whoami` and `gbf ops`; the available
-  operations are the truth about your user's role today.
+  operations are the truth about what your user may do today.
 - Follow the preconditions the summaries state, in order, and confirm each
   step's outcome by reading the entity again. For a batch of binding
   actions, run one first, verify it, and only then run the rest.
 - Retry a failed call on the same operation. A sibling route that sounds
   similar usually has different side effects (creating instead of
   updating, submitting instead of saving).
-- Reports may carry a free-text `assetIdentifier` rather than a scope
-  entry; when your user asks for per-asset analysis, check that field
-  varies across reports before promising asset-level results, and say so
-  when it does not.
-- If your user has a notifications operation (`getNotifications`), poll it
-  to react to questions, status changes, and assignments addressed to them.
+- Poll `getNotifications` to react to questions, status changes, and
+  retest assignments addressed to your user, and answer an information
+  request on the report's own thread (`postReportsComments`).
 - Keep the session private: it lives under `$XDG_CONFIG_HOME/gbf` with
   owner-only permissions. Never print the token. `gbf logout` ends the
   session on this machine; the login itself ends with the user's platform
   session.
 - Re-run `gbf skill --install` after updating `gbf` (`gbf version` shows the
   version, and each skill install prints its stamp), and refresh the API
-  document with `gbf ops --refresh` after a role or membership change.
+  document with `gbf ops --refresh` when an operation you expect is missing.

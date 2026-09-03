@@ -8,9 +8,9 @@ Method | HTTP request | Description
 [**GetReportsByReportId**](ReportsAPI.md#GetReportsByReportId) | **Get** /reports/{report_id} | One of the researcher&#39;s own reports with its status history and researcher-visible discussion; 404 for other researchers&#39; reports (ADR-0009)
 [**GetReportsCollaborations**](ReportsAPI.md#GetReportsCollaborations) | **Get** /reports/collaborations | The researcher&#39;s bounty-split collaboration invitations
 [**GetReportsEdit**](ReportsAPI.md#GetReportsEdit) | **Get** /reports/{report_id}/edit | The researcher&#39;s draft report open in the editor; 404 for foreign or already-submitted reports
-[**GetReportsEvidenceByEvidenceId**](ReportsAPI.md#GetReportsEvidenceByEvidenceId) | **Get** /reports/{report_id}/evidence/{evidence_id} | Download an evidence file (attachment); owner always, org/triage after submission; 404 otherwise
+[**GetReportsEvidenceByEvidenceId**](ReportsAPI.md#GetReportsEvidenceByEvidenceId) | **Get** /reports/{report_id}/evidence/{evidence_id} | Download an evidence file (attachment); the owner always, the other parties to the report after submission; 404 otherwise
 [**GetReportsExport**](ReportsAPI.md#GetReportsExport) | **Get** /reports/export | Download the researcher&#39;s filtered reports as CSV or JSON (every page, at most 10000 rows)
-[**GetReportsOpen**](ReportsAPI.md#GetReportsOpen) | **Get** /reports/{report_id}/open | Redirect to the surface the caller may open the report on (researcher detail, organization detail, or triage workspace)
+[**GetReportsOpen**](ReportsAPI.md#GetReportsOpen) | **Get** /reports/{report_id}/open | Redirect to the surface the caller may open the report on; 404 when there is none
 [**PostReportsCollaborators**](ReportsAPI.md#PostReportsCollaborators) | **Post** /reports/{report_id}/collaborators | Invite a researcher to an own draft&#39;s bounty split with a proposed share
 [**PostReportsCollaboratorsRemove**](ReportsAPI.md#PostReportsCollaboratorsRemove) | **Post** /reports/{report_id}/collaborators/{collaborator_id}/remove | Remove a collaborator from an own draft
 [**PostReportsCollaboratorsRespond**](ReportsAPI.md#PostReportsCollaboratorsRespond) | **Post** /reports/{report_id}/collaborators/respond | Accept or decline a bounty-split invitation (invitee only)
@@ -299,7 +299,7 @@ Name | Type | Description  | Notes
 
 > GetReportsEvidenceByEvidenceId(ctx, reportId, evidenceId).Execute()
 
-Download an evidence file (attachment); owner always, org/triage after submission; 404 otherwise
+Download an evidence file (attachment); the owner always, the other parties to the report after submission; 404 otherwise
 
 ### Example
 
@@ -446,7 +446,7 @@ Name | Type | Description  | Notes
 
 > GetReportsOpen(ctx, reportId).Execute()
 
-Redirect to the surface the caller may open the report on (researcher detail, organization detail, or triage workspace)
+Redirect to the surface the caller may open the report on; 404 when there is none
 
 ### Example
 

@@ -26,18 +26,18 @@ const testDocument = `{
       "parameters": [{"name": "kind", "in": "query", "schema": {"type": "string", "enum": ["bug_bounty", "pentest"]}}],
       "responses": {"200": {"description": "One page", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/EngagementListItemList"}}}}}
     }},
-    "/organizations/{org_slug}/engagements/{engagement_slug}/pause": {"post": {
-      "operationId": "postOrganizationsEngagementsPause", "tags": ["organizations"],
-      "summary": "Pause a live engagement",
+    "/engagements/{org_slug}/{engagement_slug}/submit/draft": {"post": {
+      "operationId": "postEngagementsSubmitDraft", "tags": ["engagements"],
+      "summary": "Save a private draft report",
       "parameters": [
         {"name": "org_slug", "in": "path", "required": true, "schema": {"type": "string"}},
         {"name": "engagement_slug", "in": "path", "required": true, "schema": {"type": "string"}}
       ],
       "requestBody": {"required": true, "content": {"application/x-www-form-urlencoded": {"schema": {
-        "type": "object", "required": ["note"],
-        "properties": {"note": {"type": "string", "maxLength": 200, "description": "Why"}, "notify": {"type": "string", "enum": ["yes", "no"]}}
+        "type": "object", "required": ["title"],
+        "properties": {"title": {"type": "string", "maxLength": 200, "description": "Report title"}, "origin": {"type": "string", "enum": ["human", "ai_agent"]}}
       }}}},
-      "responses": {"200": {"description": "Paused"}, "default": {"description": "Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}
+      "responses": {"200": {"description": "Saved"}, "default": {"description": "Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}}}
     }}
   },
   "components": {"schemas": {
@@ -180,11 +180,11 @@ func TestOpsListsAndFiltersFromTheCachedDocument(t *testing.T) {
 	if first["operationId"] != "getEngagements" || first["method"] != "GET" {
 		t.Fatalf("first op %v", first)
 	}
-	orgs := runJSON(t, "ops", "--tag", "organizations")["items"].([]any)
-	if len(orgs) != 1 || orgs[0].(map[string]any)["operationId"] != "postOrganizationsEngagementsPause" {
-		t.Fatalf("tag filter %v", orgs)
+	tagged := runJSON(t, "ops", "--tag", "engagements")["items"].([]any)
+	if len(tagged) != 2 || tagged[1].(map[string]any)["operationId"] != "postEngagementsSubmitDraft" {
+		t.Fatalf("tag filter %v", tagged)
 	}
-	found := runJSON(t, "ops", "--search", "pause")["items"].([]any)
+	found := runJSON(t, "ops", "--search", "draft")["items"].([]any)
 	if len(found) != 1 {
 		t.Fatalf("search %v", found)
 	}
@@ -207,8 +207,8 @@ func TestOpsListsAndFiltersFromTheCachedDocument(t *testing.T) {
 
 func TestDescribe(t *testing.T) {
 	loggedIn(t, newFakePlatform(t))
-	desc := runJSON(t, "describe", "postOrganizationsEngagementsPause")
-	if desc["method"] != "POST" || desc["path"] != "/organizations/{org_slug}/engagements/{engagement_slug}/pause" {
+	desc := runJSON(t, "describe", "postEngagementsSubmitDraft")
+	if desc["method"] != "POST" || desc["path"] != "/engagements/{org_slug}/{engagement_slug}/submit/draft" {
 		t.Fatalf("describe %v", desc)
 	}
 	params := desc["parameters"].([]any)
@@ -220,19 +220,19 @@ func TestDescribe(t *testing.T) {
 		t.Fatalf("body %v", body)
 	}
 	fields := body["fields"].([]any)
-	note := fields[0].(map[string]any)
-	if note["name"] != "note" || note["required"] != true || note["maxLength"] != 200.0 || note["description"] != "Why" {
-		t.Fatalf("note field %v", note)
+	title := fields[1].(map[string]any)
+	if title["name"] != "title" || title["required"] != true || title["maxLength"] != 200.0 || title["description"] != "Report title" {
+		t.Fatalf("title field %v", title)
 	}
-	notify := fields[1].(map[string]any)
-	if enum := notify["enum"].([]any); len(enum) != 2 || enum[0] != "yes" {
-		t.Fatalf("notify enum %v", notify)
+	origin := fields[0].(map[string]any)
+	if enum := origin["enum"].([]any); len(enum) != 2 || enum[0] != "human" {
+		t.Fatalf("origin enum %v", origin)
 	}
 	responses := desc["responses"].([]any)
 	if len(responses) != 2 || responses[1].(map[string]any)["schema"] != "Error" {
 		t.Fatalf("responses %v", responses)
 	}
-	if desc["example"] != "gbf run postOrganizationsEngagementsPause --param org_slug=... --param engagement_slug=... --form note=..." {
+	if desc["example"] != "gbf run postEngagementsSubmitDraft --param org_slug=... --param engagement_slug=... --form title=..." {
 		t.Fatalf("example %q", desc["example"])
 	}
 
@@ -252,15 +252,15 @@ func TestRunFillsThePathAndSendsTheDeclaredBody(t *testing.T) {
 	f := newFakePlatform(t)
 	loggedIn(t, f)
 	var out bytes.Buffer
-	err := run([]string{"run", "postOrganizationsEngagementsPause", "--param", "org_slug=acme", "--param", "engagement_slug=web app", "--form", "note=maintenance"}, &out)
+	err := run([]string{"run", "postEngagementsSubmitDraft", "--param", "org_slug=acme", "--param", "engagement_slug=web app", "--form", "title=XSS in search"}, &out)
 	if err != nil {
 		t.Fatal(err)
 	}
 	req := f.last()
-	if req.Method != http.MethodPost || req.URL.Path != "/organizations/acme/engagements/web app/pause" {
+	if req.Method != http.MethodPost || req.URL.Path != "/engagements/acme/web app/submit/draft" {
 		t.Fatalf("request %s %s", req.Method, req.URL.Path)
 	}
-	if req.Header.Get("Content-Type") != "application/x-www-form-urlencoded" || f.bodies[len(f.bodies)-1] != "note=maintenance" {
+	if req.Header.Get("Content-Type") != "application/x-www-form-urlencoded" || f.bodies[len(f.bodies)-1] != "title=XSS+in+search" {
 		t.Fatalf("body %q", f.bodies[len(f.bodies)-1])
 	}
 	if req.Header.Get("Authorization") == "" || req.Header.Get("User-Agent") != "gbf-cli/dev/go" || req.Header.Get("Accept") != "application/json" {
@@ -283,9 +283,9 @@ func TestRunExplainsTheContract(t *testing.T) {
 		args []string
 		want string
 	}{
-		{[]string{"run", "postOrganizationsEngagementsPause"}, "needs --param org_slug, --param engagement_slug"},
-		{[]string{"run", "postOrganizationsEngagementsPause", "--param", "org_slug=a", "--param", "engagement_slug=b"}, "required: --form note"},
-		{[]string{"run", "postOrganizationsEngagementsPause", "--param", "org_slug=a", "--param", "engagement_slug=b", "--json-body", "{}"}, "expects form fields"},
+		{[]string{"run", "postEngagementsSubmitDraft"}, "needs --param org_slug, --param engagement_slug"},
+		{[]string{"run", "postEngagementsSubmitDraft", "--param", "org_slug=a", "--param", "engagement_slug=b"}, "required: --form title"},
+		{[]string{"run", "postEngagementsSubmitDraft", "--param", "org_slug=a", "--param", "engagement_slug=b", "--json-body", "{}"}, "expects form fields"},
 		{[]string{"run", "getEngagements", "--form", "x=y"}, "takes no request body"},
 		{[]string{"run", "nothing"}, "unknown operation"},
 	}
@@ -300,8 +300,8 @@ func TestRunExplainsTheContract(t *testing.T) {
 func TestRunDryRunSendsNothing(t *testing.T) {
 	f := newFakePlatform(t)
 	loggedIn(t, f)
-	dry := runJSON(t, "run", "postOrganizationsEngagementsPause", "--param", "org_slug=acme", "--param", "engagement_slug=web", "--form", "note=x", "--dry-run")
-	if dry["method"] != "POST" || dry["url"] != f.server.URL+"/organizations/acme/engagements/web/pause" || dry["body"] != "note=x" {
+	dry := runJSON(t, "run", "postEngagementsSubmitDraft", "--param", "org_slug=acme", "--param", "engagement_slug=web", "--form", "title=x", "--dry-run")
+	if dry["method"] != "POST" || dry["url"] != f.server.URL+"/engagements/acme/web/submit/draft" || dry["body"] != "title=x" {
 		t.Fatalf("dry run %v", dry)
 	}
 	for _, r := range f.requests {

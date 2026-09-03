@@ -126,7 +126,7 @@ func (r VerificationAPIPostVerificationBackgroundCheckRequest) Execute() (*http.
 }
 
 /*
-PostVerificationBackgroundCheck Request a background check; staff will contact you to run the manual review
+PostVerificationBackgroundCheck Request a background check; you will be contacted for the manual review
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return VerificationAPIPostVerificationBackgroundCheckRequest

@@ -1,10 +1,11 @@
 # gbf: the GObugfree command-line client
 
-`gbf` lets people and AI agents work the GObugfree bug bounty platform from a
-terminal. It logs in with the OAuth 2.0 device flow as a platform user, then
-drives the platform through that user's live OpenAPI document: whatever the
-document lists is exactly what the user may call, whatever their role. The
-agent skill that teaches an AI agent how to use it ships inside the binary.
+`gbf` lets security researchers and their AI agents work the GObugfree bug
+bounty platform from a terminal. It logs in with the OAuth 2.0 device flow
+as the researcher, then drives the platform through that user's live OpenAPI
+document: whatever the document lists is exactly what the user may call.
+The agent skill that teaches an AI agent how to use it ships inside the
+binary.
 
 ## Install
 
@@ -21,8 +22,9 @@ carries one binary per platform plus `checksums.txt`:
 
 Verify the download against `checksums.txt`, then put it on your PATH under
 the name `gbf`. The repository is internal, so downloading needs a signed-in
-organization member (the commands below assume the browser or `gh` did
-that; `gh release download -R gobugfree/cli -p 'gbf_cli_*'` works too).
+GitHub account with access to it (the commands below assume the browser or
+`gh` did that; `gh release download -R gobugfree/cli -p 'gbf_cli_*'` works
+too).
 
 ### Linux
 
@@ -66,8 +68,8 @@ lives in `%USERPROFILE%\.config\gbf\session.json` unless
 
 ### From source (Go)
 
-Go users can build from source instead. An authenticated organization
-member and `GOPRIVATE` are needed:
+Go users can build from source instead. A GitHub account with access to the
+repository and `GOPRIVATE` are needed:
 
 ```bash
 export GOPRIVATE=github.com/gobugfree
@@ -81,7 +83,7 @@ is unset; make sure that directory is on your PATH.
 
 ```bash
 gbf login --app-url https://<platform> --issuer-url https://<keycloak>/realms/gbf
-gbf whoami                                   # user, groups (areas), token expiry
+gbf whoami                                   # user, client, token expiry
 gbf ops --tag engagements                    # operations, by tag or --search TEXT
 gbf describe postEngagementsRulesAccept      # parameters, body fields, responses, example
 gbf run postEngagementsRulesAccept --param org_slug=acme --param engagement_slug=web-app --dry-run

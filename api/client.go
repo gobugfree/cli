@@ -51,8 +51,6 @@ type APIClient struct {
 
 	AdvisoriesAPI *AdvisoriesAPIService
 
-	BackofficeAPI *BackofficeAPIService
-
 	BadgesAPI *BadgesAPIService
 
 	ConductAPI *ConductAPIService
@@ -71,13 +69,9 @@ type APIClient struct {
 
 	OnboardingAPI *OnboardingAPIService
 
-	OrganizationsAPI *OrganizationsAPIService
-
 	PayoutsAPI *PayoutsAPIService
 
 	ProfileAPI *ProfileAPIService
-
-	RegisterAPI *RegisterAPIService
 
 	ReportsAPI *ReportsAPIService
 
@@ -88,8 +82,6 @@ type APIClient struct {
 	SettingsAPI *SettingsAPIService
 
 	VerificationAPI *VerificationAPIService
-
-	WebhookAPI *WebhookAPIService
 }
 
 type service struct {
@@ -109,7 +101,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 
 	// API Services
 	c.AdvisoriesAPI = (*AdvisoriesAPIService)(&c.common)
-	c.BackofficeAPI = (*BackofficeAPIService)(&c.common)
 	c.BadgesAPI = (*BadgesAPIService)(&c.common)
 	c.ConductAPI = (*ConductAPIService)(&c.common)
 	c.DocsAPI = (*DocsAPIService)(&c.common)
@@ -119,16 +110,13 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ListsAPI = (*ListsAPIService)(&c.common)
 	c.NotificationsAPI = (*NotificationsAPIService)(&c.common)
 	c.OnboardingAPI = (*OnboardingAPIService)(&c.common)
-	c.OrganizationsAPI = (*OrganizationsAPIService)(&c.common)
 	c.PayoutsAPI = (*PayoutsAPIService)(&c.common)
 	c.ProfileAPI = (*ProfileAPIService)(&c.common)
-	c.RegisterAPI = (*RegisterAPIService)(&c.common)
 	c.ReportsAPI = (*ReportsAPIService)(&c.common)
 	c.ResearchersAPI = (*ResearchersAPIService)(&c.common)
 	c.RetestsAPI = (*RetestsAPIService)(&c.common)
 	c.SettingsAPI = (*SettingsAPIService)(&c.common)
 	c.VerificationAPI = (*VerificationAPIService)(&c.common)
-	c.WebhookAPI = (*WebhookAPIService)(&c.common)
 
 	return c
 }

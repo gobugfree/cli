@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetProfileCertifications**](ProfileAPI.md#GetProfileCertifications) | **Get** /profile/certifications | Own certifications with their verification status
 [**GetProfileExternal**](ProfileAPI.md#GetProfileExternal) | **Get** /profile/external | Own external profiles with proof-of-control status; pending challenges include the proof token and placement instructions
-[**PostProfileCertifications**](ProfileAPI.md#PostProfileCertifications) | **Post** /profile/certifications | Submit a certification; issuers with a verification URL are checked automatically, others go to staff review
+[**PostProfileCertifications**](ProfileAPI.md#PostProfileCertifications) | **Post** /profile/certifications | Submit a certification; issuers with a verification URL are checked automatically, others are reviewed manually
 [**PostProfileCertificationsDelete**](ProfileAPI.md#PostProfileCertificationsDelete) | **Post** /profile/certifications/{id}/delete | Remove an own certification
 [**PostProfileExternal**](ProfileAPI.md#PostProfileExternal) | **Post** /profile/external | Start (or restart) a proof-of-control challenge: place the returned proof token on the external profile, then check
 [**PostProfileExternalCheck**](ProfileAPI.md#PostProfileExternalCheck) | **Post** /profile/external/{id}/check | Enqueue an asynchronous proof check for an own open challenge; a verified profile is returned unchanged
@@ -137,7 +137,7 @@ Other parameters are passed through a pointer to a apiGetProfileExternalRequest 
 
 > PostProfileCertifications(ctx).CredentialId(credentialId).Issuer(issuer).Name(name).ExpiresOn(expiresOn).IssuedOn(issuedOn).Url(url).Execute()
 
-Submit a certification; issuers with a verification URL are checked automatically, others go to staff review
+Submit a certification; issuers with a verification URL are checked automatically, others are reviewed manually
 
 ### Example
 

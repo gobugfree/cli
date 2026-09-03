@@ -549,7 +549,7 @@ func (r ReportsAPIGetReportsEvidenceByEvidenceIdRequest) Execute() (*http.Respon
 }
 
 /*
-GetReportsEvidenceByEvidenceId Download an evidence file (attachment); owner always, org/triage after submission; 404 otherwise
+GetReportsEvidenceByEvidenceId Download an evidence file (attachment); the owner always, the other parties to the report after submission; 404 otherwise
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param reportId
@@ -850,7 +850,7 @@ func (r ReportsAPIGetReportsOpenRequest) Execute() (*http.Response, error) {
 }
 
 /*
-GetReportsOpen Redirect to the surface the caller may open the report on (researcher detail, organization detail, or triage workspace)
+GetReportsOpen Redirect to the surface the caller may open the report on; 404 when there is none
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param reportId

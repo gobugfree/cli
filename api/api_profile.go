@@ -285,7 +285,7 @@ func (r ProfileAPIPostProfileCertificationsRequest) Execute() (*http.Response, e
 }
 
 /*
-PostProfileCertifications Submit a certification; issuers with a verification URL are checked automatically, others go to staff review
+PostProfileCertifications Submit a certification; issuers with a verification URL are checked automatically, others are reviewed manually
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ProfileAPIPostProfileCertificationsRequest
