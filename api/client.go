@@ -67,8 +67,6 @@ type APIClient struct {
 
 	ListsAPI *ListsAPIService
 
-	LlmsTxtAPI *LlmsTxtAPIService
-
 	NotificationsAPI *NotificationsAPIService
 
 	OnboardingAPI *OnboardingAPIService
@@ -88,8 +86,6 @@ type APIClient struct {
 	RetestsAPI *RetestsAPIService
 
 	SettingsAPI *SettingsAPIService
-
-	SkillsAPI *SkillsAPIService
 
 	VerificationAPI *VerificationAPIService
 
@@ -121,7 +117,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.FeedbackAPI = (*FeedbackAPIService)(&c.common)
 	c.LeaderboardAPI = (*LeaderboardAPIService)(&c.common)
 	c.ListsAPI = (*ListsAPIService)(&c.common)
-	c.LlmsTxtAPI = (*LlmsTxtAPIService)(&c.common)
 	c.NotificationsAPI = (*NotificationsAPIService)(&c.common)
 	c.OnboardingAPI = (*OnboardingAPIService)(&c.common)
 	c.OrganizationsAPI = (*OrganizationsAPIService)(&c.common)
@@ -132,7 +127,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ResearchersAPI = (*ResearchersAPIService)(&c.common)
 	c.RetestsAPI = (*RetestsAPIService)(&c.common)
 	c.SettingsAPI = (*SettingsAPIService)(&c.common)
-	c.SkillsAPI = (*SkillsAPIService)(&c.common)
 	c.VerificationAPI = (*VerificationAPIService)(&c.common)
 	c.WebhookAPI = (*WebhookAPIService)(&c.common)
 

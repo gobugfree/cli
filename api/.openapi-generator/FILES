@@ -9,7 +9,6 @@ api_engagements.go
 api_feedback.go
 api_leaderboard.go
 api_lists.go
-api_llms_txt.go
 api_notifications.go
 api_onboarding.go
 api_organizations.go
@@ -20,7 +19,6 @@ api_reports.go
 api_researchers.go
 api_retests.go
 api_settings.go
-api_skills.go
 api_verification.go
 api_webhook.go
 client.go
@@ -74,7 +72,6 @@ docs/IntegrationWebhook.md
 docs/Integrations.md
 docs/LeaderboardAPI.md
 docs/ListsAPI.md
-docs/LlmsTxtAPI.md
 docs/MessageNotification.md
 docs/MessageNotificationList.md
 docs/NotificationsAPI.md
@@ -136,8 +133,6 @@ docs/ScopeEngagementScopeInfo.md
 docs/ScopeEntry.md
 docs/Scopes.md
 docs/SettingsAPI.md
-docs/Skill.md
-docs/SkillsAPI.md
 docs/UserCertification.md
 docs/UserCertificationList.md
 docs/UserOnboarding.md
@@ -241,7 +236,6 @@ model_scope_engagement_scope.go
 model_scope_engagement_scope_info.go
 model_scope_entry.go
 model_scopes.go
-model_skill.go
 model_user_certification.go
 model_user_certification_list.go
 model_user_onboarding.go

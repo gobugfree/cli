@@ -2797,25 +2797,6 @@
         ],
         "type": "object"
       },
-      "Skill": {
-        "properties": {
-          "content": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "version",
-          "content"
-        ],
-        "type": "object"
-      },
       "UserCertification": {
         "properties": {
           "credentialId": {
@@ -7843,30 +7824,6 @@
         "summary": "Save the caller's visible columns and their order for a list; reset=1 restores the default",
         "tags": [
           "lists"
-        ]
-      }
-    },
-    "/llms.txt": {
-      "get": {
-        "operationId": "getLlmsTxt",
-        "responses": {
-          "200": {
-            "description": "JSON when the request accepts application/json, HTML otherwise."
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "Root llms.txt pointing agents at the skill and the OpenAPI reference; public, no authentication required",
-        "tags": [
-          "llms.txt"
         ]
       }
     },
@@ -14657,37 +14614,6 @@
         "summary": "Remove an own skill",
         "tags": [
           "settings"
-        ]
-      }
-    },
-    "/skills": {
-      "get": {
-        "operationId": "getSkills",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Skill"
-                }
-              }
-            },
-            "description": "The skill with its name, version, and markdown content"
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "The agent skill as an installable SKILL.md: markdown by default, a JSON wrapper with the version stamp when application/json is accepted; public, no authentication required",
-        "tags": [
-          "skills"
         ]
       }
     },

@@ -169,7 +169,6 @@ Class | Method | HTTP request | Description
 *LeaderboardAPI* | [**GetLeaderboard**](docs/LeaderboardAPI.md#getleaderboard) | **Get** /leaderboard | The researcher leaderboard of the selected window; searchable by handle, sortable, paginated
 *LeaderboardAPI* | [**GetLeaderboardExport**](docs/LeaderboardAPI.md#getleaderboardexport) | **Get** /leaderboard/export | Download the filtered leaderboard as CSV or JSON
 *ListsAPI* | [**PostListsColumns**](docs/ListsAPI.md#postlistscolumns) | **Post** /lists/columns | Save the caller&#39;s visible columns and their order for a list; reset&#x3D;1 restores the default
-*LlmsTxtAPI* | [**GetLlmsTxt**](docs/LlmsTxtAPI.md#getllmstxt) | **Get** /llms.txt | Root llms.txt pointing agents at the skill and the OpenAPI reference; public, no authentication required
 *NotificationsAPI* | [**GetNotifications**](docs/NotificationsAPI.md#getnotifications) | **Get** /notifications | The user&#39;s notifications, newest first
 *NotificationsAPI* | [**GetNotificationsByNotificationId**](docs/NotificationsAPI.md#getnotificationsbynotificationid) | **Get** /notifications/{notification_id} | Open one notification: marks it read and forwards to its entity; 404 for other users&#39; notifications (ADR-0009)
 *NotificationsAPI* | [**PostNotificationsReadAll**](docs/NotificationsAPI.md#postnotificationsreadall) | **Post** /notifications/read-all | Mark every notification of the user as read
@@ -294,7 +293,6 @@ Class | Method | HTTP request | Description
 *SettingsAPI* | [**PostSettingsProfile**](docs/SettingsAPI.md#postsettingsprofile) | **Post** /settings/profile | Update the researcher profile
 *SettingsAPI* | [**PostSettingsSkills**](docs/SettingsAPI.md#postsettingsskills) | **Post** /settings/skills | Add a skill from the shared taxonomy, or change its level
 *SettingsAPI* | [**PostSettingsSkillsDelete**](docs/SettingsAPI.md#postsettingsskillsdelete) | **Post** /settings/skills/{id}/delete | Remove an own skill
-*SkillsAPI* | [**GetSkills**](docs/SkillsAPI.md#getskills) | **Get** /skills | The agent skill as an installable SKILL.md: markdown by default, a JSON wrapper with the version stamp when application/json is accepted; public, no authentication required
 *VerificationAPI* | [**GetVerification**](docs/VerificationAPI.md#getverification) | **Get** /verification | The researcher&#39;s verification level, latest attempt, and available methods
 *VerificationAPI* | [**PostVerificationBackgroundCheck**](docs/VerificationAPI.md#postverificationbackgroundcheck) | **Post** /verification/background-check | Request a background check; staff will contact you to run the manual review
 *VerificationAPI* | [**PostVerificationBackgroundCheckCancel**](docs/VerificationAPI.md#postverificationbackgroundcheckcancel) | **Post** /verification/background-check/cancel | Cancel a requested background check
@@ -394,7 +392,6 @@ Class | Method | HTTP request | Description
  - [ScopeEngagementScopeInfo](docs/ScopeEngagementScopeInfo.md)
  - [ScopeEntry](docs/ScopeEntry.md)
  - [Scopes](docs/Scopes.md)
- - [Skill](docs/Skill.md)
  - [UserCertification](docs/UserCertification.md)
  - [UserCertificationList](docs/UserCertificationList.md)
  - [UserOnboarding](docs/UserOnboarding.md)
