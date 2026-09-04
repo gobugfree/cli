@@ -766,16 +766,16 @@ type EngagementsAPIPostEngagementsSubmitDraftRequest struct {
 	ApiService *EngagementsAPIService
 	orgSlug string
 	engagementSlug string
-	description *string
-	origin *string
 	title *string
 	ac *string
 	av *string
 	avail *string
 	conf *string
+	description *string
 	endpoint *string
 	impact *string
 	integ *string
+	origin *string
 	poc *string
 	pr *string
 	scope *string
@@ -784,18 +784,6 @@ type EngagementsAPIPostEngagementsSubmitDraftRequest struct {
 	steps *string
 	ui *string
 	vulnerabilityType *string
-}
-
-// Vulnerability description and root cause (markdown)
-func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Description(description string) EngagementsAPIPostEngagementsSubmitDraftRequest {
-	r.description = &description
-	return r
-}
-
-// AI-use disclosure
-func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Origin(origin string) EngagementsAPIPostEngagementsSubmitDraftRequest {
-	r.origin = &origin
-	return r
 }
 
 // Vulnerability title
@@ -828,7 +816,13 @@ func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Conf(conf string) Engag
 	return r
 }
 
-// Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId
+// Vulnerability description and root cause (markdown)
+func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Description(description string) EngagementsAPIPostEngagementsSubmitDraftRequest {
+	r.description = &description
+	return r
+}
+
+// Affected endpoint or URL, refines the selected asset
 func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Endpoint(endpoint string) EngagementsAPIPostEngagementsSubmitDraftRequest {
 	r.endpoint = &endpoint
 	return r
@@ -843,6 +837,12 @@ func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Impact(impact string) E
 // CVSS integrity impact: N, L, or H
 func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Integ(integ string) EngagementsAPIPostEngagementsSubmitDraftRequest {
 	r.integ = &integ
+	return r
+}
+
+// AI-use disclosure; empty keeps the default until submission
+func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Origin(origin string) EngagementsAPIPostEngagementsSubmitDraftRequest {
+	r.origin = &origin
 	return r
 }
 
@@ -864,13 +864,13 @@ func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Scope(scope string) Eng
 	return r
 }
 
-// In-scope asset id from the engagement&#39;s live scope. Submitting needs this or an endpoint
+// In-scope asset id from the engagement&#39;s live scope
 func (r EngagementsAPIPostEngagementsSubmitDraftRequest) ScopeEntryId(scopeEntryId string) EngagementsAPIPostEngagementsSubmitDraftRequest {
 	r.scopeEntryId = &scopeEntryId
 	return r
 }
 
-// Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics
+// Claimed severity; empty derives it from the CVSS metrics
 func (r EngagementsAPIPostEngagementsSubmitDraftRequest) Severity(severity string) EngagementsAPIPostEngagementsSubmitDraftRequest {
 	r.severity = &severity
 	return r
@@ -937,18 +937,6 @@ func (a *EngagementsAPIService) PostEngagementsSubmitDraftExecute(r EngagementsA
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.description == nil {
-		return localVarReturnValue, nil, reportError("description is required and must be specified")
-	}
-	if strlen(*r.description) < 1 {
-		return localVarReturnValue, nil, reportError("description must have at least 1 elements")
-	}
-	if r.origin == nil {
-		return localVarReturnValue, nil, reportError("origin is required and must be specified")
-	}
-	if strlen(*r.origin) < 1 {
-		return localVarReturnValue, nil, reportError("origin must have at least 1 elements")
-	}
 	if r.title == nil {
 		return localVarReturnValue, nil, reportError("title is required and must be specified")
 	}
@@ -985,7 +973,9 @@ func (a *EngagementsAPIService) PostEngagementsSubmitDraftExecute(r EngagementsA
 	if r.conf != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "conf", r.conf, "", "")
 	}
-	parameterAddToHeaderOrQuery(localVarFormParams, "description", r.description, "", "")
+	if r.description != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "description", r.description, "", "")
+	}
 	if r.endpoint != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "endpoint", r.endpoint, "", "")
 	}
@@ -995,7 +985,9 @@ func (a *EngagementsAPIService) PostEngagementsSubmitDraftExecute(r EngagementsA
 	if r.integ != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "integ", r.integ, "", "")
 	}
-	parameterAddToHeaderOrQuery(localVarFormParams, "origin", r.origin, "", "")
+	if r.origin != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "origin", r.origin, "", "")
+	}
 	if r.poc != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "poc", r.poc, "", "")
 	}

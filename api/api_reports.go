@@ -1152,6 +1152,13 @@ type ReportsAPIPostReportsCollaboratorsRespondRequest struct {
 	ctx context.Context
 	ApiService *ReportsAPIService
 	reportId string
+	action *string
+}
+
+// accept or decline the invitation
+func (r ReportsAPIPostReportsCollaboratorsRespondRequest) Action(action string) ReportsAPIPostReportsCollaboratorsRespondRequest {
+	r.action = &action
+	return r
 }
 
 func (r ReportsAPIPostReportsCollaboratorsRespondRequest) Execute() (*http.Response, error) {
@@ -1192,9 +1199,15 @@ func (a *ReportsAPIService) PostReportsCollaboratorsRespondExecute(r ReportsAPIP
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.action == nil {
+		return nil, reportError("action is required and must be specified")
+	}
+	if strlen(*r.action) < 1 {
+		return nil, reportError("action must have at least 1 elements")
+	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/x-www-form-urlencoded"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -1210,6 +1223,7 @@ func (a *ReportsAPIService) PostReportsCollaboratorsRespondExecute(r ReportsAPIP
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
+	parameterAddToHeaderOrQuery(localVarFormParams, "action", r.action, "", "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
@@ -1593,16 +1607,16 @@ type ReportsAPIPostReportsEditRequest struct {
 	ctx context.Context
 	ApiService *ReportsAPIService
 	reportId string
-	description *string
-	origin *string
 	title *string
 	ac *string
 	av *string
 	avail *string
 	conf *string
+	description *string
 	endpoint *string
 	impact *string
 	integ *string
+	origin *string
 	poc *string
 	pr *string
 	scope *string
@@ -1611,18 +1625,6 @@ type ReportsAPIPostReportsEditRequest struct {
 	steps *string
 	ui *string
 	vulnerabilityType *string
-}
-
-// Vulnerability description and root cause (markdown)
-func (r ReportsAPIPostReportsEditRequest) Description(description string) ReportsAPIPostReportsEditRequest {
-	r.description = &description
-	return r
-}
-
-// AI-use disclosure
-func (r ReportsAPIPostReportsEditRequest) Origin(origin string) ReportsAPIPostReportsEditRequest {
-	r.origin = &origin
-	return r
 }
 
 // Vulnerability title
@@ -1655,7 +1657,13 @@ func (r ReportsAPIPostReportsEditRequest) Conf(conf string) ReportsAPIPostReport
 	return r
 }
 
-// Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId
+// Vulnerability description and root cause (markdown)
+func (r ReportsAPIPostReportsEditRequest) Description(description string) ReportsAPIPostReportsEditRequest {
+	r.description = &description
+	return r
+}
+
+// Affected endpoint or URL, refines the selected asset
 func (r ReportsAPIPostReportsEditRequest) Endpoint(endpoint string) ReportsAPIPostReportsEditRequest {
 	r.endpoint = &endpoint
 	return r
@@ -1670,6 +1678,12 @@ func (r ReportsAPIPostReportsEditRequest) Impact(impact string) ReportsAPIPostRe
 // CVSS integrity impact: N, L, or H
 func (r ReportsAPIPostReportsEditRequest) Integ(integ string) ReportsAPIPostReportsEditRequest {
 	r.integ = &integ
+	return r
+}
+
+// AI-use disclosure; empty keeps the default until submission
+func (r ReportsAPIPostReportsEditRequest) Origin(origin string) ReportsAPIPostReportsEditRequest {
+	r.origin = &origin
 	return r
 }
 
@@ -1691,13 +1705,13 @@ func (r ReportsAPIPostReportsEditRequest) Scope(scope string) ReportsAPIPostRepo
 	return r
 }
 
-// In-scope asset id from the engagement&#39;s live scope. Submitting needs this or an endpoint
+// In-scope asset id from the engagement&#39;s live scope
 func (r ReportsAPIPostReportsEditRequest) ScopeEntryId(scopeEntryId string) ReportsAPIPostReportsEditRequest {
 	r.scopeEntryId = &scopeEntryId
 	return r
 }
 
-// Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics
+// Claimed severity; empty derives it from the CVSS metrics
 func (r ReportsAPIPostReportsEditRequest) Severity(severity string) ReportsAPIPostReportsEditRequest {
 	r.severity = &severity
 	return r
@@ -1759,18 +1773,6 @@ func (a *ReportsAPIService) PostReportsEditExecute(r ReportsAPIPostReportsEditRe
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.description == nil {
-		return nil, reportError("description is required and must be specified")
-	}
-	if strlen(*r.description) < 1 {
-		return nil, reportError("description must have at least 1 elements")
-	}
-	if r.origin == nil {
-		return nil, reportError("origin is required and must be specified")
-	}
-	if strlen(*r.origin) < 1 {
-		return nil, reportError("origin must have at least 1 elements")
-	}
 	if r.title == nil {
 		return nil, reportError("title is required and must be specified")
 	}
@@ -1807,7 +1809,9 @@ func (a *ReportsAPIService) PostReportsEditExecute(r ReportsAPIPostReportsEditRe
 	if r.conf != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "conf", r.conf, "", "")
 	}
-	parameterAddToHeaderOrQuery(localVarFormParams, "description", r.description, "", "")
+	if r.description != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "description", r.description, "", "")
+	}
 	if r.endpoint != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "endpoint", r.endpoint, "", "")
 	}
@@ -1817,7 +1821,9 @@ func (a *ReportsAPIService) PostReportsEditExecute(r ReportsAPIPostReportsEditRe
 	if r.integ != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "integ", r.integ, "", "")
 	}
-	parameterAddToHeaderOrQuery(localVarFormParams, "origin", r.origin, "", "")
+	if r.origin != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "origin", r.origin, "", "")
+	}
 	if r.poc != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "poc", r.poc, "", "")
 	}

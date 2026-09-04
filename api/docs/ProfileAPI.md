@@ -153,7 +153,7 @@ import (
 )
 
 func main() {
-	credentialId := "credentialId_example" // string | Issuer-side credential ID
+	credentialId := "credentialId_example" // string | Issuer-side credential ID (at least 6 characters)
 	issuer := "issuer_example" // string | Certification issuer
 	name := "name_example" // string | Certification name
 	expiresOn := time.Now() // string | Expiry date (YYYY-MM-DD); an expired certification loses its verified mark (optional)
@@ -181,7 +181,7 @@ Other parameters are passed through a pointer to a apiPostProfileCertificationsR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **credentialId** | **string** | Issuer-side credential ID | 
+ **credentialId** | **string** | Issuer-side credential ID (at least 6 characters) | 
  **issuer** | **string** | Certification issuer | 
  **name** | **string** | Certification name | 
  **expiresOn** | **string** | Expiry date (YYYY-MM-DD); an expired certification loses its verified mark | 

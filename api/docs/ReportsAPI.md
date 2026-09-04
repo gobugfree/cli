@@ -647,7 +647,7 @@ Name | Type | Description  | Notes
 
 ## PostReportsCollaboratorsRespond
 
-> PostReportsCollaboratorsRespond(ctx, reportId).Execute()
+> PostReportsCollaboratorsRespond(ctx, reportId).Action(action).Execute()
 
 Accept or decline a bounty-split invitation (invitee only)
 
@@ -665,10 +665,11 @@ import (
 
 func main() {
 	reportId := "reportId_example" // string | 
+	action := "action_example" // string | accept or decline the invitation
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReportsAPI.PostReportsCollaboratorsRespond(context.Background(), reportId).Execute()
+	r, err := apiClient.ReportsAPI.PostReportsCollaboratorsRespond(context.Background(), reportId).Action(action).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReportsAPI.PostReportsCollaboratorsRespond``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -692,6 +693,7 @@ Other parameters are passed through a pointer to a apiPostReportsCollaboratorsRe
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
+ **action** | **string** | accept or decline the invitation | 
 
 ### Return type
 
@@ -703,7 +705,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/x-www-form-urlencoded
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -919,7 +921,7 @@ Name | Type | Description  | Notes
 
 ## PostReportsEdit
 
-> PostReportsEdit(ctx, reportId).Description(description).Origin(origin).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Endpoint(endpoint).Impact(impact).Integ(integ).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
+> PostReportsEdit(ctx, reportId).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Description(description).Endpoint(endpoint).Impact(impact).Integ(integ).Origin(origin).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
 
 Re-save an own draft report
 
@@ -937,28 +939,28 @@ import (
 
 func main() {
 	reportId := "reportId_example" // string | 
-	description := "description_example" // string | Vulnerability description and root cause (markdown)
-	origin := "origin_example" // string | AI-use disclosure
 	title := "title_example" // string | Vulnerability title
 	ac := "ac_example" // string | CVSS attack complexity: L or H (optional)
 	av := "av_example" // string | CVSS attack vector: N, A, L, or P (optional)
 	avail := "avail_example" // string | CVSS availability impact: N, L, or H (optional)
 	conf := "conf_example" // string | CVSS confidentiality impact: N, L, or H (optional)
-	endpoint := "endpoint_example" // string | Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId (optional)
+	description := "description_example" // string | Vulnerability description and root cause (markdown) (optional)
+	endpoint := "endpoint_example" // string | Affected endpoint or URL, refines the selected asset (optional)
 	impact := "impact_example" // string | Security impact description (optional)
 	integ := "integ_example" // string | CVSS integrity impact: N, L, or H (optional)
+	origin := "origin_example" // string | AI-use disclosure; empty keeps the default until submission (optional)
 	poc := "poc_example" // string | Proof-of-concept payload, exploit code, or evidence reference. Required to submit, optional on a draft (optional)
 	pr := "pr_example" // string | CVSS privileges required: N, L, or H (optional)
 	scope := "scope_example" // string | CVSS scope: U or C (optional)
-	scopeEntryId := "scopeEntryId_example" // string | In-scope asset id from the engagement's live scope. Submitting needs this or an endpoint (optional)
-	severity := "severity_example" // string | Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics (optional)
+	scopeEntryId := "scopeEntryId_example" // string | In-scope asset id from the engagement's live scope (optional)
+	severity := "severity_example" // string | Claimed severity; empty derives it from the CVSS metrics (optional)
 	steps := "steps_example" // string | Reproduction steps, appended to the description (optional)
 	ui := "ui_example" // string | CVSS user interaction: N or R (optional)
 	vulnerabilityType := "vulnerabilityType_example" // string | Vulnerability classification, e.g. XSS (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ReportsAPI.PostReportsEdit(context.Background(), reportId).Description(description).Origin(origin).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Endpoint(endpoint).Impact(impact).Integ(integ).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
+	r, err := apiClient.ReportsAPI.PostReportsEdit(context.Background(), reportId).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Description(description).Endpoint(endpoint).Impact(impact).Integ(integ).Origin(origin).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ReportsAPI.PostReportsEdit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -982,21 +984,21 @@ Other parameters are passed through a pointer to a apiPostReportsEditRequest str
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **description** | **string** | Vulnerability description and root cause (markdown) | 
- **origin** | **string** | AI-use disclosure | 
  **title** | **string** | Vulnerability title | 
  **ac** | **string** | CVSS attack complexity: L or H | 
  **av** | **string** | CVSS attack vector: N, A, L, or P | 
  **avail** | **string** | CVSS availability impact: N, L, or H | 
  **conf** | **string** | CVSS confidentiality impact: N, L, or H | 
- **endpoint** | **string** | Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId | 
+ **description** | **string** | Vulnerability description and root cause (markdown) | 
+ **endpoint** | **string** | Affected endpoint or URL, refines the selected asset | 
  **impact** | **string** | Security impact description | 
  **integ** | **string** | CVSS integrity impact: N, L, or H | 
+ **origin** | **string** | AI-use disclosure; empty keeps the default until submission | 
  **poc** | **string** | Proof-of-concept payload, exploit code, or evidence reference. Required to submit, optional on a draft | 
  **pr** | **string** | CVSS privileges required: N, L, or H | 
  **scope** | **string** | CVSS scope: U or C | 
- **scopeEntryId** | **string** | In-scope asset id from the engagement&#39;s live scope. Submitting needs this or an endpoint | 
- **severity** | **string** | Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics | 
+ **scopeEntryId** | **string** | In-scope asset id from the engagement&#39;s live scope | 
+ **severity** | **string** | Claimed severity; empty derives it from the CVSS metrics | 
  **steps** | **string** | Reproduction steps, appended to the description | 
  **ui** | **string** | CVSS user interaction: N or R | 
  **vulnerabilityType** | **string** | Vulnerability classification, e.g. XSS | 

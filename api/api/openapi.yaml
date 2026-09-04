@@ -335,7 +335,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/postEngagementsSubmit_request"
+              $ref: "#/components/schemas/postEngagementsSubmitDraft_request"
         required: true
       responses:
         "200":
@@ -1166,6 +1166,12 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postReportsCollaboratorsRespond_request"
+        required: true
       responses:
         "200":
           description: "JSON when the request accepts application/json, HTML otherwise."
@@ -1331,7 +1337,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/postEngagementsSubmit_request"
+              $ref: "#/components/schemas/postEngagementsSubmitDraft_request"
         required: true
       responses:
         "200":
@@ -3305,6 +3311,76 @@ components:
       - description
       - origin
       - title
+    postEngagementsSubmitDraft_request:
+      properties:
+        ac:
+          description: "CVSS attack complexity: L or H"
+          type: string
+        av:
+          description: "CVSS attack vector: N, A, L, or P"
+          type: string
+        avail:
+          description: "CVSS availability impact: N, L, or H"
+          type: string
+        conf:
+          description: "CVSS confidentiality impact: N, L, or H"
+          type: string
+        description:
+          description: Vulnerability description and root cause (markdown)
+          type: string
+        endpoint:
+          description: "Affected endpoint or URL, refines the selected asset"
+          type: string
+        impact:
+          description: Security impact description
+          type: string
+        integ:
+          description: "CVSS integrity impact: N, L, or H"
+          type: string
+        origin:
+          description: AI-use disclosure; empty keeps the default until submission
+          enum:
+          - human
+          - ai_assisted
+          - ai_agent
+          type: string
+        poc:
+          description: "Proof-of-concept payload, exploit code, or evidence reference.\
+            \ Required to submit, optional on a draft"
+          type: string
+        pr:
+          description: "CVSS privileges required: N, L, or H"
+          type: string
+        scope:
+          description: "CVSS scope: U or C"
+          type: string
+        scopeEntryId:
+          description: In-scope asset id from the engagement's live scope
+          type: string
+        severity:
+          description: Claimed severity; empty derives it from the CVSS metrics
+          enum:
+          - none
+          - low
+          - medium
+          - high
+          - critical
+          type: string
+        steps:
+          description: "Reproduction steps, appended to the description"
+          type: string
+        title:
+          description: Vulnerability title
+          minLength: 1
+          type: string
+        ui:
+          description: "CVSS user interaction: N or R"
+          type: string
+        vulnerabilityType:
+          description: "Vulnerability classification, e.g. XSS"
+          type: string
+      required:
+      - title
     postListsColumns_request:
       properties:
         list:
@@ -3398,9 +3474,9 @@ components:
     postProfileCertifications_request:
       properties:
         credential_id:
-          description: Issuer-side credential ID
+          description: Issuer-side credential ID (at least 6 characters)
           maxLength: 120
-          minLength: 1
+          minLength: 6
           type: string
         expires_on:
           description: Expiry date (YYYY-MM-DD); an expired certification loses its
@@ -3460,6 +3536,17 @@ components:
       required:
       - handle
       - provider
+    postReportsCollaboratorsRespond_request:
+      properties:
+        action:
+          description: accept or decline the invitation
+          enum:
+          - accept
+          - decline
+          minLength: 1
+          type: string
+      required:
+      - action
     postReportsComments_request:
       properties:
         audience:
@@ -3566,7 +3653,7 @@ components:
           pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           type: string
         website:
-          description: Website URL
+          description: Website URL (http or https)
           format: uri
           maxLength: 200
           type: string

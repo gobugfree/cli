@@ -287,7 +287,7 @@ func main() {
 	bountyExperience := "bountyExperience_example" // string | Empty means not specified (optional)
 	country := "country_example" // string | Country (optional)
 	experienceLevel := "experienceLevel_example" // string | Empty means not specified (optional)
-	website := "website_example" // string | Website URL (optional)
+	website := "website_example" // string | Website URL (http or https) (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -318,7 +318,7 @@ Name | Type | Description  | Notes
  **bountyExperience** | **string** | Empty means not specified | 
  **country** | **string** | Country | 
  **experienceLevel** | **string** | Empty means not specified | 
- **website** | **string** | Website URL | 
+ **website** | **string** | Website URL (http or https) | 
 
 ### Return type
 

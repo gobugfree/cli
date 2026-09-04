@@ -392,7 +392,7 @@ Name | Type | Description  | Notes
 
 ## PostEngagementsSubmitDraft
 
-> Report PostEngagementsSubmitDraft(ctx, orgSlug, engagementSlug).Description(description).Origin(origin).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Endpoint(endpoint).Impact(impact).Integ(integ).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
+> Report PostEngagementsSubmitDraft(ctx, orgSlug, engagementSlug).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Description(description).Endpoint(endpoint).Impact(impact).Integ(integ).Origin(origin).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
 
 Save a private draft report; no completeness validation, only a title is required. Submit it later with postReportsSubmit
 
@@ -411,28 +411,28 @@ import (
 func main() {
 	orgSlug := "orgSlug_example" // string | 
 	engagementSlug := "engagementSlug_example" // string | 
-	description := "description_example" // string | Vulnerability description and root cause (markdown)
-	origin := "origin_example" // string | AI-use disclosure
 	title := "title_example" // string | Vulnerability title
 	ac := "ac_example" // string | CVSS attack complexity: L or H (optional)
 	av := "av_example" // string | CVSS attack vector: N, A, L, or P (optional)
 	avail := "avail_example" // string | CVSS availability impact: N, L, or H (optional)
 	conf := "conf_example" // string | CVSS confidentiality impact: N, L, or H (optional)
-	endpoint := "endpoint_example" // string | Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId (optional)
+	description := "description_example" // string | Vulnerability description and root cause (markdown) (optional)
+	endpoint := "endpoint_example" // string | Affected endpoint or URL, refines the selected asset (optional)
 	impact := "impact_example" // string | Security impact description (optional)
 	integ := "integ_example" // string | CVSS integrity impact: N, L, or H (optional)
+	origin := "origin_example" // string | AI-use disclosure; empty keeps the default until submission (optional)
 	poc := "poc_example" // string | Proof-of-concept payload, exploit code, or evidence reference. Required to submit, optional on a draft (optional)
 	pr := "pr_example" // string | CVSS privileges required: N, L, or H (optional)
 	scope := "scope_example" // string | CVSS scope: U or C (optional)
-	scopeEntryId := "scopeEntryId_example" // string | In-scope asset id from the engagement's live scope. Submitting needs this or an endpoint (optional)
-	severity := "severity_example" // string | Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics (optional)
+	scopeEntryId := "scopeEntryId_example" // string | In-scope asset id from the engagement's live scope (optional)
+	severity := "severity_example" // string | Claimed severity; empty derives it from the CVSS metrics (optional)
 	steps := "steps_example" // string | Reproduction steps, appended to the description (optional)
 	ui := "ui_example" // string | CVSS user interaction: N or R (optional)
 	vulnerabilityType := "vulnerabilityType_example" // string | Vulnerability classification, e.g. XSS (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.EngagementsAPI.PostEngagementsSubmitDraft(context.Background(), orgSlug, engagementSlug).Description(description).Origin(origin).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Endpoint(endpoint).Impact(impact).Integ(integ).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
+	resp, r, err := apiClient.EngagementsAPI.PostEngagementsSubmitDraft(context.Background(), orgSlug, engagementSlug).Title(title).Ac(ac).Av(av).Avail(avail).Conf(conf).Description(description).Endpoint(endpoint).Impact(impact).Integ(integ).Origin(origin).Poc(poc).Pr(pr).Scope(scope).ScopeEntryId(scopeEntryId).Severity(severity).Steps(steps).Ui(ui).VulnerabilityType(vulnerabilityType).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.PostEngagementsSubmitDraft``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -460,21 +460,21 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **description** | **string** | Vulnerability description and root cause (markdown) | 
- **origin** | **string** | AI-use disclosure | 
  **title** | **string** | Vulnerability title | 
  **ac** | **string** | CVSS attack complexity: L or H | 
  **av** | **string** | CVSS attack vector: N, A, L, or P | 
  **avail** | **string** | CVSS availability impact: N, L, or H | 
  **conf** | **string** | CVSS confidentiality impact: N, L, or H | 
- **endpoint** | **string** | Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId | 
+ **description** | **string** | Vulnerability description and root cause (markdown) | 
+ **endpoint** | **string** | Affected endpoint or URL, refines the selected asset | 
  **impact** | **string** | Security impact description | 
  **integ** | **string** | CVSS integrity impact: N, L, or H | 
+ **origin** | **string** | AI-use disclosure; empty keeps the default until submission | 
  **poc** | **string** | Proof-of-concept payload, exploit code, or evidence reference. Required to submit, optional on a draft | 
  **pr** | **string** | CVSS privileges required: N, L, or H | 
  **scope** | **string** | CVSS scope: U or C | 
- **scopeEntryId** | **string** | In-scope asset id from the engagement&#39;s live scope. Submitting needs this or an endpoint | 
- **severity** | **string** | Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics | 
+ **scopeEntryId** | **string** | In-scope asset id from the engagement&#39;s live scope | 
+ **severity** | **string** | Claimed severity; empty derives it from the CVSS metrics | 
  **steps** | **string** | Reproduction steps, appended to the description | 
  **ui** | **string** | CVSS user interaction: N or R | 
  **vulnerabilityType** | **string** | Vulnerability classification, e.g. XSS | 

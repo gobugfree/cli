@@ -244,7 +244,7 @@ type ProfileAPIPostProfileCertificationsRequest struct {
 	url *string
 }
 
-// Issuer-side credential ID
+// Issuer-side credential ID (at least 6 characters)
 func (r ProfileAPIPostProfileCertificationsRequest) CredentialId(credentialId string) ProfileAPIPostProfileCertificationsRequest {
 	r.credentialId = &credentialId
 	return r
@@ -318,8 +318,8 @@ func (a *ProfileAPIService) PostProfileCertificationsExecute(r ProfileAPIPostPro
 	if r.credentialId == nil {
 		return nil, reportError("credentialId is required and must be specified")
 	}
-	if strlen(*r.credentialId) < 1 {
-		return nil, reportError("credentialId must have at least 1 elements")
+	if strlen(*r.credentialId) < 6 {
+		return nil, reportError("credentialId must have at least 6 elements")
 	}
 	if strlen(*r.credentialId) > 120 {
 		return nil, reportError("credentialId must have less than 120 elements")

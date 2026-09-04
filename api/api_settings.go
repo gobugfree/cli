@@ -520,7 +520,7 @@ func (r SettingsAPIPostSettingsProfileRequest) ExperienceLevel(experienceLevel s
 	return r
 }
 
-// Website URL
+// Website URL (http or https)
 func (r SettingsAPIPostSettingsProfileRequest) Website(website string) SettingsAPIPostSettingsProfileRequest {
 	r.website = &website
 	return r

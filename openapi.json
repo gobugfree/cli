@@ -1907,11 +1907,10 @@
                   },
                   "description": {
                     "description": "Vulnerability description and root cause (markdown)",
-                    "minLength": 1,
                     "type": "string"
                   },
                   "endpoint": {
-                    "description": "Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId",
+                    "description": "Affected endpoint or URL, refines the selected asset",
                     "type": "string"
                   },
                   "impact": {
@@ -1923,13 +1922,12 @@
                     "type": "string"
                   },
                   "origin": {
-                    "description": "AI-use disclosure",
+                    "description": "AI-use disclosure; empty keeps the default until submission",
                     "enum": [
                       "human",
                       "ai_assisted",
                       "ai_agent"
                     ],
-                    "minLength": 1,
                     "type": "string"
                   },
                   "poc": {
@@ -1945,11 +1943,11 @@
                     "type": "string"
                   },
                   "scopeEntryId": {
-                    "description": "In-scope asset id from the engagement's live scope. Submitting needs this or an endpoint",
+                    "description": "In-scope asset id from the engagement's live scope",
                     "type": "string"
                   },
                   "severity": {
-                    "description": "Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics",
+                    "description": "Claimed severity; empty derives it from the CVSS metrics",
                     "enum": [
                       "none",
                       "low",
@@ -1978,9 +1976,7 @@
                   }
                 },
                 "required": [
-                  "title",
-                  "description",
-                  "origin"
+                  "title"
                 ],
                 "type": "object"
               }
@@ -2619,9 +2615,9 @@
               "schema": {
                 "properties": {
                   "credential_id": {
-                    "description": "Issuer-side credential ID",
+                    "description": "Issuer-side credential ID (at least 6 characters)",
                     "maxLength": 120,
-                    "minLength": 1,
+                    "minLength": 6,
                     "type": "string"
                   },
                   "expires_on": {
@@ -3356,6 +3352,30 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "action": {
+                    "description": "accept or decline the invitation",
+                    "enum": [
+                      "accept",
+                      "decline"
+                    ],
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "action"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "JSON when the request accepts application/json, HTML otherwise."
@@ -3634,11 +3654,10 @@
                   },
                   "description": {
                     "description": "Vulnerability description and root cause (markdown)",
-                    "minLength": 1,
                     "type": "string"
                   },
                   "endpoint": {
-                    "description": "Affected endpoint or URL, refines the selected asset. Submitting needs this or a scopeEntryId",
+                    "description": "Affected endpoint or URL, refines the selected asset",
                     "type": "string"
                   },
                   "impact": {
@@ -3650,13 +3669,12 @@
                     "type": "string"
                   },
                   "origin": {
-                    "description": "AI-use disclosure",
+                    "description": "AI-use disclosure; empty keeps the default until submission",
                     "enum": [
                       "human",
                       "ai_assisted",
                       "ai_agent"
                     ],
-                    "minLength": 1,
                     "type": "string"
                   },
                   "poc": {
@@ -3672,11 +3690,11 @@
                     "type": "string"
                   },
                   "scopeEntryId": {
-                    "description": "In-scope asset id from the engagement's live scope. Submitting needs this or an endpoint",
+                    "description": "In-scope asset id from the engagement's live scope",
                     "type": "string"
                   },
                   "severity": {
-                    "description": "Claimed severity; empty derives it from the CVSS metrics. Submitting needs this or all eight CVSS metrics",
+                    "description": "Claimed severity; empty derives it from the CVSS metrics",
                     "enum": [
                       "none",
                       "low",
@@ -3705,9 +3723,7 @@
                   }
                 },
                 "required": [
-                  "title",
-                  "description",
-                  "origin"
+                  "title"
                 ],
                 "type": "object"
               }
@@ -4411,7 +4427,7 @@
                     "type": "string"
                   },
                   "website": {
-                    "description": "Website URL",
+                    "description": "Website URL (http or https)",
                     "format": "uri",
                     "maxLength": 200,
                     "type": "string"
