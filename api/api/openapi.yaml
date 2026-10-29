@@ -1,0 +1,6990 @@
+openapi: 3.1.0
+info:
+  title: application
+  version: 3.x
+servers:
+- url: https://app.gobugfree.com
+security:
+- bearer: []
+paths:
+  /account/programs/{program}/submissions/{legacy_id}:
+    get:
+      operationId: getAccountProgramsSubmissionsByLegacyId
+      parameters:
+      - explode: false
+        in: path
+        name: program
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: legacy_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacylinkLink"
+          description: The report the id maps to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Where an old report link that names its program leads: a redirect\
+        \ to the report, or the report list for an unknown id (JSON: the target, 404\
+        \ for an unknown id)"
+      tags:
+      - account
+  /account/submissions/{legacy_id}:
+    get:
+      operationId: getAccountSubmissionsByLegacyId
+      parameters:
+      - explode: false
+        in: path
+        name: legacy_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacylinkLink"
+          description: The report the id maps to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Where an old report link leads: a redirect to the report, or the report\
+        \ list for an unknown id (JSON: the target, 404 for an unknown id)"
+      tags:
+      - account
+  /account/{rest}:
+    get:
+      operationId: getAccountByRest
+      parameters:
+      - explode: false
+        in: path
+        name: rest
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Every other old account link opens the program list (JSON: 404)"
+      tags:
+      - account
+  /badges:
+    get:
+      operationId: getBadges
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadgeCatalogItemList"
+          description: Every active badge with its earned or progress state
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Achievement badge catalog of the authenticated researcher: earned\
+        \ badges with their award date and visibility, locked badges with progress\
+        \ toward the threshold"
+      tags:
+      - badges
+  /badges/{code}/visibility:
+    post:
+      operationId: postBadgesVisibility
+      parameters:
+      - explode: false
+        in: path
+        name: code
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postBadgesVisibility_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The badge code with its new hidden state
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Hide or show one of the researcher's own earned badges on the public
+        profile
+      tags:
+      - badges
+  /dev/athena/blob/{bucket}/{key}:
+    get:
+      operationId: getDevAthenaBlobByBucketAndKey
+      parameters:
+      - explode: false
+        in: path
+        name: bucket
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's private file storage: one blob,\
+        \ read with the stub's signature"
+      tags:
+      - dev
+  /dev/athena/jira/rest/api/3/attachment/content/{id}:
+    get:
+      operationId: getDevAthenaJiraRestApi3AttachmentContentById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Jira: the content of one attachment"
+      tags:
+      - dev
+  /dev/athena/jira/rest/api/3/field:
+    get:
+      operationId: getDevAthenaJiraRestApi3Field
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Jira: the field catalog"
+      tags:
+      - dev
+  /dev/athena/jira/rest/api/3/issue/{key}:
+    get:
+      operationId: getDevAthenaJiraRestApi3IssueByKey
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Jira: one issue with every field"
+      tags:
+      - dev
+  /dev/athena/jira/rest/api/3/issue/{key}/changelog:
+    get:
+      operationId: getDevAthenaJiraRestApi3IssueChangelog
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Jira: the changelog of an issue"
+      tags:
+      - dev
+  /dev/athena/jira/rest/api/3/issue/{key}/comment:
+    get:
+      operationId: getDevAthenaJiraRestApi3IssueComment
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Jira: the comments of an issue"
+      tags:
+      - dev
+  /dev/athena/strapi/api/organisations:
+    get:
+      operationId: getDevAthenaStrapiApiOrganisations
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Strapi: the organisations with their\
+        \ programs"
+      tags:
+      - dev
+  /dev/athena/strapi/api/programs:
+    get:
+      operationId: getDevAthenaStrapiApiPrograms
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Strapi: one program by slug"
+      tags:
+      - dev
+  /dev/athena/strapi/api/scanning-reports:
+    get:
+      operationId: getDevAthenaStrapiApiScanningReports
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Strapi: the scanning reports of\
+        \ an organisation"
+      tags:
+      - dev
+  /dev/athena/strapi/uploads/{name}:
+    get:
+      operationId: getDevAthenaStrapiUploadsByName
+      parameters:
+      - explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of athena's Strapi: one uploaded file"
+      tags:
+      - dev
+  /dev/brand-site/{site}:
+    get:
+      operationId: getDevBrandSiteBySite
+      parameters:
+      - explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub brand site homepage (acme, plain, ico-only)\
+        \ the website brand extraction can fetch locally"
+      tags:
+      - dev
+  /dev/brand-site/{site}/{file}:
+    get:
+      operationId: getDevBrandSiteBySiteAndFile
+      parameters:
+      - explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: file
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub brand site asset, addressed by its file stem"
+      tags:
+      - dev
+  /dev/jira/_act:
+    post:
+      operationId: postDevJiraAct
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: act as a Jira user\
+        \ and deliver the webhook, for tests"
+      tags:
+      - dev
+  /dev/jira/_issues/{key}:
+    get:
+      operationId: getDevJiraIssuesByKey
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the stub's view of\
+        \ an issue, for tests"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue:
+    post:
+      operationId: postDevJiraRestApi3Issue
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: create an issue"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue/{key}:
+    get:
+      operationId: getDevJiraRestApi3IssueByKey
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: one issue"
+      tags:
+      - dev
+    put:
+      operationId: putDevJiraRestApi3IssueByKey
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: set fields of an issue"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue/{key}/attachments:
+    post:
+      operationId: postDevJiraRestApi3IssueAttachments
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: attach a file"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue/{key}/comment:
+    get:
+      operationId: getDevJiraRestApi3IssueComment
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the comments of an\
+        \ issue"
+      tags:
+      - dev
+    post:
+      operationId: postDevJiraRestApi3IssueComment
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: comment on an issue"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue/{key}/comment/{id}:
+    get:
+      operationId: getDevJiraRestApi3IssueCommentById
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: one comment"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issue/{key}/transitions:
+    get:
+      operationId: getDevJiraRestApi3IssueTransitions
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the moves of an issue"
+      tags:
+      - dev
+    post:
+      operationId: postDevJiraRestApi3IssueTransitions
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: move an issue"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issueLink:
+    post:
+      operationId: postDevJiraRestApi3IssueLink
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: link two issues"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/issueLink/{id}:
+    delete:
+      operationId: deleteDevJiraRestApi3IssueLinkById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: remove a link"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/myself:
+    get:
+      operationId: getDevJiraRestApi3Myself
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the app's own account"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/project/{key}:
+    get:
+      operationId: getDevJiraRestApi3ProjectByKey
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: one project"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/project/{key}/role:
+    get:
+      operationId: getDevJiraRestApi3ProjectRole
+      parameters:
+      - explode: false
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the roles of a project"
+      tags:
+      - dev
+  /dev/jira/rest/api/3/search/jql:
+    get:
+      operationId: getDevJiraRestApi3SearchJql
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub of GObugfree's Jira site: the issues of a project"
+      tags:
+      - dev
+  /dev/llm/v1/chat/completions:
+    post:
+      operationId: postDevLlmV1ChatCompletions
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub worker: streams the start of the last user message\
+        \ back in the OpenAI format"
+      tags:
+      - dev
+  /dev/llm/v1/embeddings:
+    post:
+      operationId: postDevLlmV1Embeddings
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub worker: hashed bag-of-words embeddings in the\
+        \ OpenAI format"
+      tags:
+      - dev
+  /dev/llm/v1/models:
+    get:
+      operationId: getDevLlmV1Models
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Development-only stub worker: the models it answers to, in the OpenAI\
+        \ format"
+      tags:
+      - dev
+  /docs:
+    get:
+      operationId: getDocs
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApidocReference"
+          description: Where the OpenAPI document and this reference live
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Interactive API reference: the caller's OpenAPI document rendered\
+        \ for people, with try-it requests; JSON callers get the document locations"
+      tags:
+      - docs
+  /docs/agents:
+    get:
+      operationId: getDocsAgents
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/McpAgents"
+          description: The endpoint locations and the agent instructions
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "How to connect an agent: the MCP endpoint and its OAuth discovery\
+        \ document, the client setup, the command line, and the rules agents follow"
+      tags:
+      - docs
+  /domain-confirmation/{token}:
+    get:
+      operationId: getDomainConfirmationByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "What a domain confirmation link would confirm: the domain and the\
+        \ organization; 404 for an invalid or expired link"
+      tags:
+      - domain-confirmation
+    post:
+      operationId: postDomainConfirmationByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Confirm the email domain claim behind a confirmation link; the link
+        works once
+      tags:
+      - domain-confirmation
+  /embed/resize.js:
+    get:
+      operationId: getEmbedResizeJs
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The script a customer page loads with the embed snippet; it sizes the
+        frame to the form
+      tags:
+      - embed
+  /embed/{org_slug}/{engagement_slug}:
+    get:
+      operationId: getEmbedByOrgSlugAndEngagementSlug
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The embedded vulnerability submission form of a public VDP, frameable\
+        \ by its allowed origins; 404 for any other engagement"
+      tags:
+      - embed
+    post:
+      operationId: postEmbedByOrgSlugAndEngagementSlug
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEmbedByOrgSlugAndEngagementSlug_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Submit a report anonymously through the embedded form with its proof
+        of work; 429 when the per-IP budget is spent
+      tags:
+      - embed
+  /engagements:
+    get:
+      operationId: getEngagements
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngagementListItemList"
+          description: One directory page with the filtered total
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Engagement directory: active and paused engagements visible to the\
+        \ authenticated user, filterable by kind, industry, scope type (scope), and\
+        \ minimum bounty (bounty), paginated with page"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}:
+    get:
+      operationId: getEngagementsByOrgSlugAndEngagementSlug
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngagementDetail"
+          description: The engagement detail
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Engagement detail; public engagements for any user, full details of\
+        \ other engagements for members only (ADR-0009); non-members of a private\
+        \ or invite_only engagement, and pending invitees, get the locked teaser with\
+        \ locked true and access, everyone else 404"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/access-request:
+    post:
+      operationId: postEngagementsAccessRequest
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsAccessRequest_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdmissionState"
+          description: The request was filed
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Request access to a listed private engagement; the test account fields\
+        \ are required when the engagement asks for test accounts; 404 unless the\
+        \ engagement takes requests from the caller, 409 on a second request or a\
+        \ pending invitation"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/files/{name}:
+    get:
+      operationId: getEngagementsFilesByName
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Download a program file of the published version: the NDA once the\
+        \ verification gate is passed, an attachment once cleared to test (verification,\
+        \ NDA, and rules accepted); 404 otherwise"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/invitation/accept:
+    post:
+      operationId: postEngagementsInvitationAccept
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdmissionState"
+          description: The invitation was accepted
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Accept the caller's pending invitation and join the engagement; 404
+        without one
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/invitation/decline:
+    post:
+      operationId: postEngagementsInvitationDecline
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdmissionState"
+          description: The invitation was declined
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Decline the caller's pending invitation; 404 without one
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/message-proxy:
+    get:
+      operationId: getEngagementsMessageProxy
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngagementProxyMessageList"
+          description: "The recent codes, newest first"
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Authentication codes forwarded from the engagement's 2FA-protected
+        test accounts within the last 15 minutes; requires testing access and accepted
+        rules
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/nda/accept:
+    post:
+      operationId: postEngagementsNdaAccept
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsNdaAccept_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Accept the NDA of the engagement's published version; required before
+        the rules of engagement; 409 without an NDA or while the verification gate
+        applies; a new NDA file asks again
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/rules/accept:
+    post:
+      operationId: postEngagementsRulesAccept
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Accept the engagement's published rules of engagement; required before\
+        \ submitting reports, re-required after a new version publishes"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/submit:
+    get:
+      description: Read this before submitting with postEngagementsSubmit or saving
+        a draft with postEngagementsSubmitDraft. Members always may; for an active
+        public engagement every fully onboarded researcher may; a private engagement
+        answers 404 to non-members.
+      operationId: getEngagementsSubmit
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "The id of a report the caller just submitted to this engagement,\
+          \ shown as a confirmation"
+        explode: true
+        in: query
+        name: submitted
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The report submission form of one engagement: the caller's pending-report\
+        \ budget, the weakness catalog, the severity presets with their CVSS vectors,\
+        \ the reward bands, and the caller's recent accuracy"
+      tags:
+      - engagements
+    post:
+      operationId: postEngagementsSubmit
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsSubmit_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+          description: The submitted report
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Create and submit a vulnerability report in one call; members and,\
+        \ for active public engagements, fully onboarded researchers. 400 names the\
+        \ missing fields; 409 pending_budget_exceeded keeps the content as the draft\
+        \ named by draftId. To submit an existing draft use postReportsSubmit"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/submit/draft:
+    post:
+      operationId: postEngagementsSubmitDraft
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsSubmitDraft_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+          description: The saved draft
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Save a private draft report; no completeness validation, only a title\
+        \ is required. Submit it later with postReportsSubmit"
+      tags:
+      - engagements
+  /feedback:
+    get:
+      operationId: getFeedback
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeedbackList"
+          description: The user's feedback
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The feedback overlay and the signed-in user's earlier feedback
+      tags:
+      - feedback
+    post:
+      operationId: postFeedback
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postFeedback_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Feedback"
+          description: The stored feedback
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Send product feedback
+      tags:
+      - feedback
+  /help:
+    get:
+      operationId: getHelp
+      parameters:
+      - description: "The screen's path, for example /organizations/abacus/engagements/internal-api"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelpTopic"
+          description: The screen's help
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Help for one screen: what the page does and the agent and gbf operations\
+        \ reachable from it, scoped to the caller"
+      tags:
+      - docs
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The researcher leaderboard of the selected window; searchable by handle,\
+        \ sortable, paginated"
+      tags:
+      - leaderboard
+  /leaderboard/export:
+    get:
+      operationId: getLeaderboardExport
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Download the filtered leaderboard as CSV or JSON
+      tags:
+      - leaderboard
+  /lists/columns:
+    post:
+      operationId: postListsColumns
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postListsColumns_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Save the caller's visible columns and their order for a list; reset=1
+        restores the default
+      tags:
+      - lists
+  /lists/layout:
+    post:
+      operationId: postListsLayout
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postListsLayout_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Save the caller's layout of a split-view list: single (the list alone),\
+        \ split (the list beside the open record), or board (the kanban)"
+      tags:
+      - lists
+  /lists/views:
+    post:
+      operationId: postListsViews
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postListsViews_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListviewView"
+          description: The saved view
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Save the current filters of a list as a named view of the caller (at\
+        \ most 20 per list, names unique per list)"
+      tags:
+      - lists
+  /lists/views/{id}/delete:
+    post:
+      operationId: postListsViewsDelete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Delete one of the caller's saved views; 404 when it is not theirs
+      tags:
+      - lists
+  /markdown/preview:
+    post:
+      operationId: postMarkdownPreview
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postMarkdownPreview_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: The rendered HTML
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Render a Markdown document as the readers see it; nothing is stored
+      tags:
+      - markdown
+  /notifications:
+    get:
+      description: "Lists 50 notifications. When older ones exist, the answer carries\
+        \ next: pass it as before for the next page."
+      operationId: getNotifications
+      parameters:
+      - description: "Notification id: list the page older than it (the previous answer's\
+          \ next)"
+        explode: true
+        in: query
+        name: before
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageNotificationPage"
+          description: "One page of the user's notifications, with an optional next\
+            \ cursor when older notifications exist"
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The user's notifications, newest first, a page at a time"
+      tags:
+      - notifications
+  /notifications/preferences:
+    get:
+      operationId: getNotificationsPreferences
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageEmailPreferenceList"
+          description: The email switches
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The user's email notification switches, one per notification kind"
+      tags:
+      - notifications
+    post:
+      operationId: postNotificationsPreferences
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postNotificationsPreferences_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Switch the user's email notifications per kind
+      tags:
+      - notifications
+  /notifications/read-all:
+    post:
+      operationId: postNotificationsReadAll
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Mark every notification of the user as read
+      tags:
+      - notifications
+  /notifications/{notification_id}:
+    get:
+      operationId: getNotificationsByNotificationId
+      parameters:
+      - explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Open one notification: marks it read and forwards to its entity; 404\
+        \ for other users' notifications (ADR-0009)"
+      tags:
+      - notifications
+  /notifications/{notification_id}/read:
+    post:
+      operationId: postNotificationsRead
+      parameters:
+      - explode: false
+        in: path
+        name: notification_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Mark one notification of the user as read; 404 for other users' notifications
+      tags:
+      - notifications
+  /onboarding:
+    get:
+      operationId: getOnboarding
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserOnboarding"
+          description: The current onboarding state
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Researcher onboarding state: the current wizard step, conduct acceptance,\
+        \ and completion"
+      tags:
+      - onboarding
+  /onboarding/conduct:
+    post:
+      operationId: postOnboardingConduct
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postOnboardingConduct_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Onboarding step 4: accept the community guidelines and complete registration"
+      tags:
+      - onboarding
+  /onboarding/experience:
+    post:
+      operationId: postOnboardingExperience
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postOnboardingExperience_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Onboarding step 2: experience"
+      tags:
+      - onboarding
+  /onboarding/interests:
+    post:
+      operationId: postOnboardingInterests
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postOnboardingInterests_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Onboarding step 3: skills from the shared taxonomy"
+      tags:
+      - onboarding
+  /organization-invitations:
+    get:
+      operationId: getOrganizationInvitations
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationInvitationList"
+          description: The caller's pending invitations
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The caller's pending organization invitations, with what each would\
+        \ grant"
+      tags:
+      - organization-invitations
+  /organization-invitations/{member_id}/accept:
+    post:
+      operationId: postOrganizationInvitationsAccept
+      parameters:
+      - explode: false
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationAcceptedInvitation"
+          description: The organization and its workspace path
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Accept one of the caller's pending invitations: the membership becomes\
+        \ active and joins the organization's groups; 404 for another user's or a\
+        \ decided invitation"
+      tags:
+      - organization-invitations
+  /organization-invitations/{member_id}/decline:
+    post:
+      operationId: postOrganizationInvitationsDecline
+      parameters:
+      - explode: false
+        in: path
+        name: member_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Decline one of the caller's pending invitations: the invitation is\
+        \ deleted; 404 for another user's or a decided invitation"
+      tags:
+      - organization-invitations
+  /organizations:
+    get:
+      operationId: getOrganizations
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationList"
+          description: The caller's organizations
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The organizations the caller is a member of, with what the membership\
+        \ grants and the workspace path of each"
+      tags:
+      - organizations
+  /payouts:
+    get:
+      operationId: getPayouts
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The researcher's payout method, payout preferences, and payout history"
+      tags:
+      - payouts
+  /payouts/method:
+    post:
+      operationId: postPayoutsMethod
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postPayoutsMethod_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Save the researcher's payout details: bank account, postal address,\
+        \ company fields, and account currency (sealed; an empty IBAN keeps the stored\
+        \ one)"
+      tags:
+      - payouts
+  /payouts/preferences:
+    post:
+      operationId: postPayoutsPreferences
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postPayoutsPreferences_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Save the researcher's payout hold and minimum-threshold preferences
+      tags:
+      - payouts
+  /profile/certifications:
+    get:
+      operationId: getProfileCertifications
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserCertificationList"
+          description: Own certifications with their verification status
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Own certifications with their verification status
+      tags:
+      - profile
+    post:
+      operationId: postProfileCertifications
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postProfileCertifications_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Submit a certification; issuers with a verification URL are checked\
+        \ automatically, others are reviewed manually"
+      tags:
+      - profile
+  /profile/certifications/{id}/delete:
+    post:
+      operationId: postProfileCertificationsDelete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Remove an own certification
+      tags:
+      - profile
+  /profile/external:
+    get:
+      operationId: getProfileExternal
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProofExternalProfileList"
+          description: External profiles with their proof-of-control status
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Own external profiles with proof-of-control status; pending challenges
+        include the proof token and placement instructions
+      tags:
+      - profile
+    post:
+      operationId: postProfileExternal
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postProfileExternal_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProofExternalProfile"
+          description: The started challenge with its proof token and placement instructions
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Start (or restart) a proof-of-control challenge: place the returned\
+        \ proof token on the external profile, then check"
+      tags:
+      - profile
+  /profile/external/{id}/check:
+    post:
+      operationId: postProfileExternalCheck
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProofExternalProfile"
+          description: The external profile
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Enqueue an asynchronous proof check for an own open challenge; a verified\
+        \ profile, or a repeat request within a minute, is returned unchanged"
+      tags:
+      - profile
+  /profile/external/{id}/delete:
+    post:
+      operationId: postProfileExternalDelete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Remove an own external profile
+      tags:
+      - profile
+  /profile/external/{id}/revoke:
+    post:
+      operationId: postProfileExternalRevoke
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProofExternalProfile"
+          description: The revoked external profile
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Revoke an own verified external profile
+      tags:
+      - profile
+  /public/engagements:
+    get:
+      operationId: getPublicEngagements
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngagementPublicItemList"
+          description: Every listed engagement
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Public engagement directory: every active or paused engagement as\
+        \ an anonymous viewer sees it; locked rows carry no scope and no rewards"
+      tags:
+      - public
+  /public/engagements/{org_slug}/{engagement_slug}/logo:
+    get:
+      operationId: getPublicEngagementsLogo
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The organization logo of an engagement the public directory lists;
+        404 otherwise
+      tags:
+      - public
+  /report-claim/{token}:
+    get:
+      operationId: getReportClaimByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportClaim"
+          description: The report the link names
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The anonymous report a claim link names, for a researcher whose account\
+        \ email matches; 404 for an invalid, used, or expired link, 403 with fields.reason\
+        \ when a program gate or the email refuses"
+      tags:
+      - report-claim
+    post:
+      operationId: postReportClaimByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportClaim"
+          description: The claimed report
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Claim the anonymous report: the researcher becomes its owner when\
+        \ the email, the program gates, and the pending-report budget allow; 403 with\
+        \ fields.reason otherwise"
+      tags:
+      - report-claim
+  /reports:
+    get:
+      operationId: getReports
+      parameters:
+      - description: Workflow states to include
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          items:
+            enum:
+            - new
+            - triaging
+            - validated
+            - accepted
+            - fixed
+            - closed
+            - reopened
+            - rejected
+            - duplicate
+            - draft
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: "Severities (assessed, else submitted) to include"
+        explode: true
+        in: query
+        name: severity
+        required: false
+        schema:
+          items:
+            enum:
+            - none
+            - low
+            - medium
+            - high
+            - critical
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: "Free-text search: title substring or report id prefix"
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Time window: a preset counted back from now, or custom with\
+          \ from/to; omitted or all means no window"
+        explode: true
+        in: query
+        name: range
+        required: false
+        schema:
+          enum:
+          - 7d
+          - 30d
+          - 90d
+          - 12m
+          - all
+          - custom
+          type: string
+        style: form
+      - description: "First day of a custom window (YYYY-MM-DD), open when omitted"
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Last day of a custom window (YYYY-MM-DD, inclusive), open when\
+          \ omitted"
+        explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Date the window applies to: submitted (default) or accepted\
+          \ (the acceptance)"
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          enum:
+          - submitted
+          - accepted
+          type: string
+        style: form
+      - description: "1 keeps only the reports that need attention now: escalated,\
+          \ SLA breached, or inside the last fifth of an open deadline"
+        explode: true
+        in: query
+        name: urgent
+        required: false
+        schema:
+          enum:
+          - "1"
+          type: string
+        style: form
+      - description: Sort key
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          enum:
+          - submitted
+          - updated
+          - severity
+          - title
+          - engagement
+          - status
+          type: string
+        style: form
+      - description: Sort direction
+        explode: true
+        in: query
+        name: dir
+        required: false
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      - description: "Page number, from 1"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Rows per page
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          enum:
+          - "25"
+          - "50"
+          - "100"
+          type: string
+        style: form
+      - description: Engagement as org_slug/engagement_slug
+        explode: true
+        in: query
+        name: engagement
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportMyReportList"
+          description: One page of the researcher's reports with the filtered total
+            and the resolved filter
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The researcher's own reports: filterable by status, engagement, severity,\
+        \ and search, sortable, paginated"
+      tags:
+      - reports
+  /reports/collaborations:
+    get:
+      operationId: getReportsCollaborations
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportInvitationList"
+          description: The researcher's collaboration invitations
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The researcher's bounty-split collaboration invitations
+      tags:
+      - reports
+  /reports/export:
+    get:
+      operationId: getReportsExport
+      parameters:
+      - description: Workflow states to include
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          items:
+            enum:
+            - new
+            - triaging
+            - validated
+            - accepted
+            - fixed
+            - closed
+            - reopened
+            - rejected
+            - duplicate
+            - draft
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: "Severities (assessed, else submitted) to include"
+        explode: true
+        in: query
+        name: severity
+        required: false
+        schema:
+          items:
+            enum:
+            - none
+            - low
+            - medium
+            - high
+            - critical
+            type: string
+          type: array
+          default: null
+        style: form
+      - description: "Free-text search: title substring or report id prefix"
+        explode: true
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Time window: a preset counted back from now, or custom with\
+          \ from/to; omitted or all means no window"
+        explode: true
+        in: query
+        name: range
+        required: false
+        schema:
+          enum:
+          - 7d
+          - 30d
+          - 90d
+          - 12m
+          - all
+          - custom
+          type: string
+        style: form
+      - description: "First day of a custom window (YYYY-MM-DD), open when omitted"
+        explode: true
+        in: query
+        name: from
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Last day of a custom window (YYYY-MM-DD, inclusive), open when\
+          \ omitted"
+        explode: true
+        in: query
+        name: to
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "Date the window applies to: submitted (default) or accepted\
+          \ (the acceptance)"
+        explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          enum:
+          - submitted
+          - accepted
+          type: string
+        style: form
+      - description: "1 keeps only the reports that need attention now: escalated,\
+          \ SLA breached, or inside the last fifth of an open deadline"
+        explode: true
+        in: query
+        name: urgent
+        required: false
+        schema:
+          enum:
+          - "1"
+          type: string
+        style: form
+      - description: Sort key
+        explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          enum:
+          - submitted
+          - updated
+          - severity
+          - title
+          - engagement
+          - status
+          type: string
+        style: form
+      - description: Sort direction
+        explode: true
+        in: query
+        name: dir
+        required: false
+        schema:
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      - description: "Page number, from 1"
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Rows per page
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          enum:
+          - "25"
+          - "50"
+          - "100"
+          type: string
+        style: form
+      - description: Engagement as org_slug/engagement_slug
+        explode: true
+        in: query
+        name: engagement
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Download format
+        explode: true
+        in: query
+        name: format
+        required: false
+        schema:
+          enum:
+          - csv
+          - json
+          type: string
+        style: form
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Download the researcher's filtered reports as CSV or JSON (every page,\
+        \ at most 10000 rows)"
+      tags:
+      - reports
+  /reports/{report_id}:
+    get:
+      operationId: getReportsByReportId
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportMyReportDetail"
+          description: The report with status history and discussion
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: One of the researcher's own reports with its status history and researcher-visible
+        discussion; 404 for other researchers' reports (ADR-0009)
+      tags:
+      - reports
+  /reports/{report_id}/collaborators:
+    post:
+      operationId: postReportsCollaborators
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportContributor"
+          description: The proposed collaborator
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Invite a researcher to an own draft's bounty split with a proposed
+        share
+      tags:
+      - reports
+  /reports/{report_id}/collaborators/respond:
+    post:
+      operationId: postReportsCollaboratorsRespond
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postReportsCollaboratorsRespond_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Accept or decline a bounty-split invitation (invitee only)
+      tags:
+      - reports
+  /reports/{report_id}/collaborators/{collaborator_id}/remove:
+    post:
+      operationId: postReportsCollaboratorsRemove
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: collaborator_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Remove a collaborator from an own draft
+      tags:
+      - reports
+  /reports/{report_id}/comments:
+    post:
+      operationId: postReportsComments
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postReportsComments_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportPostedComment"
+          description: The created message
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Post a message on an own report's thread: audience 'researcher' (to\
+        \ the triage team, answers a pending information request), 'direct' (to the\
+        \ organization, only while it triages the report), or 'researcher_internal'\
+        \ (private note); a multipart body may add up to 5 files as 'files' parts"
+      tags:
+      - reports
+  /reports/{report_id}/content:
+    post:
+      operationId: postReportsContent
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postReportsContent_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+          description: The updated report
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Rewrite the report's body as one Markdown document, appending a revision;\
+        \ 409 once triage has decided or for a writer who is neither the reporter\
+        \ nor an accepted collaborator"
+      tags:
+      - reports
+  /reports/{report_id}/content/edit:
+    get:
+      operationId: getReportsContentEdit
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The report's body document for editing; 409 once triage has decided
+      tags:
+      - reports
+  /reports/{report_id}/delete:
+    post:
+      operationId: postReportsDelete
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Delete an own draft report
+      tags:
+      - reports
+  /reports/{report_id}/edit:
+    get:
+      operationId: getReportsEdit
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The researcher's draft report open in the editor; 404 for foreign or
+        already-submitted reports
+      tags:
+      - reports
+    post:
+      operationId: postReportsEdit
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsSubmitDraft_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Re-save an own draft report
+      tags:
+      - reports
+  /reports/{report_id}/evidence:
+    post:
+      operationId: postReportsEvidence
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/postReportsEvidence_request"
+        description: The evidence file
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportEvidence"
+          description: The attached evidence
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Attach a multipart evidence file to an own report while it is a draft
+        or awaits triage; scanned before it can download; files added after submission
+        cannot be removed
+      tags:
+      - reports
+  /reports/{report_id}/evidence/{evidence_id}:
+    get:
+      operationId: getReportsEvidenceByEvidenceId
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: evidence_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Download an evidence file (attachment); the owner always, the other\
+        \ parties to the report after submission; 404 otherwise"
+      tags:
+      - reports
+  /reports/{report_id}/evidence/{evidence_id}/delete:
+    post:
+      operationId: postReportsEvidenceDelete
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: evidence_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Delete an evidence file from an own draft report
+      tags:
+      - reports
+  /reports/{report_id}/open:
+    get:
+      operationId: getReportsOpen
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Redirect to the surface the caller may open the report on; 404 when
+        there is none
+      tags:
+      - reports
+  /reports/{report_id}/submit:
+    post:
+      operationId: postReportsSubmit
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postEngagementsSubmit_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+          description: The submitted report
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Submit an own draft report; runs full completeness validation (400
+        names the missing fields) and re-checks engagement access; 409 pending_budget_exceeded
+        when the pending-report budget is used up
+      tags:
+      - reports
+  /reports/{report_id}/versions:
+    get:
+      operationId: getReportsVersions
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportContentVersionList"
+          description: The revisions
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The report body's revisions, newest first; the page is the searchable\
+        \ history with each revision's diff"
+      tags:
+      - reports
+  /reports/{report_id}/versions/export:
+    get:
+      operationId: getReportsVersionsExport
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Download the report's revision history as CSV or JSON, carrying the\
+        \ history's own search and sort"
+      tags:
+      - reports
+  /reports/{report_id}/versions/{number}:
+    get:
+      operationId: getReportsVersionsByNumber
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportContentVersion"
+          description: The revision
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: One revision of the report body; 404 for an unknown number
+      tags:
+      - reports
+  /reports/{report_id}/versions/{number}/diff:
+    get:
+      operationId: getReportsVersionsDiff
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "What one revision changed against the revision before it: the document\
+        \ as a unified diff and the finding field by field"
+      tags:
+      - reports
+  /reports/{report_id}/versions/{number}/document:
+    get:
+      operationId: getReportsVersionsDocument
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "One revision as its exchange document: the finding as YAML front matter\
+        \ above the Markdown body (text/markdown)"
+      tags:
+      - reports
+  /reports/{report_id}/versions/{number}/restore:
+    post:
+      operationId: postReportsVersionsRestore
+      parameters:
+      - explode: false
+        in: path
+        name: report_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Make an old revision's document the report's next revision; the finding
+        stays as it is; 403 once triage has decided
+      tags:
+      - reports
+  /researchers/{username}:
+    get:
+      operationId: getResearchersByUsername
+      parameters:
+      - explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPublicProfile"
+          description: The public researcher profile
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Public researcher profile: skills, verified certifications, and verified\
+        \ external profiles"
+      tags:
+      - researchers
+  /researchers/{username}/website:
+    get:
+      operationId: getResearchersWebsite
+      parameters:
+      - explode: false
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfileWebsite"
+          description: The researcher's website
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: The website a researcher entered on the profile; the page warns before
+        the reader leaves the platform
+      tags:
+      - researchers
+  /retests:
+    get:
+      operationId: getRetests
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The researcher's retest queue: open assignments with due dates, and\
+        \ the decided history"
+      tags:
+      - retests
+  /retests/{retest_id}/start:
+    post:
+      operationId: postRetestsStart
+      parameters:
+      - explode: false
+        in: path
+        name: retest_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Retest"
+          description: The started retest
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Start an assigned retest; only the assignee, 409 unless the retest\
+        \ is assigned"
+      tags:
+      - retests
+  /retests/{retest_id}/verdict:
+    post:
+      operationId: postRetestsVerdict
+      parameters:
+      - explode: false
+        in: path
+        name: retest_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postRetestsVerdict_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Retest"
+          description: The decided retest
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Submit the retest verdict with mandatory reasoning: passed closes\
+        \ the report, failed reopens it; only the assignee, immutable once decided"
+      tags:
+      - retests
+  /search:
+    get:
+      operationId: getSearch
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResultList"
+          description: The matching items with the page each one opens
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Search engagements, reports, documents, members, and organizations\
+        \ the user may open; q is the term, area selects the workspace (researcher\
+        \ or org:{org_slug})"
+      tags:
+      - search
+  /settings:
+    get:
+      operationId: getSettings
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSettings"
+          description: The own profile and visibility settings
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Own researcher profile and visibility settings, with the caller's\
+        \ numeric userId"
+      tags:
+      - settings
+  /settings/language:
+    post:
+      operationId: postSettingsLanguage
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsLanguage_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Switch the interface language
+      tags:
+      - settings
+  /settings/look:
+    post:
+      operationId: postSettingsLook
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsLook_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Switch between the new look and the classic look of the former portal
+      tags:
+      - settings
+  /settings/privacy:
+    post:
+      operationId: postSettingsPrivacy
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsPrivacy_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Update the per-section public visibility
+      tags:
+      - settings
+  /settings/profile:
+    post:
+      operationId: postSettingsProfile
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsProfile_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSettings"
+          description: The updated profile and visibility settings
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Update the researcher profile
+      tags:
+      - settings
+  /settings/security:
+    get:
+      operationId: getSettingsSecurity
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSecurity"
+          description: The sign-in methods and the linked providers
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Own sign-in methods as Keycloak holds them (password, passkeys, security\
+        \ keys, authenticator app, recovery codes) and the linked external accounts;\
+        \ never a secret"
+      tags:
+      - settings
+  /settings/security/actions:
+    post:
+      operationId: postSettingsSecurityActions
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsSecurityActions_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Start a sign-in method action in Keycloak (add a passkey, set up recovery\
+        \ codes, change the password, link Microsoft, remove a method) and send the\
+        \ browser there; browser sessions only, a JSON client gets 400"
+      tags:
+      - settings
+  /settings/skills:
+    get:
+      operationId: getSettingsSkills
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Own skills with their levels
+      tags:
+      - settings
+    post:
+      operationId: postSettingsSkills
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsSkills_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Add a skill from the shared taxonomy, or change its level"
+      tags:
+      - settings
+  /settings/skills/{id}/delete:
+    post:
+      operationId: postSettingsSkillsDelete
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Remove an own skill
+      tags:
+      - settings
+  /verification:
+    get:
+      operationId: getVerification
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The researcher's verification level, latest attempt, and available\
+        \ methods"
+      tags:
+      - verification
+  /verification/background-check:
+    post:
+      operationId: postVerificationBackgroundCheck
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Request a background check; you will be contacted for the manual review
+      tags:
+      - verification
+  /verification/background-check/cancel:
+    post:
+      operationId: postVerificationBackgroundCheckCancel
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Cancel a requested background check
+      tags:
+      - verification
+components:
+  schemas:
+    AdmissionState:
+      example:
+        state: state
+      properties:
+        state:
+          type: string
+      required:
+      - state
+    ApidocReference:
+      example:
+        docs: docs
+        openapi: openapi
+      properties:
+        docs:
+          type: string
+        openapi:
+          type: string
+      required:
+      - docs
+      - openapi
+    BadgeCatalogItem:
+      example:
+        code: code
+        color: color
+        criteria: criteria
+        current: 0
+        description: description
+        earned: true
+        earnedAt: 2000-01-23T04:56:07.000+00:00
+        hidden: true
+        icon: icon
+        name: name
+        stars: 6
+        threshold: 1
+      properties:
+        code:
+          type: string
+        color:
+          type: string
+        criteria:
+          type: string
+        current:
+          type: integer
+        description:
+          type: string
+        earned:
+          type: boolean
+        earnedAt:
+          format: date-time
+          type: string
+        hidden:
+          type: boolean
+        icon:
+          type: string
+        name:
+          type: string
+        stars:
+          type: integer
+        threshold:
+          type: integer
+      required:
+      - code
+      - color
+      - criteria
+      - description
+      - earned
+      - icon
+      - name
+      - stars
+      - threshold
+    BadgeCatalogItemList:
+      example:
+        items:
+        - code: code
+          color: color
+          criteria: criteria
+          current: 0
+          description: description
+          earned: true
+          earnedAt: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          icon: icon
+          name: name
+          stars: 6
+          threshold: 1
+        - code: code
+          color: color
+          criteria: criteria
+          current: 0
+          description: description
+          earned: true
+          earnedAt: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          icon: icon
+          name: name
+          stars: 6
+          threshold: 1
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/BadgeCatalogItem"
+          type: array
+          default: null
+      required:
+      - items
+    EngagementBadge:
+      example:
+        color: color
+        text: text
+      properties:
+        color:
+          type: string
+        text:
+          type: string
+      required:
+      - color
+      - text
+    EngagementDetail:
+      example:
+        accessData: accessData
+        attachments:
+        - name: name
+          size: 0
+          url: url
+        - name: name
+          size: 0
+          url: url
+        badges:
+        - color: color
+          text: text
+        - color: color
+          text: text
+        briefingAccessible: true
+        cleared: true
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        disclosurePolicy: disclosurePolicy
+        endsOn: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        kind: kind
+        leaderboard:
+        - handle: handle
+          points: 6
+          rank: 1
+        - handle: handle
+          points: 6
+          rank: 1
+        locked: true
+        messageProxyEnabled: true
+        ndaAccepted: true
+        ndaRequired: true
+        ndaUrl: ndaUrl
+        orgAbout: orgAbout
+        requiredVerificationLevel: requiredVerificationLevel
+        rulesAccepted: true
+        slug: slug
+        startsOn: 2000-01-23T04:56:07.000+00:00
+        status: status
+        title: title
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+        visibility: visibility
+      properties:
+        accessData:
+          type: string
+        attachments:
+          items:
+            $ref: "#/components/schemas/EngagementFile"
+          type: array
+          default: null
+        badges:
+          items:
+            $ref: "#/components/schemas/EngagementBadge"
+          type: array
+          default: null
+        briefingAccessible:
+          type: boolean
+        cleared:
+          type: boolean
+        createdAt:
+          format: date-time
+          type: string
+        disclosurePolicy:
+          type: string
+        endsOn:
+          format: date-time
+          type: string
+        id:
+          format: uuid
+          type: string
+        kind:
+          type: string
+        leaderboard:
+          items:
+            $ref: "#/components/schemas/EngagementLeaderboard"
+          type: array
+          default: null
+        locked:
+          type: boolean
+        messageProxyEnabled:
+          type: boolean
+        ndaAccepted:
+          type: boolean
+        ndaRequired:
+          type: boolean
+        ndaUrl:
+          type: string
+        orgAbout:
+          type: string
+        requiredVerificationLevel:
+          type: string
+        rulesAccepted:
+          type: boolean
+        slug:
+          type: string
+        startsOn:
+          format: date-time
+          type: string
+        status:
+          type: string
+        title:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        visibility:
+          type: string
+      required:
+      - briefingAccessible
+      - cleared
+      - createdAt
+      - disclosurePolicy
+      - id
+      - kind
+      - locked
+      - messageProxyEnabled
+      - ndaAccepted
+      - ndaRequired
+      - requiredVerificationLevel
+      - rulesAccepted
+      - slug
+      - status
+      - title
+      - updatedAt
+      - visibility
+    EngagementFile:
+      example:
+        name: name
+        size: 0
+        url: url
+      properties:
+        name:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+      required:
+      - name
+      - size
+      - url
+    EngagementLeaderboard:
+      example:
+        handle: handle
+        points: 6
+        rank: 1
+      properties:
+        handle:
+          type: string
+        points:
+          type: integer
+        rank:
+          type: integer
+      required:
+      - handle
+      - points
+      - rank
+    EngagementListItem:
+      example:
+        badges:
+        - color: color
+          text: text
+        - color: color
+          text: text
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        industry: industry
+        invited: true
+        kind: kind
+        locked: true
+        member: true
+        orgName: orgName
+        orgSlug: orgSlug
+        rewardCurrency: rewardCurrency
+        rewardMax: 0.8008281904610115
+        rewardMin: 6.027456183070403
+        scopeKinds:
+        - scopeKinds
+        - scopeKinds
+        slug: slug
+        status: status
+        summary: summary
+        title: title
+        visibility: visibility
+      properties:
+        badges:
+          items:
+            $ref: "#/components/schemas/EngagementBadge"
+          type: array
+          default: null
+        id:
+          format: uuid
+          type: string
+        industry:
+          type: string
+        invited:
+          type: boolean
+        kind:
+          type: string
+        locked:
+          type: boolean
+        member:
+          type: boolean
+        orgName:
+          type: string
+        orgSlug:
+          type: string
+        rewardCurrency:
+          type: string
+        rewardMax:
+          type: number
+        rewardMin:
+          type: number
+        scopeKinds:
+          items:
+            type: string
+          type: array
+          default: null
+        slug:
+          type: string
+        status:
+          type: string
+        summary:
+          type: string
+        title:
+          type: string
+        visibility:
+          type: string
+      required:
+      - id
+      - invited
+      - kind
+      - locked
+      - member
+      - orgName
+      - orgSlug
+      - slug
+      - status
+      - title
+      - visibility
+    EngagementListItemList:
+      example:
+        items:
+        - badges:
+          - color: color
+            text: text
+          - color: color
+            text: text
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          industry: industry
+          invited: true
+          kind: kind
+          locked: true
+          member: true
+          orgName: orgName
+          orgSlug: orgSlug
+          rewardCurrency: rewardCurrency
+          rewardMax: 0.8008281904610115
+          rewardMin: 6.027456183070403
+          scopeKinds:
+          - scopeKinds
+          - scopeKinds
+          slug: slug
+          status: status
+          summary: summary
+          title: title
+          visibility: visibility
+        - badges:
+          - color: color
+            text: text
+          - color: color
+            text: text
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          industry: industry
+          invited: true
+          kind: kind
+          locked: true
+          member: true
+          orgName: orgName
+          orgSlug: orgSlug
+          rewardCurrency: rewardCurrency
+          rewardMax: 0.8008281904610115
+          rewardMin: 6.027456183070403
+          scopeKinds:
+          - scopeKinds
+          - scopeKinds
+          slug: slug
+          status: status
+          summary: summary
+          title: title
+          visibility: visibility
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/EngagementListItem"
+          type: array
+          default: null
+      required:
+      - items
+    EngagementProxyMessage:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        text: text
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        text:
+          type: string
+      required:
+      - createdAt
+      - text
+    EngagementProxyMessageList:
+      example:
+        items:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          text: text
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          text: text
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/EngagementProxyMessage"
+          type: array
+          default: null
+      required:
+      - items
+    EngagementPublicItem:
+      example:
+        badges:
+        - color: color
+          text: text
+        - color: color
+          text: text
+        kind: kind
+        locked: true
+        logoUrl: logoUrl
+        orgName: orgName
+        orgSlug: orgSlug
+        slug: slug
+        summary: summary
+        title: title
+      properties:
+        badges:
+          items:
+            $ref: "#/components/schemas/EngagementBadge"
+          type: array
+          default: null
+        kind:
+          type: string
+        locked:
+          type: boolean
+        logoUrl:
+          type: string
+        orgName:
+          type: string
+        orgSlug:
+          type: string
+        slug:
+          type: string
+        summary:
+          type: string
+        title:
+          type: string
+      required:
+      - kind
+      - locked
+      - orgName
+      - orgSlug
+      - slug
+      - title
+    EngagementPublicItemList:
+      example:
+        items:
+        - badges:
+          - color: color
+            text: text
+          - color: color
+            text: text
+          kind: kind
+          locked: true
+          logoUrl: logoUrl
+          orgName: orgName
+          orgSlug: orgSlug
+          slug: slug
+          summary: summary
+          title: title
+        - badges:
+          - color: color
+            text: text
+          - color: color
+            text: text
+          kind: kind
+          locked: true
+          logoUrl: logoUrl
+          orgName: orgName
+          orgSlug: orgSlug
+          slug: slug
+          summary: summary
+          title: title
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/EngagementPublicItem"
+          type: array
+          default: null
+      required:
+      - items
+    Error:
+      example:
+        fields:
+          key: fields
+        message: message
+        requestId: requestId
+        status: 0
+        title: title
+      properties:
+        fields:
+          additionalProperties:
+            type: string
+          type: object
+        message:
+          type: string
+        requestId:
+          type: string
+        status:
+          type: integer
+        title:
+          type: string
+      required:
+      - message
+      - requestId
+      - status
+      - title
+    Feedback:
+      example:
+        createdAt: createdAt
+        id: 0
+        kind: kind
+        message: message
+        page: page
+        rating: 6
+        status: status
+      properties:
+        createdAt:
+          type: string
+        id:
+          type: integer
+        kind:
+          type: string
+        message:
+          type: string
+        page:
+          type: string
+        rating:
+          type: integer
+        status:
+          type: string
+      required:
+      - createdAt
+      - id
+      - kind
+      - message
+      - status
+    FeedbackList:
+      example:
+        items:
+        - createdAt: createdAt
+          id: 0
+          kind: kind
+          message: message
+          page: page
+          rating: 6
+          status: status
+        - createdAt: createdAt
+          id: 0
+          kind: kind
+          message: message
+          page: page
+          rating: 6
+          status: status
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/Feedback"
+          type: array
+          default: null
+      required:
+      - items
+    HelpOperation:
+      example:
+        command: command
+        describe: describe
+        description: description
+        id: id
+        method: method
+        multipart: true
+        path: path
+        prompt: prompt
+        summary: summary
+      properties:
+        command:
+          type: string
+        describe:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        method:
+          type: string
+        multipart:
+          type: boolean
+        path:
+          type: string
+        prompt:
+          type: string
+        summary:
+          type: string
+      required:
+      - command
+      - describe
+      - id
+      - method
+      - multipart
+      - path
+      - prompt
+      - summary
+    HelpTopic:
+      example:
+        description: description
+        links:
+          key: links
+        operations:
+        - command: command
+          describe: describe
+          description: description
+          id: id
+          method: method
+          multipart: true
+          path: path
+          prompt: prompt
+          summary: summary
+        - command: command
+          describe: describe
+          description: description
+          id: id
+          method: method
+          multipart: true
+          path: path
+          prompt: prompt
+          summary: summary
+        page: page
+        pattern: pattern
+        summary: summary
+      properties:
+        description:
+          type: string
+        links:
+          additionalProperties:
+            type: string
+          type: object
+        operations:
+          items:
+            $ref: "#/components/schemas/HelpOperation"
+          type: array
+          default: null
+        page:
+          type: string
+        pattern:
+          type: string
+        summary:
+          type: string
+      required:
+      - links
+      - operations
+      - page
+      - pattern
+      - summary
+    LegacylinkLink:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        path: path
+        target: target
+      properties:
+        id:
+          format: uuid
+          type: string
+        path:
+          type: string
+        target:
+          type: string
+      required:
+      - id
+      - path
+      - target
+    ListviewView:
+      example:
+        id: 0
+        list: list
+        name: name
+        query: query
+      properties:
+        id:
+          type: integer
+        list:
+          type: string
+        name:
+          type: string
+        query:
+          type: string
+      required:
+      - id
+      - list
+      - name
+      - query
+    McpAgents:
+      example:
+        docs: docs
+        instructions: instructions
+        mcp: mcp
+        openapi: openapi
+        resourceMetadata: resourceMetadata
+      properties:
+        docs:
+          type: string
+        instructions:
+          type: string
+        mcp:
+          type: string
+        openapi:
+          type: string
+        resourceMetadata:
+          type: string
+      required:
+      - docs
+      - instructions
+      - mcp
+      - openapi
+      - resourceMetadata
+    MessageEmailPreference:
+      example:
+        audience: audience
+        email: true
+        kind: kind
+      properties:
+        audience:
+          type: string
+        email:
+          type: boolean
+        kind:
+          type: string
+      required:
+      - audience
+      - email
+      - kind
+    MessageEmailPreferenceList:
+      example:
+        items:
+        - audience: audience
+          email: true
+          kind: kind
+        - audience: audience
+          email: true
+          kind: kind
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/MessageEmailPreference"
+          type: array
+          default: null
+      required:
+      - items
+    MessageNotification:
+      example:
+        body: body
+        created: 2000-01-23T04:56:07.000+00:00
+        entityId: entityId
+        entityKind: entityKind
+        id: 0
+        isRead: true
+        kind: kind
+        title: title
+      properties:
+        body:
+          type: string
+        created:
+          format: date-time
+          type: string
+        entityId:
+          type: string
+        entityKind:
+          type: string
+        id:
+          type: integer
+        isRead:
+          type: boolean
+        kind:
+          type: string
+        title:
+          type: string
+      required:
+      - created
+      - id
+      - isRead
+      - kind
+      - title
+    MessageNotificationPage:
+      example:
+        items:
+        - body: body
+          created: 2000-01-23T04:56:07.000+00:00
+          entityId: entityId
+          entityKind: entityKind
+          id: 0
+          isRead: true
+          kind: kind
+          title: title
+        - body: body
+          created: 2000-01-23T04:56:07.000+00:00
+          entityId: entityId
+          entityKind: entityKind
+          id: 0
+          isRead: true
+          kind: kind
+          title: title
+        next: 6
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/MessageNotification"
+          type: array
+          default: null
+        next:
+          type: integer
+      required:
+      - items
+    Organization:
+      example:
+        hasAnalytics: true
+        hasFinance: true
+        hasGrants: true
+        hasScanReports: true
+        iconUrl: iconUrl
+        isAdmin: true
+        name: name
+        slug: slug
+        url: url
+      properties:
+        hasAnalytics:
+          type: boolean
+        hasFinance:
+          type: boolean
+        hasGrants:
+          type: boolean
+        hasScanReports:
+          type: boolean
+        iconUrl:
+          type: string
+        isAdmin:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        url:
+          type: string
+      required:
+      - hasAnalytics
+      - hasFinance
+      - hasGrants
+      - hasScanReports
+      - isAdmin
+      - name
+      - slug
+      - url
+    OrganizationAcceptedInvitation:
+      example:
+        organization: organization
+        url: url
+      properties:
+        organization:
+          type: string
+        url:
+          type: string
+      required:
+      - organization
+      - url
+    OrganizationInvitation:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        hasFinance: true
+        hasScanReports: true
+        id: 0
+        invitedBy: invitedBy
+        isAdmin: true
+        message: message
+        organization: organization
+        organizationName: organizationName
+        programs:
+        - programs
+        - programs
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        hasFinance:
+          type: boolean
+        hasScanReports:
+          type: boolean
+        id:
+          type: integer
+        invitedBy:
+          type: string
+        isAdmin:
+          type: boolean
+        message:
+          type: string
+        organization:
+          type: string
+        organizationName:
+          type: string
+        programs:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - createdAt
+      - hasFinance
+      - hasScanReports
+      - id
+      - invitedBy
+      - isAdmin
+      - message
+      - organization
+      - organizationName
+      - programs
+    OrganizationInvitationList:
+      example:
+        items:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          hasFinance: true
+          hasScanReports: true
+          id: 0
+          invitedBy: invitedBy
+          isAdmin: true
+          message: message
+          organization: organization
+          organizationName: organizationName
+          programs:
+          - programs
+          - programs
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          hasFinance: true
+          hasScanReports: true
+          id: 0
+          invitedBy: invitedBy
+          isAdmin: true
+          message: message
+          organization: organization
+          organizationName: organizationName
+          programs:
+          - programs
+          - programs
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/OrganizationInvitation"
+          type: array
+          default: null
+      required:
+      - items
+    OrganizationList:
+      example:
+        items:
+        - hasAnalytics: true
+          hasFinance: true
+          hasGrants: true
+          hasScanReports: true
+          iconUrl: iconUrl
+          isAdmin: true
+          name: name
+          slug: slug
+          url: url
+        - hasAnalytics: true
+          hasFinance: true
+          hasGrants: true
+          hasScanReports: true
+          iconUrl: iconUrl
+          isAdmin: true
+          name: name
+          slug: slug
+          url: url
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/Organization"
+          type: array
+          default: null
+      required:
+      - items
+    ProofExternalProfile:
+      example:
+        failureReason: failureReason
+        handle: handle
+        id: 0
+        instructions: instructions
+        lastChecked: 2000-01-23T04:56:07.000+00:00
+        provider: provider
+        secret: secret
+        secretExpires: 2000-01-23T04:56:07.000+00:00
+        status: status
+        url: url
+        verifiedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        failureReason:
+          type: string
+        handle:
+          type: string
+        id:
+          type: integer
+        instructions:
+          type: string
+        lastChecked:
+          format: date-time
+          type: string
+        provider:
+          type: string
+        secret:
+          type: string
+        secretExpires:
+          format: date-time
+          type: string
+        status:
+          type: string
+        url:
+          type: string
+        verifiedAt:
+          format: date-time
+          type: string
+      required:
+      - handle
+      - id
+      - provider
+      - status
+      - url
+    ProofExternalProfileList:
+      example:
+        items:
+        - failureReason: failureReason
+          handle: handle
+          id: 0
+          instructions: instructions
+          lastChecked: 2000-01-23T04:56:07.000+00:00
+          provider: provider
+          secret: secret
+          secretExpires: 2000-01-23T04:56:07.000+00:00
+          status: status
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+        - failureReason: failureReason
+          handle: handle
+          id: 0
+          instructions: instructions
+          lastChecked: 2000-01-23T04:56:07.000+00:00
+          provider: provider
+          secret: secret
+          secretExpires: 2000-01-23T04:56:07.000+00:00
+          status: status
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ProofExternalProfile"
+          type: array
+          default: null
+      required:
+      - items
+    Report:
+      example:
+        assetIdentifier: assetIdentifier
+        cvssScore: 0.8008281904610115
+        cvssVector: cvssVector
+        engagementId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        severitySubmitted: severitySubmitted
+        status: status
+        structuredContent:
+          assetIdentifier: assetIdentifier
+          cwe: cwe
+          decided:
+            cvssScore: 6.027456183070403
+            cvssVector: cvssVector
+            justification: justification
+            severity: severity
+          feedback: feedback
+          scopeEntryId: 1
+          submitted:
+            cvssScore: 6.027456183070403
+            cvssVector: cvssVector
+            justification: justification
+            severity: severity
+        submittedAt: 2000-01-23T04:56:07.000+00:00
+        title: title
+      properties:
+        assetIdentifier:
+          type: string
+        cvssScore:
+          type: number
+        cvssVector:
+          type: string
+        engagementId:
+          format: uuid
+          type: string
+        id:
+          format: uuid
+          type: string
+        severitySubmitted:
+          type: string
+        status:
+          type: string
+        structuredContent:
+          $ref: "#/components/schemas/ReportFinding"
+        submittedAt:
+          format: date-time
+          type: string
+        title:
+          type: string
+      required:
+      - engagementId
+      - id
+      - status
+      - title
+    ReportAssessment:
+      example:
+        cvssScore: 6.027456183070403
+        cvssVector: cvssVector
+        justification: justification
+        severity: severity
+      properties:
+        cvssScore:
+          type: number
+        cvssVector:
+          type: string
+        justification:
+          type: string
+        severity:
+          type: string
+    ReportAttachment:
+      example:
+        id: 6
+        name: name
+        scanStatus: scanStatus
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        scanStatus:
+          type: string
+      required:
+      - id
+      - name
+      - scanStatus
+    ReportBody:
+      example:
+        description: description
+        impact: impact
+        poc: poc
+        recommendation: recommendation
+        steps: steps
+      properties:
+        description:
+          type: string
+        impact:
+          type: string
+        poc:
+          type: string
+        recommendation:
+          type: string
+        steps:
+          type: string
+    ReportBonus:
+      example:
+        note: note
+        points: 0
+      properties:
+        note:
+          type: string
+        points:
+          type: integer
+      required:
+      - note
+      - points
+    ReportClaim:
+      example:
+        reportId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        title: title
+      properties:
+        reportId:
+          format: uuid
+          type: string
+        title:
+          type: string
+      required:
+      - reportId
+    ReportComment:
+      example:
+        attachments:
+        - id: 6
+          name: name
+          scanStatus: scanStatus
+        - id: 6
+          name: name
+          scanStatus: scanStatus
+        author: author
+        authorParty: authorParty
+        body: body
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 1
+      properties:
+        attachments:
+          items:
+            $ref: "#/components/schemas/ReportAttachment"
+          type: array
+          default: null
+        author:
+          type: string
+        authorParty:
+          type: string
+        body:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: integer
+      required:
+      - attachments
+      - author
+      - authorParty
+      - body
+      - createdAt
+      - id
+    ReportContentVersion:
+      example:
+        RowJSON:
+          author: author
+          authoredVia: authoredVia
+          changeReason: changeReason
+          content: content
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          number: 0
+          parentVersion: 6
+          publishedAt: 2000-01-23T04:56:07.000+00:00
+          schemaVersion: 1
+          status: status
+          structuredContent:
+          - 5
+          - 5
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        RowJSON:
+          $ref: "#/components/schemas/RevisionRow"
+      required:
+      - RowJSON
+    ReportContentVersionList:
+      example:
+        items:
+        - RowJSON:
+            author: author
+            authoredVia: authoredVia
+            changeReason: changeReason
+            content: content
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            number: 0
+            parentVersion: 6
+            publishedAt: 2000-01-23T04:56:07.000+00:00
+            schemaVersion: 1
+            status: status
+            structuredContent:
+            - 5
+            - 5
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+        - RowJSON:
+            author: author
+            authoredVia: authoredVia
+            changeReason: changeReason
+            content: content
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            number: 0
+            parentVersion: 6
+            publishedAt: 2000-01-23T04:56:07.000+00:00
+            schemaVersion: 1
+            status: status
+            structuredContent:
+            - 5
+            - 5
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ReportContentVersion"
+          type: array
+          default: null
+      required:
+      - items
+    ReportContributor:
+      example:
+        researcher: researcher
+        sharePct: 5
+        status: status
+      properties:
+        researcher:
+          type: string
+        sharePct:
+          type: integer
+        status:
+          type: string
+      required:
+      - researcher
+      - sharePct
+      - status
+    ReportEvidence:
+      example:
+        caption: caption
+        id: 5
+        scanStatus: scanStatus
+      properties:
+        caption:
+          type: string
+        id:
+          type: integer
+        scanStatus:
+          type: string
+      required:
+      - id
+      - scanStatus
+    ReportFeed:
+      example:
+        at: 2000-01-23T04:56:07.000+00:00
+        author: author
+        authorParty: authorParty
+        body: body
+        from: from
+        kind: kind
+        to: to
+        visibility: visibility
+      properties:
+        at:
+          format: date-time
+          type: string
+        author:
+          type: string
+        authorParty:
+          type: string
+        body:
+          type: string
+        from:
+          type: string
+        kind:
+          type: string
+        to:
+          type: string
+        visibility:
+          type: string
+      required:
+      - at
+      - kind
+    ReportFinding:
+      example:
+        assetIdentifier: assetIdentifier
+        cwe: cwe
+        decided:
+          cvssScore: 6.027456183070403
+          cvssVector: cvssVector
+          justification: justification
+          severity: severity
+        feedback: feedback
+        scopeEntryId: 1
+        submitted:
+          cvssScore: 6.027456183070403
+          cvssVector: cvssVector
+          justification: justification
+          severity: severity
+      properties:
+        assetIdentifier:
+          type: string
+        cwe:
+          type: string
+        decided:
+          $ref: "#/components/schemas/ReportAssessment"
+        feedback:
+          type: string
+        scopeEntryId:
+          type: integer
+        submitted:
+          $ref: "#/components/schemas/ReportAssessment"
+      required:
+      - submitted
+    ReportInvitation:
+      example:
+        engagement: engagement
+        reportId: reportId
+        reportTitle: reportTitle
+        sharePct: 0
+        status: status
+      properties:
+        engagement:
+          type: string
+        reportId:
+          type: string
+        reportTitle:
+          type: string
+        sharePct:
+          type: integer
+        status:
+          type: string
+      required:
+      - engagement
+      - reportId
+      - reportTitle
+      - sharePct
+      - status
+    ReportInvitationList:
+      example:
+        items:
+        - engagement: engagement
+          reportId: reportId
+          reportTitle: reportTitle
+          sharePct: 0
+          status: status
+        - engagement: engagement
+          reportId: reportId
+          reportTitle: reportTitle
+          sharePct: 0
+          status: status
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ReportInvitation"
+          type: array
+          default: null
+      required:
+      - items
+    ReportMyReport:
+      example:
+        cvssScore: 0.8008281904610115
+        engagementSlug: engagementSlug
+        engagementTitle: engagementTitle
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        infoRequestedAt: 2000-01-23T04:56:07.000+00:00
+        orgName: orgName
+        orgSlug: orgSlug
+        severity: severity
+        severitySubmitted: severitySubmitted
+        status: status
+        submittedAt: 2000-01-23T04:56:07.000+00:00
+        title: title
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        cvssScore:
+          type: number
+        engagementSlug:
+          type: string
+        engagementTitle:
+          type: string
+        id:
+          format: uuid
+          type: string
+        infoRequestedAt:
+          format: date-time
+          type: string
+        orgName:
+          type: string
+        orgSlug:
+          type: string
+        severity:
+          type: string
+        severitySubmitted:
+          type: string
+        status:
+          type: string
+        submittedAt:
+          format: date-time
+          type: string
+        title:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+      - engagementSlug
+      - engagementTitle
+      - id
+      - orgName
+      - orgSlug
+      - status
+      - title
+      - updatedAt
+    ReportMyReportDetail:
+      example:
+        activity:
+        - at: 2000-01-23T04:56:07.000+00:00
+          author: author
+          authorParty: authorParty
+          body: body
+          from: from
+          kind: kind
+          to: to
+          visibility: visibility
+        - at: 2000-01-23T04:56:07.000+00:00
+          author: author
+          authorParty: authorParty
+          body: body
+          from: from
+          kind: kind
+          to: to
+          visibility: visibility
+        assetIdentifier: assetIdentifier
+        body:
+          description: description
+          impact: impact
+          poc: poc
+          recommendation: recommendation
+          steps: steps
+        bonus:
+          note: note
+          points: 0
+        comments:
+        - attachments:
+          - id: 6
+            name: name
+            scanStatus: scanStatus
+          - id: 6
+            name: name
+            scanStatus: scanStatus
+          author: author
+          authorParty: authorParty
+          body: body
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          id: 1
+        - attachments:
+          - id: 6
+            name: name
+            scanStatus: scanStatus
+          - id: 6
+            name: name
+            scanStatus: scanStatus
+          author: author
+          authorParty: authorParty
+          body: body
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          id: 1
+        content: content
+        contributors:
+        - researcher: researcher
+          sharePct: 5
+          status: status
+        - researcher: researcher
+          sharePct: 5
+          status: status
+        cvssVector: cvssVector
+        cwe: cwe
+        evidence:
+        - caption: caption
+          id: 5
+          scanStatus: scanStatus
+        - caption: caption
+          id: 5
+          scanStatus: scanStatus
+        feedback: feedback
+        firstRespondedAt: 2000-01-23T04:56:07.000+00:00
+        firstResponseDueAt: 2000-01-23T04:56:07.000+00:00
+        infoRequestedAt: 2000-01-23T04:56:07.000+00:00
+        points: 2
+        rejectionCategory: rejectionCategory
+        rejectionReason: rejectionReason
+        resolutionDueAt: 2000-01-23T04:56:07.000+00:00
+        resolvedAt: 2000-01-23T04:56:07.000+00:00
+        retest:
+          decidedAt: 2000-01-23T04:56:07.000+00:00
+          due: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          outcomeNotes: outcomeNotes
+          remediationNotes: remediationNotes
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          status: status
+        retestHistory:
+        - decidedAt: 2000-01-23T04:56:07.000+00:00
+          due: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          outcomeNotes: outcomeNotes
+          remediationNotes: remediationNotes
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          status: status
+        - decidedAt: 2000-01-23T04:56:07.000+00:00
+          due: 2000-01-23T04:56:07.000+00:00
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          outcomeNotes: outcomeNotes
+          remediationNotes: remediationNotes
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          status: status
+        severityJustification: severityJustification
+        slaSource: slaSource
+        slaStatus: slaStatus
+        statusHistory:
+        - at: 2000-01-23T04:56:07.000+00:00
+          from: from
+          to: to
+        - at: 2000-01-23T04:56:07.000+00:00
+          from: from
+          to: to
+        structuredContent:
+          assetIdentifier: assetIdentifier
+          cwe: cwe
+          decided:
+            cvssScore: 6.027456183070403
+            cvssVector: cvssVector
+            justification: justification
+            severity: severity
+          feedback: feedback
+          scopeEntryId: 1
+          submitted:
+            cvssScore: 6.027456183070403
+            cvssVector: cvssVector
+            justification: justification
+            severity: severity
+        triageMode: triageMode
+      properties:
+        activity:
+          items:
+            $ref: "#/components/schemas/ReportFeed"
+          type: array
+          default: null
+        assetIdentifier:
+          type: string
+        body:
+          $ref: "#/components/schemas/ReportBody"
+        bonus:
+          $ref: "#/components/schemas/ReportBonus"
+        comments:
+          items:
+            $ref: "#/components/schemas/ReportComment"
+          type: array
+          default: null
+        content:
+          type: string
+        contributors:
+          items:
+            $ref: "#/components/schemas/ReportContributor"
+          type: array
+          default: null
+        cvssVector:
+          type: string
+        cwe:
+          type: string
+        evidence:
+          items:
+            $ref: "#/components/schemas/ReportEvidence"
+          type: array
+          default: null
+        feedback:
+          type: string
+        firstRespondedAt:
+          format: date-time
+          type: string
+        firstResponseDueAt:
+          format: date-time
+          type: string
+        infoRequestedAt:
+          format: date-time
+          type: string
+        points:
+          type: integer
+        rejectionCategory:
+          type: string
+        rejectionReason:
+          type: string
+        resolutionDueAt:
+          format: date-time
+          type: string
+        resolvedAt:
+          format: date-time
+          type: string
+        retest:
+          $ref: "#/components/schemas/ReportRetest"
+        retestHistory:
+          items:
+            $ref: "#/components/schemas/ReportRetest"
+          type: array
+          default: null
+        severityJustification:
+          type: string
+        slaSource:
+          type: string
+        slaStatus:
+          type: string
+        statusHistory:
+          items:
+            $ref: "#/components/schemas/ReportStatusEvent"
+          type: array
+          default: null
+        structuredContent:
+          $ref: "#/components/schemas/ReportFinding"
+        triageMode:
+          type: string
+      required:
+      - activity
+      - body
+      - comments
+      - content
+      - statusHistory
+      - triageMode
+    ReportMyReportList:
+      example:
+        items:
+        - cvssScore: 0.8008281904610115
+          engagementSlug: engagementSlug
+          engagementTitle: engagementTitle
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          infoRequestedAt: 2000-01-23T04:56:07.000+00:00
+          orgName: orgName
+          orgSlug: orgSlug
+          severity: severity
+          severitySubmitted: severitySubmitted
+          status: status
+          submittedAt: 2000-01-23T04:56:07.000+00:00
+          title: title
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - cvssScore: 0.8008281904610115
+          engagementSlug: engagementSlug
+          engagementTitle: engagementTitle
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          infoRequestedAt: 2000-01-23T04:56:07.000+00:00
+          orgName: orgName
+          orgSlug: orgSlug
+          severity: severity
+          severitySubmitted: severitySubmitted
+          status: status
+          submittedAt: 2000-01-23T04:56:07.000+00:00
+          title: title
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/ReportMyReport"
+          type: array
+          default: null
+      required:
+      - items
+    ReportPostedComment:
+      example:
+        attachments:
+        - id: 6
+          name: name
+          scanStatus: scanStatus
+        - id: 6
+          name: name
+          scanStatus: scanStatus
+        author: author
+        body: body
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        visibility: visibility
+      properties:
+        attachments:
+          items:
+            $ref: "#/components/schemas/ReportAttachment"
+          type: array
+          default: null
+        author:
+          type: string
+        body:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: integer
+        visibility:
+          type: string
+      required:
+      - attachments
+      - author
+      - body
+      - createdAt
+      - id
+      - visibility
+    ReportRetest:
+      example:
+        decidedAt: 2000-01-23T04:56:07.000+00:00
+        due: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        outcomeNotes: outcomeNotes
+        remediationNotes: remediationNotes
+        requestedAt: 2000-01-23T04:56:07.000+00:00
+        status: status
+      properties:
+        decidedAt:
+          format: date-time
+          type: string
+        due:
+          format: date-time
+          type: string
+        id:
+          format: uuid
+          type: string
+        outcomeNotes:
+          type: string
+        remediationNotes:
+          type: string
+        requestedAt:
+          format: date-time
+          type: string
+        status:
+          type: string
+      required:
+      - id
+      - remediationNotes
+      - requestedAt
+      - status
+    ReportStatusEvent:
+      example:
+        at: 2000-01-23T04:56:07.000+00:00
+        from: from
+        to: to
+      properties:
+        at:
+          format: date-time
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+      required:
+      - at
+      - from
+      - to
+    Retest:
+      example:
+        decidedAt: 2000-01-23T04:56:07.000+00:00
+        due: 2000-01-23T04:56:07.000+00:00
+        engagement: engagement
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        outcomeNotes: outcomeNotes
+        remediationNotes: remediationNotes
+        reportId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        reportTitle: reportTitle
+        requestedAt: 2000-01-23T04:56:07.000+00:00
+        status: status
+      properties:
+        decidedAt:
+          format: date-time
+          type: string
+        due:
+          format: date-time
+          type: string
+        engagement:
+          type: string
+        id:
+          format: uuid
+          type: string
+        outcomeNotes:
+          type: string
+        remediationNotes:
+          type: string
+        reportId:
+          format: uuid
+          type: string
+        reportTitle:
+          type: string
+        requestedAt:
+          format: date-time
+          type: string
+        status:
+          type: string
+      required:
+      - id
+      - remediationNotes
+      - reportId
+      - requestedAt
+      - status
+    RevisionRow:
+      example:
+        author: author
+        authoredVia: authoredVia
+        changeReason: changeReason
+        content: content
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        number: 0
+        parentVersion: 6
+        publishedAt: 2000-01-23T04:56:07.000+00:00
+        schemaVersion: 1
+        status: status
+        structuredContent:
+        - 5
+        - 5
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        author:
+          type: string
+        authoredVia:
+          type: string
+        changeReason:
+          type: string
+        content:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          format: uuid
+          type: string
+        number:
+          type: integer
+        parentVersion:
+          type: integer
+        publishedAt:
+          format: date-time
+          type: string
+        schemaVersion:
+          type: integer
+        status:
+          type: string
+        structuredContent:
+          items:
+            type: integer
+          type: array
+          default: null
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+      - content
+      - createdAt
+      - id
+      - number
+      - schemaVersion
+      - status
+      - structuredContent
+      - updatedAt
+    SearchResult:
+      example:
+        href: href
+        kind: kind
+        meta: meta
+        title: title
+      properties:
+        href:
+          type: string
+        kind:
+          type: string
+        meta:
+          type: string
+        title:
+          type: string
+      required:
+      - href
+      - kind
+      - meta
+      - title
+    SearchResultList:
+      example:
+        items:
+        - href: href
+          kind: kind
+          meta: meta
+          title: title
+        - href: href
+          kind: kind
+          meta: meta
+          title: title
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/SearchResult"
+          type: array
+          default: null
+      required:
+      - items
+    UserCertification:
+      example:
+        credentialId: credentialId
+        expiresOn: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        issuedOn: 2000-01-23T04:56:07.000+00:00
+        issuer: issuer
+        issuerName: issuerName
+        name: name
+        note: note
+        status: status
+        url: url
+        verifiedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        credentialId:
+          type: string
+        expiresOn:
+          format: date-time
+          type: string
+        id:
+          type: integer
+        issuedOn:
+          format: date-time
+          type: string
+        issuer:
+          type: string
+        issuerName:
+          type: string
+        name:
+          type: string
+        note:
+          type: string
+        status:
+          type: string
+        url:
+          type: string
+        verifiedAt:
+          format: date-time
+          type: string
+      required:
+      - credentialId
+      - id
+      - issuer
+      - issuerName
+      - name
+      - status
+    UserCertificationList:
+      example:
+        items:
+        - credentialId: credentialId
+          expiresOn: 2000-01-23T04:56:07.000+00:00
+          id: 0
+          issuedOn: 2000-01-23T04:56:07.000+00:00
+          issuer: issuer
+          issuerName: issuerName
+          name: name
+          note: note
+          status: status
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+        - credentialId: credentialId
+          expiresOn: 2000-01-23T04:56:07.000+00:00
+          id: 0
+          issuedOn: 2000-01-23T04:56:07.000+00:00
+          issuer: issuer
+          issuerName: issuerName
+          name: name
+          note: note
+          status: status
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/UserCertification"
+          type: array
+          default: null
+      required:
+      - items
+    UserOnboarding:
+      example:
+        conductAccepted: 2000-01-23T04:56:07.000+00:00
+        onboardedAt: 2000-01-23T04:56:07.000+00:00
+        step: 0
+      properties:
+        conductAccepted:
+          format: date-time
+          type: string
+        onboardedAt:
+          format: date-time
+          type: string
+        step:
+          type: integer
+      required:
+      - step
+    UserProfileBadge:
+      example:
+        code: code
+        earnedAt: 2000-01-23T04:56:07.000+00:00
+        hidden: true
+        name: name
+      properties:
+        code:
+          type: string
+        earnedAt:
+          format: date-time
+          type: string
+        hidden:
+          type: boolean
+        name:
+          type: string
+      required:
+      - code
+      - earnedAt
+      - hidden
+      - name
+    UserProfileWebsite:
+      example:
+        handle: handle
+        website: website
+      properties:
+        handle:
+          type: string
+        website:
+          type: string
+      required:
+      - handle
+      - website
+    UserPublicCertification:
+      example:
+        expiresOn: 2000-01-23T04:56:07.000+00:00
+        issuedOn: 2000-01-23T04:56:07.000+00:00
+        issuer: issuer
+        name: name
+        status: status
+        verifyUrl: verifyUrl
+      properties:
+        expiresOn:
+          format: date-time
+          type: string
+        issuedOn:
+          format: date-time
+          type: string
+        issuer:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        verifyUrl:
+          type: string
+      required:
+      - issuer
+      - name
+      - status
+    UserPublicExternal:
+      example:
+        handle: handle
+        lastChecked: 2000-01-23T04:56:07.000+00:00
+        provider: provider
+        url: url
+        verifiedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        handle:
+          type: string
+        lastChecked:
+          format: date-time
+          type: string
+        provider:
+          type: string
+        url:
+          type: string
+        verifiedAt:
+          format: date-time
+          type: string
+      required:
+      - handle
+      - provider
+      - url
+    UserPublicProfile:
+      example:
+        badges:
+        - code: code
+          earnedAt: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          name: name
+        - code: code
+          earnedAt: 2000-01-23T04:56:07.000+00:00
+          hidden: true
+          name: name
+        bio: bio
+        certifications:
+        - expiresOn: 2000-01-23T04:56:07.000+00:00
+          issuedOn: 2000-01-23T04:56:07.000+00:00
+          issuer: issuer
+          name: name
+          status: status
+          verifyUrl: verifyUrl
+        - expiresOn: 2000-01-23T04:56:07.000+00:00
+          issuedOn: 2000-01-23T04:56:07.000+00:00
+          issuer: issuer
+          name: name
+          status: status
+          verifyUrl: verifyUrl
+        country: country
+        displayName: displayName
+        externalProfiles:
+        - handle: handle
+          lastChecked: 2000-01-23T04:56:07.000+00:00
+          provider: provider
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+        - handle: handle
+          lastChecked: 2000-01-23T04:56:07.000+00:00
+          provider: provider
+          url: url
+          verifiedAt: 2000-01-23T04:56:07.000+00:00
+        handle: handle
+        joinedAt: 2000-01-23T04:56:07.000+00:00
+        reputation: 0
+        reputationHistory:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          points: 6
+          reason: reason
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          points: 6
+          reason: reason
+        skills:
+        - level: level
+          name: name
+        - level: level
+          name: name
+        tier: tier
+        verificationLevel: verificationLevel
+        website: website
+      properties:
+        badges:
+          items:
+            $ref: "#/components/schemas/UserProfileBadge"
+          type: array
+          default: null
+        bio:
+          type: string
+        certifications:
+          items:
+            $ref: "#/components/schemas/UserPublicCertification"
+          type: array
+          default: null
+        country:
+          type: string
+        displayName:
+          type: string
+        externalProfiles:
+          items:
+            $ref: "#/components/schemas/UserPublicExternal"
+          type: array
+          default: null
+        handle:
+          type: string
+        joinedAt:
+          format: date-time
+          type: string
+        reputation:
+          type: integer
+        reputationHistory:
+          items:
+            $ref: "#/components/schemas/UserReputationEvent"
+          type: array
+          default: null
+        skills:
+          items:
+            $ref: "#/components/schemas/UserPublicSkill"
+          type: array
+          default: null
+        tier:
+          type: string
+        verificationLevel:
+          type: string
+        website:
+          type: string
+      required:
+      - badges
+      - bio
+      - certifications
+      - displayName
+      - externalProfiles
+      - handle
+      - joinedAt
+      - reputation
+      - skills
+      - tier
+      - verificationLevel
+    UserPublicSkill:
+      example:
+        level: level
+        name: name
+      properties:
+        level:
+          type: string
+        name:
+          type: string
+      required:
+      - level
+      - name
+    UserReputationEvent:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        points: 6
+        reason: reason
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        points:
+          type: integer
+        reason:
+          type: string
+      required:
+      - createdAt
+      - points
+      - reason
+    UserSecurity:
+      example:
+        items:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          label: label
+          type: type
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          id: id
+          label: label
+          type: type
+        linkedProviders:
+        - linkedProviders
+        - linkedProviders
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/UserSignInMethod"
+          type: array
+          default: null
+        linkedProviders:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - items
+      - linkedProviders
+    UserSettings:
+      example:
+        bio: bio
+        bountyExperience: bountyExperience
+        country: country
+        displayName: displayName
+        experienceLevel: experienceLevel
+        handle: handle
+        isPublic: true
+        legacyLook: true
+        showEarnings: true
+        showOnLeaderboard: true
+        showVulnTypes: true
+        userId: 0
+        website: website
+      properties:
+        bio:
+          type: string
+        bountyExperience:
+          type: string
+        country:
+          type: string
+        displayName:
+          type: string
+        experienceLevel:
+          type: string
+        handle:
+          type: string
+        isPublic:
+          type: boolean
+        legacyLook:
+          type: boolean
+        showEarnings:
+          type: boolean
+        showOnLeaderboard:
+          type: boolean
+        showVulnTypes:
+          type: boolean
+        userId:
+          type: integer
+        website:
+          type: string
+      required:
+      - bio
+      - bountyExperience
+      - country
+      - displayName
+      - experienceLevel
+      - handle
+      - isPublic
+      - legacyLook
+      - showEarnings
+      - showOnLeaderboard
+      - showVulnTypes
+      - userId
+      - website
+    UserSignInMethod:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        id: id
+        label: label
+        type: type
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        type:
+          type: string
+      required:
+      - createdAt
+      - id
+      - label
+      - type
+    postBadgesVisibility_request:
+      properties:
+        hidden:
+          description: Whether the badge is hidden on the public profile
+          enum:
+          - "true"
+          - "false"
+          minLength: 1
+          type: string
+      required:
+      - hidden
+    postEmbedByOrgSlugAndEngagementSlug_request:
+      properties:
+        challenge:
+          maxLength: 200
+          minLength: 1
+          type: string
+        description:
+          maxLength: 20000
+          minLength: 1
+          type: string
+        email:
+          format: email
+          maxLength: 254
+          type: string
+        impact:
+          maxLength: 20000
+          type: string
+        nonce:
+          maxLength: 32
+          type: string
+        recommendation:
+          maxLength: 20000
+          type: string
+        scopeEntryId:
+          type: string
+        severity:
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+          minLength: 1
+          type: string
+        signature:
+          maxLength: 200
+          minLength: 1
+          type: string
+        steps:
+          maxLength: 20000
+          minLength: 1
+          type: string
+        terms:
+          enum:
+          - "on"
+          minLength: 1
+          type: string
+        title:
+          maxLength: 200
+          minLength: 1
+          type: string
+        weakness:
+          maxLength: 200
+          type: string
+        website:
+          maxLength: 500
+          type: string
+      required:
+      - challenge
+      - description
+      - severity
+      - signature
+      - steps
+      - terms
+      - title
+    postEngagementsAccessRequest_request:
+      properties:
+        mobile_number:
+          description: Mobile number for the test accounts in international format;
+            required when the engagement asks for test accounts
+          pattern: "^\\+[1-9][0-9]{1,14}$"
+          type: string
+        test_email_1:
+          description: First test account email; required when the engagement asks
+            for test accounts
+          format: email
+          maxLength: 320
+          type: string
+        test_email_2:
+          description: Second test account email; required when the engagement asks
+            for test accounts
+          format: email
+          maxLength: 320
+          type: string
+        test_email_3:
+          description: Third test account email; required when the engagement asks
+            for test accounts
+          format: email
+          maxLength: 320
+          type: string
+    postEngagementsNdaAccept_request:
+      properties:
+        accept:
+          description: on to accept the NDA of the published version
+          enum:
+          - "on"
+          minLength: 1
+          type: string
+      required:
+      - accept
+    postEngagementsSubmit_request:
+      properties:
+        ac:
+          description: "CVSS attack complexity: L or H"
+          type: string
+        av:
+          description: "CVSS attack vector: N, A, L, or P"
+          type: string
+        avail:
+          description: "CVSS availability impact: N, L, or H"
+          type: string
+        conf:
+          description: "CVSS confidentiality impact: N, L, or H"
+          type: string
+        content:
+          description: "The report body as one Markdown document. Its single H1 is\
+            \ the report title; the sections are Description, Steps to reproduce,\
+            \ Impact, and Proof of concept. Description and Proof of concept are required\
+            \ to submit"
+          maxLength: 40000
+          minLength: 1
+          type: string
+        e:
+          description: "CVSS exploit code maturity: X, U, P, F, or H; X or empty is\
+            \ not defined"
+          type: string
+        integ:
+          description: "CVSS integrity impact: N, L, or H"
+          type: string
+        pr:
+          description: "CVSS privileges required: N, L, or H"
+          type: string
+        rc:
+          description: "CVSS report confidence: X, U, R, or C; X or empty is not defined"
+          type: string
+        reason:
+          description: "Why this revision exists, recorded on the revision (post-submission\
+            \ edits)"
+          maxLength: 500
+          type: string
+        rl:
+          description: "CVSS remediation level: X, O, T, W, or U; X or empty is not\
+            \ defined"
+          type: string
+        scope:
+          description: "CVSS scope: U or C"
+          type: string
+        scopeEntryId:
+          description: In-scope asset id from the engagement's live scope. Submitting
+            needs one
+          type: string
+        ui:
+          description: "CVSS user interaction: N or R"
+          type: string
+        vulnerabilityType:
+          description: "Weakness key from the catalog, e.g. CWE-79"
+          type: string
+      required:
+      - content
+    postEngagementsSubmitDraft_request:
+      properties:
+        ac:
+          description: "CVSS attack complexity: L or H"
+          type: string
+        av:
+          description: "CVSS attack vector: N, A, L, or P"
+          type: string
+        avail:
+          description: "CVSS availability impact: N, L, or H"
+          type: string
+        conf:
+          description: "CVSS confidentiality impact: N, L, or H"
+          type: string
+        content:
+          description: "The report body as one Markdown document. Its single H1 is\
+            \ the report title; the sections are Description, Steps to reproduce,\
+            \ Impact, and Proof of concept. A draft may leave sections empty"
+          maxLength: 40000
+          minLength: 1
+          type: string
+        e:
+          description: "CVSS exploit code maturity: X, U, P, F, or H; X or empty is\
+            \ not defined"
+          type: string
+        integ:
+          description: "CVSS integrity impact: N, L, or H"
+          type: string
+        pr:
+          description: "CVSS privileges required: N, L, or H"
+          type: string
+        rc:
+          description: "CVSS report confidence: X, U, R, or C; X or empty is not defined"
+          type: string
+        rl:
+          description: "CVSS remediation level: X, O, T, W, or U; X or empty is not\
+            \ defined"
+          type: string
+        scope:
+          description: "CVSS scope: U or C"
+          type: string
+        scopeEntryId:
+          description: In-scope asset id from the engagement's live scope
+          type: string
+        ui:
+          description: "CVSS user interaction: N or R"
+          type: string
+        vulnerabilityType:
+          description: "Vulnerability classification, e.g. XSS"
+          type: string
+      required:
+      - content
+    postFeedback_request:
+      properties:
+        kind:
+          description: "bug, idea, praise, or other"
+          enum:
+          - bug
+          - idea
+          - praise
+          - other
+          minLength: 1
+          type: string
+        message:
+          description: The feedback text
+          maxLength: 4000
+          minLength: 1
+          type: string
+        page:
+          description: The app path the feedback refers to
+          maxLength: 2000
+          type: string
+        rating:
+          description: Optional rating from 1 to 5
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          type: string
+      required:
+      - kind
+      - message
+    postListsColumns_request:
+      properties:
+        list:
+          description: The list key a feature registered its column catalog under
+            (for example my-reports or audit-log)
+          maxLength: 40
+          minLength: 1
+          type: string
+        move:
+          description: "Nudge one column: <key>:up or <key>:down"
+          maxLength: 60
+          type: string
+        reset:
+          description: 1 restores the default set
+          enum:
+          - "1"
+          type: string
+        return:
+          description: The list URL to return to
+          maxLength: 2000
+          minLength: 1
+          type: string
+      required:
+      - list
+      - return
+    postListsLayout_request:
+      properties:
+        layout:
+          description: "The layout: single (the list alone), split (the list beside\
+            \ the open record), or board (the kanban)"
+          enum:
+          - single
+          - split
+          - board
+          minLength: 1
+          type: string
+        list:
+          description: The list key a feature registered its layouts under (for example
+            triage-inbox or org-reports)
+          maxLength: 40
+          minLength: 1
+          type: string
+        return:
+          description: The list URL to return to (browsers)
+          maxLength: 2000
+          type: string
+      required:
+      - layout
+      - list
+    postListsViews_request:
+      properties:
+        list:
+          description: The list key a feature registered (for example triage-inbox)
+          maxLength: 40
+          minLength: 1
+          type: string
+        name:
+          description: "The view's name, unique per list"
+          maxLength: 60
+          minLength: 1
+          type: string
+        query:
+          description: "The filter query string to save, without page or markers"
+          maxLength: 2000
+          type: string
+        return:
+          description: The list URL to return to (browsers)
+          maxLength: 2000
+          type: string
+      required:
+      - list
+      - name
+    postMarkdownPreview_request:
+      properties:
+        content:
+          description: The Markdown document to render
+          maxLength: 40000
+          minLength: 1
+          type: string
+      required:
+      - content
+    postNotificationsPreferences_request:
+      properties:
+        engagement_access_requested:
+          description: "Organization members: send \"on\" for email on program access\
+            \ requests, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        engagement_invitation_responded:
+          description: "Organization members: send \"on\" for email on answers to\
+            \ program invitations, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        engagement_rules_changed:
+          description: "Send \"on\" for email on program rule changes, omit to switch\
+            \ it off"
+          enum:
+          - "on"
+          type: string
+        engagement_status_changed:
+          description: "Send \"on\" for email on program status changes, omit to switch\
+            \ it off"
+          enum:
+          - "on"
+          type: string
+        org_report_awaiting_feedback:
+          description: "Organization members: send \"on\" for email on reports awaiting\
+            \ your decision, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        org_report_comment_added:
+          description: "Organization members: send \"on\" for email on messages to\
+            \ you on program reports, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        org_report_status_changed:
+          description: "Organization members: send \"on\" for email on status changes\
+            \ of program reports, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        org_report_submitted:
+          description: "Organization members: send \"on\" for email on new reports\
+            \ to your programs, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        organization_join_decided:
+          description: "Send \"on\" for email on decisions on your requests to join\
+            \ an organization, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        organization_join_requested:
+          description: "Organization members: send \"on\" for email on join requests\
+            \ from your verified email domains, omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        report_comment_added:
+          description: "Send \"on\" for email on new report comments, omit to switch\
+            \ it off"
+          enum:
+          - "on"
+          type: string
+        report_info_requested:
+          description: "Send \"on\" for email on information requests, omit to switch\
+            \ it off"
+          enum:
+          - "on"
+          type: string
+        report_status_changed:
+          description: "Send \"on\" for email on report status changes, omit to switch\
+            \ it off"
+          enum:
+          - "on"
+          type: string
+        scan_report_published:
+          description: "Organization members: send \"on\" for email on new scan reports,\
+            \ omit to switch it off"
+          enum:
+          - "on"
+          type: string
+        version_decided:
+          description: "Send \"on\" for email on content review decisions (a program,\
+            \ the organization profile, an asset), omit to switch it off"
+          enum:
+          - "on"
+          type: string
+    postOnboardingConduct_request:
+      properties:
+        accept:
+          description: Must be "on"; registration cannot complete without acceptance
+          enum:
+          - "on"
+          minLength: 1
+          type: string
+      required:
+      - accept
+    postOnboardingExperience_request:
+      properties:
+        bounty_experience:
+          enum:
+          - none
+          - hobby
+          - active
+          - pro
+          - fulltime
+          type: string
+        experience_level:
+          enum:
+          - beginner
+          - intermediate
+          - expert
+          minLength: 1
+          type: string
+      required:
+      - experience_level
+    postOnboardingInterests_request:
+      properties:
+        skills:
+          description: Repeat the parameter per selected skill
+          items:
+            enum:
+            - Web Apps
+            - APIs / REST
+            - Mobile Apps
+            - Cloud / Infra
+            - Network
+            - IoT
+            - Blockchain
+            - AI / LLM
+            - Hardware
+            - Social Engineering
+            type: string
+          maxItems: 10
+          type: array
+          default: null
+    postPayoutsMethod_request:
+      properties:
+        accountHolder:
+          description: Name of the account holder
+          maxLength: 200
+          minLength: 1
+          type: string
+        bankAddress:
+          description: Address of the bank
+          maxLength: 500
+          type: string
+        bic:
+          description: BIC of the bank
+          minLength: 1
+          pattern: "^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$"
+          type: string
+        city:
+          description: City
+          maxLength: 100
+          minLength: 1
+          type: string
+        companyName:
+          description: Company name; required with the company address
+          maxLength: 200
+          type: string
+        companyVatOrId:
+          description: VAT or company id; required with the company address
+          maxLength: 100
+          type: string
+        country:
+          description: Country
+          maxLength: 100
+          minLength: 1
+          type: string
+        currency:
+          description: Currency the account receives
+          enum:
+          - CHF
+          - EUR
+          - USD
+          minLength: 1
+          type: string
+        iban:
+          description: IBAN; empty keeps the stored one
+          pattern: "^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$"
+          type: string
+        postalCode:
+          description: Postal code
+          maxLength: 20
+          minLength: 1
+          type: string
+        street:
+          description: Street and number
+          maxLength: 200
+          minLength: 1
+          type: string
+        useCompanyAddress:
+          description: "Use the address as a company address, checkbox value 'on'"
+          type: string
+      required:
+      - accountHolder
+      - bic
+      - city
+      - country
+      - currency
+      - postalCode
+      - street
+    postPayoutsPreferences_request:
+      properties:
+        hold:
+          description: "Hold payouts, checkbox value 'on'"
+          type: string
+        minAmount:
+          description: Minimum payout amount in whole CHF
+          type: string
+    postProfileCertifications_request:
+      properties:
+        credential_id:
+          description: Issuer-side credential ID (at least 6 characters)
+          maxLength: 120
+          minLength: 6
+          type: string
+        expires_on:
+          description: Expiry date (YYYY-MM-DD); an expired certification loses its
+            verified mark
+          format: date
+          maxLength: 10
+          type: string
+        issued_on:
+          description: Issue date (YYYY-MM-DD)
+          format: date
+          maxLength: 10
+          type: string
+        issuer:
+          description: Certification issuer
+          enum:
+          - offsec
+          - hackthebox
+          - giac
+          - ine
+          - pwnedlabs
+          minLength: 1
+          type: string
+        name:
+          description: Certification name
+          maxLength: 120
+          minLength: 1
+          type: string
+        url:
+          description: Issuer verification URL on the issuer's domain; required for
+            issuers with automatic checks
+          format: uri
+          maxLength: 300
+          type: string
+      required:
+      - credential_id
+      - issuer
+      - name
+    postProfileExternal_request:
+      properties:
+        handle:
+          description: Handle or profile URL on the provider; normalized server-side
+          maxLength: 200
+          minLength: 1
+          type: string
+        provider:
+          enum:
+          - github
+          - x
+          - linkedin
+          - discord
+          - offsec
+          - hackthebox
+          maxLength: 40
+          minLength: 1
+          pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          type: string
+      required:
+      - handle
+      - provider
+    postReportsCollaboratorsRespond_request:
+      properties:
+        action:
+          description: accept or decline the invitation
+          enum:
+          - accept
+          - decline
+          minLength: 1
+          type: string
+      required:
+      - action
+    postReportsComments_request:
+      properties:
+        audience:
+          description: Message audience; the server enforces the role's allowlist
+          enum:
+          - researcher
+          - researcher_internal
+          - organization
+          - organization_internal
+          - direct
+          type: string
+        body:
+          description: The message text
+          maxLength: 10000
+          minLength: 1
+          type: string
+      required:
+      - body
+    postReportsContent_request:
+      properties:
+        content:
+          description: "The report body as one Markdown document. Sections: Description,\
+            \ Steps to reproduce, Impact, Proof of concept"
+          maxLength: 40000
+          minLength: 1
+          type: string
+        reason:
+          description: "Why this revision exists, recorded on the revision"
+          maxLength: 500
+          type: string
+      required:
+      - content
+    postReportsEvidence_request:
+      properties:
+        evidence:
+          format: binary
+          type: string
+      required:
+      - evidence
+    postRetestsVerdict_request:
+      properties:
+        notes:
+          description: How the verifier tested the fix; recorded immutably with the
+            verdict
+          maxLength: 10000
+          minLength: 1
+          type: string
+        outcome:
+          description: "Whether the fix held: passed closes the report, failed reopens\
+            \ it"
+          enum:
+          - passed
+          - failed
+          minLength: 1
+          type: string
+      required:
+      - notes
+      - outcome
+    postSettingsLanguage_request:
+      properties:
+        locale:
+          minLength: 1
+          type: string
+        redirect:
+          type: string
+      required:
+      - locale
+    postSettingsLook_request:
+      properties:
+        legacy_look:
+          description: "Send \"on\" for the classic look, omit for the new look"
+          enum:
+          - "on"
+          type: string
+        redirect:
+          type: string
+    postSettingsPrivacy_request:
+      properties:
+        is_public:
+          description: "Send \"on\" to show the public profile, omit to hide it"
+          enum:
+          - "on"
+          type: string
+        show_earnings:
+          description: "Send \"on\" to enable, omit to disable"
+          enum:
+          - "on"
+          type: string
+        show_on_leaderboard:
+          description: "Send \"on\" to enable, omit to disable"
+          enum:
+          - "on"
+          type: string
+        show_vuln_types:
+          description: "Send \"on\" to enable, omit to disable"
+          enum:
+          - "on"
+          type: string
+    postSettingsProfile_request:
+      properties:
+        bio:
+          description: Profile bio
+          maxLength: 1000
+          type: string
+        bounty_experience:
+          description: Empty means not specified
+          enum:
+          - none
+          - hobby
+          - active
+          - pro
+          - fulltime
+          type: string
+        country:
+          description: Country
+          maxLength: 56
+          type: string
+        display_name:
+          description: Public display name
+          maxLength: 80
+          minLength: 1
+          type: string
+        experience_level:
+          description: Empty means not specified
+          enum:
+          - beginner
+          - intermediate
+          - expert
+          type: string
+        handle:
+          description: "Public researcher handle: lowercase letters, numbers, and\
+            \ dashes"
+          maxLength: 39
+          minLength: 3
+          pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          type: string
+        website:
+          description: Website URL (http or https)
+          format: uri
+          maxLength: 200
+          type: string
+      required:
+      - display_name
+      - handle
+    postSettingsSecurityActions_request:
+      properties:
+        action:
+          description: The sign-in method action to start in Keycloak
+          enum:
+          - add-passkey
+          - set-up-authenticator
+          - set-up-recovery-codes
+          - change-password
+          - link-microsoft
+          - remove-credential
+          minLength: 1
+          type: string
+        credential_id:
+          description: "The sign-in method to remove, required for remove-credential"
+          format: uuid
+          type: string
+      required:
+      - action
+    postSettingsSkills_request:
+      properties:
+        level:
+          enum:
+          - basic
+          - intermediate
+          - expert
+          minLength: 1
+          type: string
+        name:
+          enum:
+          - Web Apps
+          - APIs / REST
+          - Mobile Apps
+          - Cloud / Infra
+          - Network
+          - IoT
+          - Blockchain
+          - AI / LLM
+          - Hardware
+          - Social Engineering
+          maxLength: 50
+          minLength: 1
+          type: string
+      required:
+      - level
+      - name
+  securitySchemes:
+    bearer:
+      bearerFormat: JWT
+      description: Access token issued to the user by the OAuth 2.0 device authorization
+        grant (RFC 8628); x-device-flow lists the endpoints.
+      scheme: bearer
+      type: http
+      x-device-flow:
+        clientId: agent
+        deviceAuthorizationUrl: https://id.gobugfree.com/realms/gobugfree/protocol/openid-connect/auth/device
+        issuer: https://id.gobugfree.com/realms/gobugfree
+        scopes:
+        - openid
+        - profile
+        tokenUrl: https://id.gobugfree.com/realms/gobugfree/protocol/openid-connect/token

@@ -1,0 +1,87 @@
+name: Release
+
+# Publishes gbf for a version tag: the gbf_cli_<os>_<arch> binaries and
+# their checksums on a GitHub release. Tags are pushed by the platform's
+# "OpenAPI delivery" workflow with the platform version; a rerun on an
+# existing release does nothing.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Check the release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          case "$GITHUB_REF_NAME" in v*) ;; *) echo "not a version tag: $GITHUB_REF_NAME"; echo "exists=true" >> "$GITHUB_OUTPUT"; exit 0;; esac
+          if gh release view "$GITHUB_REF_NAME" --json tagName >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME exists, nothing to do"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Go
+        if: steps.release.outputs.exists == 'false'
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Vet and test
+        if: steps.release.outputs.exists == 'false'
+        run: make check
+
+      - name: Build the binaries
+        if: steps.release.outputs.exists == 'false'
+        run: make build-all VERSION="$GITHUB_REF_NAME"
+
+      - name: Create the release
+        if: steps.release.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" \
+            --notes "gbf command-line client $GITHUB_REF_NAME. Download gbf_cli_<os>_<arch> for your platform and verify it against checksums.txt, or run: GOPRIVATE=github.com/gobugfree go install github.com/gobugfree/cli/v3/cmd/gbf@$GITHUB_REF_NAME"
+
+      # The upload API returns a 500 now and then. Retry, and drop the release
+      # again when it stays broken, so the next run starts from a clean state.
+      - name: Upload the binaries
+        if: steps.release.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          uploaded=false
+          for attempt in 1 2 3 4 5; do
+            if gh release upload "$GITHUB_REF_NAME" dist/* --clobber; then
+              uploaded=true
+              break
+            fi
+            echo "Upload attempt $attempt failed, retrying"
+            sleep $((attempt * 10))
+          done
+          if [ "$uploaded" = true ]; then
+            gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets[].name' | sort > /tmp/assets.txt
+            (cd dist && ls) | sort > /tmp/expected.txt
+            diff /tmp/expected.txt /tmp/assets.txt && exit 0
+            echo "Release $GITHUB_REF_NAME is missing assets"
+          fi
+          gh release delete "$GITHUB_REF_NAME" --yes
+          exit 1
