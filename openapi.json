@@ -1543,9 +1543,6 @@
             },
             "type": "array"
           },
-          "feedback": {
-            "type": "string"
-          },
           "firstRespondedAt": {
             "format": "date-time",
             "type": "string"

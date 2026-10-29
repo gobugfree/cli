@@ -14,7 +14,6 @@ Name | Type | Description | Notes
 **CvssVector** | Pointer to **string** |  | [optional] 
 **Cwe** | Pointer to **string** |  | [optional] 
 **Evidence** | Pointer to [**[]ReportEvidence**](ReportEvidence.md) |  | [optional] 
-**Feedback** | Pointer to **string** |  | [optional] 
 **FirstRespondedAt** | Pointer to **time.Time** |  | [optional] 
 **FirstResponseDueAt** | Pointer to **time.Time** |  | [optional] 
 **InfoRequestedAt** | Pointer to **time.Time** |  | [optional] 
@@ -280,31 +279,6 @@ SetEvidence sets Evidence field to given value.
 `func (o *ReportMyReportDetail) HasEvidence() bool`
 
 HasEvidence returns a boolean if a field has been set.
-
-### GetFeedback
-
-`func (o *ReportMyReportDetail) GetFeedback() string`
-
-GetFeedback returns the Feedback field if non-nil, zero value otherwise.
-
-### GetFeedbackOk
-
-`func (o *ReportMyReportDetail) GetFeedbackOk() (*string, bool)`
-
-GetFeedbackOk returns a tuple with the Feedback field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetFeedback
-
-`func (o *ReportMyReportDetail) SetFeedback(v string)`
-
-SetFeedback sets Feedback field to given value.
-
-### HasFeedback
-
-`func (o *ReportMyReportDetail) HasFeedback() bool`
-
-HasFeedback returns a boolean if a field has been set.
 
 ### GetFirstRespondedAt
 

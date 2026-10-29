@@ -5564,7 +5564,6 @@ components:
         - caption: caption
           id: 5
           scanStatus: scanStatus
-        feedback: feedback
         firstRespondedAt: 2000-01-23T04:56:07.000+00:00
         firstResponseDueAt: 2000-01-23T04:56:07.000+00:00
         infoRequestedAt: 2000-01-23T04:56:07.000+00:00
@@ -5655,8 +5654,6 @@ components:
             $ref: "#/components/schemas/ReportEvidence"
           type: array
           default: null
-        feedback:
-          type: string
         firstRespondedAt:
           format: date-time
           type: string

@@ -31,7 +31,6 @@ type ReportMyReportDetail struct {
 	CvssVector *string `json:"cvssVector,omitempty"`
 	Cwe *string `json:"cwe,omitempty"`
 	Evidence []ReportEvidence `json:"evidence,omitempty"`
-	Feedback *string `json:"feedback,omitempty"`
 	FirstRespondedAt *time.Time `json:"firstRespondedAt,omitempty"`
 	FirstResponseDueAt *time.Time `json:"firstResponseDueAt,omitempty"`
 	InfoRequestedAt *time.Time `json:"infoRequestedAt,omitempty"`
@@ -362,38 +361,6 @@ func (o *ReportMyReportDetail) HasEvidence() bool {
 // SetEvidence gets a reference to the given []ReportEvidence and assigns it to the Evidence field.
 func (o *ReportMyReportDetail) SetEvidence(v []ReportEvidence) {
 	o.Evidence = v
-}
-
-// GetFeedback returns the Feedback field value if set, zero value otherwise.
-func (o *ReportMyReportDetail) GetFeedback() string {
-	if o == nil || IsNil(o.Feedback) {
-		var ret string
-		return ret
-	}
-	return *o.Feedback
-}
-
-// GetFeedbackOk returns a tuple with the Feedback field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ReportMyReportDetail) GetFeedbackOk() (*string, bool) {
-	if o == nil || IsNil(o.Feedback) {
-		return nil, false
-	}
-	return o.Feedback, true
-}
-
-// HasFeedback returns a boolean if a field has been set.
-func (o *ReportMyReportDetail) HasFeedback() bool {
-	if o != nil && !IsNil(o.Feedback) {
-		return true
-	}
-
-	return false
-}
-
-// SetFeedback gets a reference to the given string and assigns it to the Feedback field.
-func (o *ReportMyReportDetail) SetFeedback(v string) {
-	o.Feedback = &v
 }
 
 // GetFirstRespondedAt returns the FirstRespondedAt field value if set, zero value otherwise.
@@ -924,9 +891,6 @@ func (o ReportMyReportDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Evidence) {
 		toSerialize["evidence"] = o.Evidence
 	}
-	if !IsNil(o.Feedback) {
-		toSerialize["feedback"] = o.Feedback
-	}
 	if !IsNil(o.FirstRespondedAt) {
 		toSerialize["firstRespondedAt"] = o.FirstRespondedAt
 	}
@@ -1029,7 +993,6 @@ func (o *ReportMyReportDetail) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "cvssVector")
 		delete(additionalProperties, "cwe")
 		delete(additionalProperties, "evidence")
-		delete(additionalProperties, "feedback")
 		delete(additionalProperties, "firstRespondedAt")
 		delete(additionalProperties, "firstResponseDueAt")
 		delete(additionalProperties, "infoRequestedAt")
