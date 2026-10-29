@@ -4,7 +4,7 @@ All URIs are relative to *https://app.gobugfree.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetSearch**](SearchAPI.md#GetSearch) | **Get** /search | Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher, org:{org_slug}, or backoffice)
+[**GetSearch**](SearchAPI.md#GetSearch) | **Get** /search | Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher or org:{org_slug})
 
 
 
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 > SearchResultList GetSearch(ctx).Execute()
 
-Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher, org:{org_slug}, or backoffice)
+Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher or org:{org_slug})
 
 ### Example
 

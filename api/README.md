@@ -195,7 +195,7 @@ Class | Method | HTTP request | Description
 *RetestsAPI* | [**GetRetests**](docs/RetestsAPI.md#getretests) | **Get** /retests | The researcher&#39;s retest queue: open assignments with due dates, and the decided history
 *RetestsAPI* | [**PostRetestsStart**](docs/RetestsAPI.md#postretestsstart) | **Post** /retests/{retest_id}/start | Start an assigned retest; only the assignee, 409 unless the retest is assigned
 *RetestsAPI* | [**PostRetestsVerdict**](docs/RetestsAPI.md#postretestsverdict) | **Post** /retests/{retest_id}/verdict | Submit the retest verdict with mandatory reasoning: passed closes the report, failed reopens it; only the assignee, immutable once decided
-*SearchAPI* | [**GetSearch**](docs/SearchAPI.md#getsearch) | **Get** /search | Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher, org:{org_slug}, or backoffice)
+*SearchAPI* | [**GetSearch**](docs/SearchAPI.md#getsearch) | **Get** /search | Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher or org:{org_slug})
 *SettingsAPI* | [**GetSettings**](docs/SettingsAPI.md#getsettings) | **Get** /settings | Own researcher profile and visibility settings, with the caller&#39;s numeric userId
 *SettingsAPI* | [**GetSettingsSecurity**](docs/SettingsAPI.md#getsettingssecurity) | **Get** /settings/security | Own sign-in methods as Keycloak holds them (password, passkeys, security keys, authenticator app, recovery codes) and the linked external accounts; never a secret
 *SettingsAPI* | [**GetSettingsSkills**](docs/SettingsAPI.md#getsettingsskills) | **Get** /settings/skills | Own skills with their levels
