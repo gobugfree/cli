@@ -1004,8 +1004,9 @@ paths:
                 $ref: "#/components/schemas/Error"
           description: Error
       summary: "Engagement directory: active and paused engagements visible to the\
-        \ authenticated user, filterable by kind, industry, scope type (scope), and\
-        \ minimum bounty (bounty), paginated with page"
+        \ authenticated user, the ones a running event bundles first, filterable by\
+        \ kind, running event (event=live), industry, scope type (scope), and minimum\
+        \ bounty (bounty), paginated with page"
       tags:
       - engagements
   /engagements/{org_slug}/{engagement_slug}:

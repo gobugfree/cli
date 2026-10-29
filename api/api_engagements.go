@@ -33,7 +33,7 @@ func (r EngagementsAPIGetEngagementsRequest) Execute() (*EngagementListItemList,
 }
 
 /*
-GetEngagements Engagement directory: active and paused engagements visible to the authenticated user, filterable by kind, industry, scope type (scope), and minimum bounty (bounty), paginated with page
+GetEngagements Engagement directory: active and paused engagements visible to the authenticated user, the ones a running event bundles first, filterable by kind, running event (event=live), industry, scope type (scope), and minimum bounty (bounty), paginated with page
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return EngagementsAPIGetEngagementsRequest

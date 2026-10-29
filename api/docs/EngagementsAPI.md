@@ -4,7 +4,7 @@ All URIs are relative to *https://app.gobugfree.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetEngagements**](EngagementsAPI.md#GetEngagements) | **Get** /engagements | Engagement directory: active and paused engagements visible to the authenticated user, filterable by kind, industry, scope type (scope), and minimum bounty (bounty), paginated with page
+[**GetEngagements**](EngagementsAPI.md#GetEngagements) | **Get** /engagements | Engagement directory: active and paused engagements visible to the authenticated user, the ones a running event bundles first, filterable by kind, running event (event&#x3D;live), industry, scope type (scope), and minimum bounty (bounty), paginated with page
 [**GetEngagementsByOrgSlugAndEngagementSlug**](EngagementsAPI.md#GetEngagementsByOrgSlugAndEngagementSlug) | **Get** /engagements/{org_slug}/{engagement_slug} | Engagement detail; public engagements for any user, full details of other engagements for members only (ADR-0009); non-members of a private or invite_only engagement, and pending invitees, get the locked teaser with locked true and access, everyone else 404
 [**GetEngagementsFilesByName**](EngagementsAPI.md#GetEngagementsFilesByName) | **Get** /engagements/{org_slug}/{engagement_slug}/files/{name} | Download a program file of the published version: the NDA once the verification gate is passed, an attachment once cleared to test (verification, NDA, and rules accepted); 404 otherwise
 [**GetEngagementsMessageProxy**](EngagementsAPI.md#GetEngagementsMessageProxy) | **Get** /engagements/{org_slug}/{engagement_slug}/message-proxy | Authentication codes forwarded from the engagement&#39;s 2FA-protected test accounts within the last 15 minutes; requires testing access and accepted rules
@@ -23,7 +23,7 @@ Method | HTTP request | Description
 
 > EngagementListItemList GetEngagements(ctx).Execute()
 
-Engagement directory: active and paused engagements visible to the authenticated user, filterable by kind, industry, scope type (scope), and minimum bounty (bounty), paginated with page
+Engagement directory: active and paused engagements visible to the authenticated user, the ones a running event bundles first, filterable by kind, running event (event=live), industry, scope type (scope), and minimum bounty (bounty), paginated with page
 
 ### Example
 
