@@ -49,6 +49,10 @@ docs/EngagementPublicItem.md
 docs/EngagementPublicItemList.md
 docs/EngagementsAPI.md
 docs/Error.md
+docs/EventPublicEntry.md
+docs/EventPublicLeaderboard.md
+docs/EventPublicPartner.md
+docs/EventPublicStats.md
 docs/Feedback.md
 docs/FeedbackAPI.md
 docs/FeedbackList.md
@@ -138,6 +142,10 @@ model_engagement_proxy_message_list.go
 model_engagement_public_item.go
 model_engagement_public_item_list.go
 model_error.go
+model_event_public_entry.go
+model_event_public_leaderboard.go
+model_event_public_partner.go
+model_event_public_stats.go
 model_feedback.go
 model_feedback_list.go
 model_help_operation.go

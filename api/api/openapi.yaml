@@ -2255,6 +2255,36 @@ paths:
         404 otherwise
       tags:
       - public
+  /public/events/{event_slug}/leaderboard:
+    get:
+      operationId: getPublicEventsLeaderboard
+      parameters:
+      - explode: false
+        in: path
+        name: event_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventPublicLeaderboard"
+          description: The board
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The public leaderboard of a live hacking event: the event's numbers,\
+        \ the ranked participants (handles only where the researcher chose to be on\
+        \ leaderboards), and one card per partner program; 404 while the event keeps\
+        \ it to staff"
+      tags:
+      - public
   /report-claim/{token}:
     get:
       operationId: getReportClaimByToken
@@ -4278,6 +4308,197 @@ components:
       - requestId
       - status
       - title
+    EventPublicEntry:
+      example:
+        criticalHigh: 0
+        name: name
+        points: 6
+        rank: 1
+        reports: 5
+      properties:
+        criticalHigh:
+          type: integer
+        name:
+          type: string
+        points:
+          type: integer
+        rank:
+          type: integer
+        reports:
+          type: integer
+      required:
+      - criticalHigh
+      - name
+      - points
+      - rank
+      - reports
+    EventPublicLeaderboard:
+      example:
+        endsAt: 2000-01-23T04:56:07.000+00:00
+        items:
+        - criticalHigh: 0
+          name: name
+          points: 6
+          rank: 1
+          reports: 5
+        - criticalHigh: 0
+          name: name
+          points: 6
+          rank: 1
+          reports: 5
+        partners:
+        - accepted: 5
+          budgetCents: 2
+          budgetCurrency: budgetCurrency
+          committedCents: 7
+          criticalHigh: 9
+          new: 3
+          organizationName: organizationName
+          pendingAcceptance: 2
+          rejected: 4
+          status: status
+          title: title
+        - accepted: 5
+          budgetCents: 2
+          budgetCurrency: budgetCurrency
+          committedCents: 7
+          criticalHigh: 9
+          new: 3
+          organizationName: organizationName
+          pendingAcceptance: 2
+          rejected: 4
+          status: status
+          title: title
+        refreshedAt: 2000-01-23T04:56:07.000+00:00
+        slug: slug
+        startsAt: 2000-01-23T04:56:07.000+00:00
+        stats:
+          bountyCents: 7
+          criticalHigh: 1
+          currency: currency
+          handled: 1
+          new: 1
+          reports: 6
+          researchers: 7
+        status: status
+        title: title
+      properties:
+        endsAt:
+          format: date-time
+          type: string
+        items:
+          items:
+            $ref: "#/components/schemas/EventPublicEntry"
+          type: array
+          default: null
+        partners:
+          items:
+            $ref: "#/components/schemas/EventPublicPartner"
+          type: array
+          default: null
+        refreshedAt:
+          format: date-time
+          type: string
+        slug:
+          type: string
+        startsAt:
+          format: date-time
+          type: string
+        stats:
+          $ref: "#/components/schemas/EventPublicStats"
+        status:
+          type: string
+        title:
+          type: string
+      required:
+      - endsAt
+      - items
+      - partners
+      - refreshedAt
+      - slug
+      - startsAt
+      - stats
+      - status
+      - title
+    EventPublicPartner:
+      example:
+        accepted: 5
+        budgetCents: 2
+        budgetCurrency: budgetCurrency
+        committedCents: 7
+        criticalHigh: 9
+        new: 3
+        organizationName: organizationName
+        pendingAcceptance: 2
+        rejected: 4
+        status: status
+        title: title
+      properties:
+        accepted:
+          type: integer
+        budgetCents:
+          type: integer
+        budgetCurrency:
+          type: string
+        committedCents:
+          type: integer
+        criticalHigh:
+          type: integer
+        new:
+          type: integer
+        organizationName:
+          type: string
+        pendingAcceptance:
+          type: integer
+        rejected:
+          type: integer
+        status:
+          type: string
+        title:
+          type: string
+      required:
+      - accepted
+      - budgetCurrency
+      - committedCents
+      - criticalHigh
+      - new
+      - organizationName
+      - pendingAcceptance
+      - rejected
+      - status
+      - title
+    EventPublicStats:
+      example:
+        bountyCents: 7
+        criticalHigh: 1
+        currency: currency
+        handled: 1
+        new: 1
+        reports: 6
+        researchers: 7
+      properties:
+        bountyCents:
+          type: integer
+        criticalHigh:
+          type: integer
+        currency:
+          type: string
+        handled:
+          type: integer
+        new:
+          type: integer
+        reports:
+          type: integer
+        researchers:
+          type: integer
+      required:
+      - bountyCents
+      - criticalHigh
+      - currency
+      - handled
+      - new
+      - reports
+      - researchers
     Feedback:
       example:
         createdAt: createdAt

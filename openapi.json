@@ -469,6 +469,170 @@
         ],
         "type": "object"
       },
+      "EventPublicEntry": {
+        "properties": {
+          "criticalHigh": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "points": {
+            "type": "integer"
+          },
+          "rank": {
+            "type": "integer"
+          },
+          "reports": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rank",
+          "name",
+          "points",
+          "reports",
+          "criticalHigh"
+        ],
+        "type": "object"
+      },
+      "EventPublicLeaderboard": {
+        "properties": {
+          "endsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EventPublicEntry"
+            },
+            "type": "array"
+          },
+          "partners": {
+            "items": {
+              "$ref": "#/components/schemas/EventPublicPartner"
+            },
+            "type": "array"
+          },
+          "refreshedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "stats": {
+            "$ref": "#/components/schemas/EventPublicStats"
+          },
+          "status": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "startsAt",
+          "endsAt",
+          "status",
+          "stats",
+          "items",
+          "partners",
+          "refreshedAt"
+        ],
+        "type": "object"
+      },
+      "EventPublicPartner": {
+        "properties": {
+          "accepted": {
+            "type": "integer"
+          },
+          "budgetCents": {
+            "type": "integer"
+          },
+          "budgetCurrency": {
+            "type": "string"
+          },
+          "committedCents": {
+            "type": "integer"
+          },
+          "criticalHigh": {
+            "type": "integer"
+          },
+          "new": {
+            "type": "integer"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "pendingAcceptance": {
+            "type": "integer"
+          },
+          "rejected": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "organizationName",
+          "status",
+          "budgetCurrency",
+          "committedCents",
+          "new",
+          "pendingAcceptance",
+          "accepted",
+          "rejected",
+          "criticalHigh"
+        ],
+        "type": "object"
+      },
+      "EventPublicStats": {
+        "properties": {
+          "bountyCents": {
+            "type": "integer"
+          },
+          "criticalHigh": {
+            "type": "integer"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "handled": {
+            "type": "integer"
+          },
+          "new": {
+            "type": "integer"
+          },
+          "reports": {
+            "type": "integer"
+          },
+          "researchers": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "reports",
+          "new",
+          "handled",
+          "criticalHigh",
+          "researchers",
+          "currency",
+          "bountyCents"
+        ],
+        "type": "object"
+      },
       "Feedback": {
         "properties": {
           "createdAt": {
@@ -6138,6 +6302,47 @@
           }
         },
         "summary": "The organization logo of an engagement the public directory lists; 404 otherwise",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/public/events/{event_slug}/leaderboard": {
+      "get": {
+        "operationId": "getPublicEventsLeaderboard",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "event_slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPublicLeaderboard"
+                }
+              }
+            },
+            "description": "The board"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "The public leaderboard of a live hacking event: the event's numbers, the ranked participants (handles only where the researcher chose to be on leaderboards), and one card per partner program; 404 while the event keeps it to staff",
         "tags": [
           "public"
         ]

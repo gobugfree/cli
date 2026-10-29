@@ -164,6 +164,7 @@ Class | Method | HTTP request | Description
 *ProfileAPI* | [**PostProfileExternalRevoke**](docs/ProfileAPI.md#postprofileexternalrevoke) | **Post** /profile/external/{id}/revoke | Revoke an own verified external profile
 *PublicAPI* | [**GetPublicEngagements**](docs/PublicAPI.md#getpublicengagements) | **Get** /public/engagements | Public engagement directory: every active or paused engagement as an anonymous viewer sees it; locked rows carry no scope and no rewards
 *PublicAPI* | [**GetPublicEngagementsLogo**](docs/PublicAPI.md#getpublicengagementslogo) | **Get** /public/engagements/{org_slug}/{engagement_slug}/logo | The organization logo of an engagement the public directory lists; 404 otherwise
+*PublicAPI* | [**GetPublicEventsLeaderboard**](docs/PublicAPI.md#getpubliceventsleaderboard) | **Get** /public/events/{event_slug}/leaderboard | The public leaderboard of a live hacking event: the event&#39;s numbers, the ranked participants (handles only where the researcher chose to be on leaderboards), and one card per partner program; 404 while the event keeps it to staff
 *ReportClaimAPI* | [**GetReportClaimByToken**](docs/ReportClaimAPI.md#getreportclaimbytoken) | **Get** /report-claim/{token} | The anonymous report a claim link names, for a researcher whose account email matches; 404 for an invalid, used, or expired link, 403 with fields.reason when a program gate or the email refuses
 *ReportClaimAPI* | [**PostReportClaimByToken**](docs/ReportClaimAPI.md#postreportclaimbytoken) | **Post** /report-claim/{token} | Claim the anonymous report: the researcher becomes its owner when the email, the program gates, and the pending-report budget allow; 403 with fields.reason otherwise
 *ReportsAPI* | [**GetReports**](docs/ReportsAPI.md#getreports) | **Get** /reports | The researcher&#39;s own reports: filterable by status, engagement, severity, and search, sortable, paginated
@@ -228,6 +229,10 @@ Class | Method | HTTP request | Description
  - [EngagementPublicItem](docs/EngagementPublicItem.md)
  - [EngagementPublicItemList](docs/EngagementPublicItemList.md)
  - [Error](docs/Error.md)
+ - [EventPublicEntry](docs/EventPublicEntry.md)
+ - [EventPublicLeaderboard](docs/EventPublicLeaderboard.md)
+ - [EventPublicPartner](docs/EventPublicPartner.md)
+ - [EventPublicStats](docs/EventPublicStats.md)
  - [Feedback](docs/Feedback.md)
  - [FeedbackList](docs/FeedbackList.md)
  - [HelpOperation](docs/HelpOperation.md)
