@@ -32,7 +32,7 @@ func (r SearchAPIGetSearchRequest) Execute() (*SearchResultList, *http.Response,
 }
 
 /*
-GetSearch Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher or org:{org_slug})
+GetSearch Search engagements, reports, documents, members, and organizations the user may open; q is the term, area selects the workspace (researcher, org:{org_slug}, or backoffice)
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return SearchAPIGetSearchRequest

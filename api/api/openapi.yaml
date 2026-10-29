@@ -3465,8 +3465,8 @@ paths:
                 $ref: "#/components/schemas/Error"
           description: Error
       summary: "Search engagements, reports, documents, members, and organizations\
-        \ the user may open; q is the term, area selects the workspace (researcher\
-        \ or org:{org_slug})"
+        \ the user may open; q is the term, area selects the workspace (researcher,\
+        \ org:{org_slug}, or backoffice)"
       tags:
       - search
   /settings:
