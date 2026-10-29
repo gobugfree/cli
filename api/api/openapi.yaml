@@ -3540,6 +3540,28 @@ paths:
       summary: Switch the interface language
       tags:
       - settings
+  /settings/leaderboard:
+    post:
+      operationId: postSettingsLeaderboard
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postSettingsLeaderboard_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Show or hide the public profile and the leaderboard entry together:\
+        \ the classic look's one leaderboard switch"
+      tags:
+      - settings
   /settings/look:
     post:
       operationId: postSettingsLook
@@ -6065,7 +6087,6 @@ components:
           type: string
       required:
       - code
-      - earnedAt
       - hidden
       - name
     UserProfileWebsite:
@@ -6239,7 +6260,6 @@ components:
       - displayName
       - externalProfiles
       - handle
-      - joinedAt
       - reputation
       - skills
       - tier
@@ -6311,7 +6331,7 @@ components:
         handle: handle
         isPublic: true
         legacyLook: true
-        showEarnings: true
+        showDates: true
         showOnLeaderboard: true
         showVulnTypes: true
         userId: 0
@@ -6333,7 +6353,7 @@ components:
           type: boolean
         legacyLook:
           type: boolean
-        showEarnings:
+        showDates:
           type: boolean
         showOnLeaderboard:
           type: boolean
@@ -6352,7 +6372,7 @@ components:
       - handle
       - isPublic
       - legacyLook
-      - showEarnings
+      - showDates
       - showOnLeaderboard
       - showVulnTypes
       - userId
@@ -7071,6 +7091,14 @@ components:
           type: string
       required:
       - locale
+    postSettingsLeaderboard_request:
+      properties:
+        show_on_leaderboard:
+          description: "Send \"on\" to show the public profile and the leaderboard\
+            \ entry, omit to hide both"
+          enum:
+          - "on"
+          type: string
     postSettingsLook_request:
       properties:
         legacy_look:
@@ -7087,8 +7115,9 @@ components:
           enum:
           - "on"
           type: string
-        show_earnings:
-          description: "Send \"on\" to enable, omit to disable"
+        show_dates:
+          description: "Send \"on\" to show dates on the public profile, omit to hide\
+            \ them"
           enum:
           - "on"
           type: string

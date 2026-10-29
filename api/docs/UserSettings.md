@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **Handle** | **string** |  | 
 **IsPublic** | **bool** |  | 
 **LegacyLook** | **bool** |  | 
-**ShowEarnings** | **bool** |  | 
+**ShowDates** | **bool** |  | 
 **ShowOnLeaderboard** | **bool** |  | 
 **ShowVulnTypes** | **bool** |  | 
 **UserId** | **int32** |  | 
@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 
 ### NewUserSettings
 
-`func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showEarnings bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string, ) *UserSettings`
+`func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string, ) *UserSettings`
 
 NewUserSettings instantiates a new UserSettings object
 This constructor will assign default values to properties that have it defined,
@@ -197,24 +197,24 @@ and a boolean to check if the value has been set.
 SetLegacyLook sets LegacyLook field to given value.
 
 
-### GetShowEarnings
+### GetShowDates
 
-`func (o *UserSettings) GetShowEarnings() bool`
+`func (o *UserSettings) GetShowDates() bool`
 
-GetShowEarnings returns the ShowEarnings field if non-nil, zero value otherwise.
+GetShowDates returns the ShowDates field if non-nil, zero value otherwise.
 
-### GetShowEarningsOk
+### GetShowDatesOk
 
-`func (o *UserSettings) GetShowEarningsOk() (*bool, bool)`
+`func (o *UserSettings) GetShowDatesOk() (*bool, bool)`
 
-GetShowEarningsOk returns a tuple with the ShowEarnings field if it's non-nil, zero value otherwise
+GetShowDatesOk returns a tuple with the ShowDates field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetShowEarnings
+### SetShowDates
 
-`func (o *UserSettings) SetShowEarnings(v bool)`
+`func (o *UserSettings) SetShowDates(v bool)`
 
-SetShowEarnings sets ShowEarnings field to given value.
+SetShowDates sets ShowDates field to given value.
 
 
 ### GetShowOnLeaderboard

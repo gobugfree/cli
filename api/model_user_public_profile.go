@@ -28,7 +28,7 @@ type UserPublicProfile struct {
 	DisplayName string `json:"displayName"`
 	ExternalProfiles []UserPublicExternal `json:"externalProfiles"`
 	Handle string `json:"handle"`
-	JoinedAt time.Time `json:"joinedAt"`
+	JoinedAt *time.Time `json:"joinedAt,omitempty"`
 	Reputation int32 `json:"reputation"`
 	ReputationHistory []UserReputationEvent `json:"reputationHistory,omitempty"`
 	Skills []UserPublicSkill `json:"skills"`
@@ -44,7 +44,7 @@ type _UserPublicProfile UserPublicProfile
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserPublicProfile(badges []UserProfileBadge, bio string, certifications []UserPublicCertification, displayName string, externalProfiles []UserPublicExternal, handle string, joinedAt time.Time, reputation int32, skills []UserPublicSkill, tier string, verificationLevel string) *UserPublicProfile {
+func NewUserPublicProfile(badges []UserProfileBadge, bio string, certifications []UserPublicCertification, displayName string, externalProfiles []UserPublicExternal, handle string, reputation int32, skills []UserPublicSkill, tier string, verificationLevel string) *UserPublicProfile {
 	this := UserPublicProfile{}
 	this.Badges = badges
 	this.Bio = bio
@@ -52,7 +52,6 @@ func NewUserPublicProfile(badges []UserProfileBadge, bio string, certifications 
 	this.DisplayName = displayName
 	this.ExternalProfiles = externalProfiles
 	this.Handle = handle
-	this.JoinedAt = joinedAt
 	this.Reputation = reputation
 	this.Skills = skills
 	this.Tier = tier
@@ -244,28 +243,36 @@ func (o *UserPublicProfile) SetHandle(v string) {
 	o.Handle = v
 }
 
-// GetJoinedAt returns the JoinedAt field value
+// GetJoinedAt returns the JoinedAt field value if set, zero value otherwise.
 func (o *UserPublicProfile) GetJoinedAt() time.Time {
-	if o == nil {
+	if o == nil || IsNil(o.JoinedAt) {
 		var ret time.Time
 		return ret
 	}
-
-	return o.JoinedAt
+	return *o.JoinedAt
 }
 
-// GetJoinedAtOk returns a tuple with the JoinedAt field value
+// GetJoinedAtOk returns a tuple with the JoinedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserPublicProfile) GetJoinedAtOk() (*time.Time, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.JoinedAt) {
 		return nil, false
 	}
-	return &o.JoinedAt, true
+	return o.JoinedAt, true
 }
 
-// SetJoinedAt sets field value
+// HasJoinedAt returns a boolean if a field has been set.
+func (o *UserPublicProfile) HasJoinedAt() bool {
+	if o != nil && !IsNil(o.JoinedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetJoinedAt gets a reference to the given time.Time and assigns it to the JoinedAt field.
 func (o *UserPublicProfile) SetJoinedAt(v time.Time) {
-	o.JoinedAt = v
+	o.JoinedAt = &v
 }
 
 // GetReputation returns the Reputation field value
@@ -447,7 +454,9 @@ func (o UserPublicProfile) ToMap() (map[string]interface{}, error) {
 	toSerialize["displayName"] = o.DisplayName
 	toSerialize["externalProfiles"] = o.ExternalProfiles
 	toSerialize["handle"] = o.Handle
-	toSerialize["joinedAt"] = o.JoinedAt
+	if !IsNil(o.JoinedAt) {
+		toSerialize["joinedAt"] = o.JoinedAt
+	}
 	toSerialize["reputation"] = o.Reputation
 	if !IsNil(o.ReputationHistory) {
 		toSerialize["reputationHistory"] = o.ReputationHistory
@@ -477,7 +486,6 @@ func (o *UserPublicProfile) UnmarshalJSON(data []byte) (err error) {
 		"displayName",
 		"externalProfiles",
 		"handle",
-		"joinedAt",
 		"reputation",
 		"skills",
 		"tier",

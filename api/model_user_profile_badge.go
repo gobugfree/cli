@@ -22,7 +22,7 @@ var _ MappedNullable = &UserProfileBadge{}
 // UserProfileBadge struct for UserProfileBadge
 type UserProfileBadge struct {
 	Code string `json:"code"`
-	EarnedAt time.Time `json:"earnedAt"`
+	EarnedAt *time.Time `json:"earnedAt,omitempty"`
 	Hidden bool `json:"hidden"`
 	Name string `json:"name"`
 	AdditionalProperties map[string]interface{}
@@ -34,10 +34,9 @@ type _UserProfileBadge UserProfileBadge
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserProfileBadge(code string, earnedAt time.Time, hidden bool, name string) *UserProfileBadge {
+func NewUserProfileBadge(code string, hidden bool, name string) *UserProfileBadge {
 	this := UserProfileBadge{}
 	this.Code = code
-	this.EarnedAt = earnedAt
 	this.Hidden = hidden
 	this.Name = name
 	return &this
@@ -75,28 +74,36 @@ func (o *UserProfileBadge) SetCode(v string) {
 	o.Code = v
 }
 
-// GetEarnedAt returns the EarnedAt field value
+// GetEarnedAt returns the EarnedAt field value if set, zero value otherwise.
 func (o *UserProfileBadge) GetEarnedAt() time.Time {
-	if o == nil {
+	if o == nil || IsNil(o.EarnedAt) {
 		var ret time.Time
 		return ret
 	}
-
-	return o.EarnedAt
+	return *o.EarnedAt
 }
 
-// GetEarnedAtOk returns a tuple with the EarnedAt field value
+// GetEarnedAtOk returns a tuple with the EarnedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserProfileBadge) GetEarnedAtOk() (*time.Time, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.EarnedAt) {
 		return nil, false
 	}
-	return &o.EarnedAt, true
+	return o.EarnedAt, true
 }
 
-// SetEarnedAt sets field value
+// HasEarnedAt returns a boolean if a field has been set.
+func (o *UserProfileBadge) HasEarnedAt() bool {
+	if o != nil && !IsNil(o.EarnedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetEarnedAt gets a reference to the given time.Time and assigns it to the EarnedAt field.
 func (o *UserProfileBadge) SetEarnedAt(v time.Time) {
-	o.EarnedAt = v
+	o.EarnedAt = &v
 }
 
 // GetHidden returns the Hidden field value
@@ -158,7 +165,9 @@ func (o UserProfileBadge) MarshalJSON() ([]byte, error) {
 func (o UserProfileBadge) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["code"] = o.Code
-	toSerialize["earnedAt"] = o.EarnedAt
+	if !IsNil(o.EarnedAt) {
+		toSerialize["earnedAt"] = o.EarnedAt
+	}
 	toSerialize["hidden"] = o.Hidden
 	toSerialize["name"] = o.Name
 
@@ -175,7 +184,6 @@ func (o *UserProfileBadge) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"code",
-		"earnedAt",
 		"hidden",
 		"name",
 	}

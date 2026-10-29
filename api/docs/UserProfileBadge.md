@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Code** | **string** |  | 
-**EarnedAt** | **time.Time** |  | 
+**EarnedAt** | Pointer to **time.Time** |  | [optional] 
 **Hidden** | **bool** |  | 
 **Name** | **string** |  | 
 
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewUserProfileBadge
 
-`func NewUserProfileBadge(code string, earnedAt time.Time, hidden bool, name string, ) *UserProfileBadge`
+`func NewUserProfileBadge(code string, hidden bool, name string, ) *UserProfileBadge`
 
 NewUserProfileBadge instantiates a new UserProfileBadge object
 This constructor will assign default values to properties that have it defined,
@@ -67,6 +67,11 @@ and a boolean to check if the value has been set.
 
 SetEarnedAt sets EarnedAt field to given value.
 
+### HasEarnedAt
+
+`func (o *UserProfileBadge) HasEarnedAt() bool`
+
+HasEarnedAt returns a boolean if a field has been set.
 
 ### GetHidden
 

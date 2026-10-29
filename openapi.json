@@ -1967,7 +1967,6 @@
         "required": [
           "code",
           "name",
-          "earnedAt",
           "hidden"
         ],
         "type": "object"
@@ -2112,7 +2111,6 @@
           "verificationLevel",
           "tier",
           "reputation",
-          "joinedAt",
           "skills",
           "certifications",
           "externalProfiles",
@@ -2202,7 +2200,7 @@
           "legacyLook": {
             "type": "boolean"
           },
-          "showEarnings": {
+          "showDates": {
             "type": "boolean"
           },
           "showOnLeaderboard": {
@@ -2229,8 +2227,8 @@
           "bountyExperience",
           "isPublic",
           "showOnLeaderboard",
-          "showEarnings",
           "showVulnTypes",
+          "showDates",
           "legacyLook"
         ],
         "type": "object"
@@ -8264,6 +8262,49 @@
         ]
       }
     },
+    "/settings/leaderboard": {
+      "post": {
+        "operationId": "postSettingsLeaderboard",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "show_on_leaderboard": {
+                    "description": "Send \"on\" to show the public profile and the leaderboard entry, omit to hide both",
+                    "enum": [
+                      "on"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Show or hide the public profile and the leaderboard entry together: the classic look's one leaderboard switch",
+        "tags": [
+          "settings"
+        ]
+      }
+    },
     "/settings/look": {
       "post": {
         "operationId": "postSettingsLook",
@@ -8325,8 +8366,8 @@
                     ],
                     "type": "string"
                   },
-                  "show_earnings": {
-                    "description": "Send \"on\" to enable, omit to disable",
+                  "show_dates": {
+                    "description": "Send \"on\" to show dates on the public profile, omit to hide them",
                     "enum": [
                       "on"
                     ],

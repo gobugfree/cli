@@ -28,7 +28,7 @@ type UserSettings struct {
 	Handle string `json:"handle"`
 	IsPublic bool `json:"isPublic"`
 	LegacyLook bool `json:"legacyLook"`
-	ShowEarnings bool `json:"showEarnings"`
+	ShowDates bool `json:"showDates"`
 	ShowOnLeaderboard bool `json:"showOnLeaderboard"`
 	ShowVulnTypes bool `json:"showVulnTypes"`
 	UserId int32 `json:"userId"`
@@ -42,7 +42,7 @@ type _UserSettings UserSettings
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showEarnings bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string) *UserSettings {
+func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string) *UserSettings {
 	this := UserSettings{}
 	this.Bio = bio
 	this.BountyExperience = bountyExperience
@@ -52,7 +52,7 @@ func NewUserSettings(bio string, bountyExperience string, country string, displa
 	this.Handle = handle
 	this.IsPublic = isPublic
 	this.LegacyLook = legacyLook
-	this.ShowEarnings = showEarnings
+	this.ShowDates = showDates
 	this.ShowOnLeaderboard = showOnLeaderboard
 	this.ShowVulnTypes = showVulnTypes
 	this.UserId = userId
@@ -260,28 +260,28 @@ func (o *UserSettings) SetLegacyLook(v bool) {
 	o.LegacyLook = v
 }
 
-// GetShowEarnings returns the ShowEarnings field value
-func (o *UserSettings) GetShowEarnings() bool {
+// GetShowDates returns the ShowDates field value
+func (o *UserSettings) GetShowDates() bool {
 	if o == nil {
 		var ret bool
 		return ret
 	}
 
-	return o.ShowEarnings
+	return o.ShowDates
 }
 
-// GetShowEarningsOk returns a tuple with the ShowEarnings field value
+// GetShowDatesOk returns a tuple with the ShowDates field value
 // and a boolean to check if the value has been set.
-func (o *UserSettings) GetShowEarningsOk() (*bool, bool) {
+func (o *UserSettings) GetShowDatesOk() (*bool, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return &o.ShowEarnings, true
+	return &o.ShowDates, true
 }
 
-// SetShowEarnings sets field value
-func (o *UserSettings) SetShowEarnings(v bool) {
-	o.ShowEarnings = v
+// SetShowDates sets field value
+func (o *UserSettings) SetShowDates(v bool) {
+	o.ShowDates = v
 }
 
 // GetShowOnLeaderboard returns the ShowOnLeaderboard field value
@@ -398,7 +398,7 @@ func (o UserSettings) ToMap() (map[string]interface{}, error) {
 	toSerialize["handle"] = o.Handle
 	toSerialize["isPublic"] = o.IsPublic
 	toSerialize["legacyLook"] = o.LegacyLook
-	toSerialize["showEarnings"] = o.ShowEarnings
+	toSerialize["showDates"] = o.ShowDates
 	toSerialize["showOnLeaderboard"] = o.ShowOnLeaderboard
 	toSerialize["showVulnTypes"] = o.ShowVulnTypes
 	toSerialize["userId"] = o.UserId
@@ -424,7 +424,7 @@ func (o *UserSettings) UnmarshalJSON(data []byte) (err error) {
 		"handle",
 		"isPublic",
 		"legacyLook",
-		"showEarnings",
+		"showDates",
 		"showOnLeaderboard",
 		"showVulnTypes",
 		"userId",
@@ -466,7 +466,7 @@ func (o *UserSettings) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "handle")
 		delete(additionalProperties, "isPublic")
 		delete(additionalProperties, "legacyLook")
-		delete(additionalProperties, "showEarnings")
+		delete(additionalProperties, "showDates")
 		delete(additionalProperties, "showOnLeaderboard")
 		delete(additionalProperties, "showVulnTypes")
 		delete(additionalProperties, "userId")

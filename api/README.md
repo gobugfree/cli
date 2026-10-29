@@ -201,6 +201,7 @@ Class | Method | HTTP request | Description
 *SettingsAPI* | [**GetSettingsSecurity**](docs/SettingsAPI.md#getsettingssecurity) | **Get** /settings/security | Own sign-in methods as Keycloak holds them (password, passkeys, security keys, authenticator app, recovery codes) and the linked external accounts; never a secret
 *SettingsAPI* | [**GetSettingsSkills**](docs/SettingsAPI.md#getsettingsskills) | **Get** /settings/skills | Own skills with their levels
 *SettingsAPI* | [**PostSettingsLanguage**](docs/SettingsAPI.md#postsettingslanguage) | **Post** /settings/language | Switch the interface language
+*SettingsAPI* | [**PostSettingsLeaderboard**](docs/SettingsAPI.md#postsettingsleaderboard) | **Post** /settings/leaderboard | Show or hide the public profile and the leaderboard entry together: the classic look&#39;s one leaderboard switch
 *SettingsAPI* | [**PostSettingsLook**](docs/SettingsAPI.md#postsettingslook) | **Post** /settings/look | Switch between the new look and the classic look of the former portal
 *SettingsAPI* | [**PostSettingsPrivacy**](docs/SettingsAPI.md#postsettingsprivacy) | **Post** /settings/privacy | Update the per-section public visibility
 *SettingsAPI* | [**PostSettingsProfile**](docs/SettingsAPI.md#postsettingsprofile) | **Post** /settings/profile | Update the researcher profile

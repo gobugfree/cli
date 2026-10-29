@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **DisplayName** | **string** |  | 
 **ExternalProfiles** | [**[]UserPublicExternal**](UserPublicExternal.md) |  | 
 **Handle** | **string** |  | 
-**JoinedAt** | **time.Time** |  | 
+**JoinedAt** | Pointer to **time.Time** |  | [optional] 
 **Reputation** | **int32** |  | 
 **ReputationHistory** | Pointer to [**[]UserReputationEvent**](UserReputationEvent.md) |  | [optional] 
 **Skills** | [**[]UserPublicSkill**](UserPublicSkill.md) |  | 
@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 
 ### NewUserPublicProfile
 
-`func NewUserPublicProfile(badges []UserProfileBadge, bio string, certifications []UserPublicCertification, displayName string, externalProfiles []UserPublicExternal, handle string, joinedAt time.Time, reputation int32, skills []UserPublicSkill, tier string, verificationLevel string, ) *UserPublicProfile`
+`func NewUserPublicProfile(badges []UserProfileBadge, bio string, certifications []UserPublicCertification, displayName string, externalProfiles []UserPublicExternal, handle string, reputation int32, skills []UserPublicSkill, tier string, verificationLevel string, ) *UserPublicProfile`
 
 NewUserPublicProfile instantiates a new UserPublicProfile object
 This constructor will assign default values to properties that have it defined,
@@ -202,6 +202,11 @@ and a boolean to check if the value has been set.
 
 SetJoinedAt sets JoinedAt field to given value.
 
+### HasJoinedAt
+
+`func (o *UserPublicProfile) HasJoinedAt() bool`
+
+HasJoinedAt returns a boolean if a field has been set.
 
 ### GetReputation
 

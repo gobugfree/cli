@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**GetSettingsSecurity**](SettingsAPI.md#GetSettingsSecurity) | **Get** /settings/security | Own sign-in methods as Keycloak holds them (password, passkeys, security keys, authenticator app, recovery codes) and the linked external accounts; never a secret
 [**GetSettingsSkills**](SettingsAPI.md#GetSettingsSkills) | **Get** /settings/skills | Own skills with their levels
 [**PostSettingsLanguage**](SettingsAPI.md#PostSettingsLanguage) | **Post** /settings/language | Switch the interface language
+[**PostSettingsLeaderboard**](SettingsAPI.md#PostSettingsLeaderboard) | **Post** /settings/leaderboard | Show or hide the public profile and the leaderboard entry together: the classic look&#39;s one leaderboard switch
 [**PostSettingsLook**](SettingsAPI.md#PostSettingsLook) | **Post** /settings/look | Switch between the new look and the classic look of the former portal
 [**PostSettingsPrivacy**](SettingsAPI.md#PostSettingsPrivacy) | **Post** /settings/privacy | Update the per-section public visibility
 [**PostSettingsProfile**](SettingsAPI.md#PostSettingsProfile) | **Post** /settings/profile | Update the researcher profile
@@ -256,6 +257,68 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## PostSettingsLeaderboard
+
+> PostSettingsLeaderboard(ctx).ShowOnLeaderboard(showOnLeaderboard).Execute()
+
+Show or hide the public profile and the leaderboard entry together: the classic look's one leaderboard switch
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	showOnLeaderboard := "showOnLeaderboard_example" // string | Send \\\"on\\\" to show the public profile and the leaderboard entry, omit to hide both (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.SettingsAPI.PostSettingsLeaderboard(context.Background()).ShowOnLeaderboard(showOnLeaderboard).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `SettingsAPI.PostSettingsLeaderboard``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPostSettingsLeaderboardRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **showOnLeaderboard** | **string** | Send \\\&quot;on\\\&quot; to show the public profile and the leaderboard entry, omit to hide both | 
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## PostSettingsLook
 
 > PostSettingsLook(ctx).LegacyLook(legacyLook).Redirect(redirect).Execute()
@@ -322,7 +385,7 @@ Name | Type | Description  | Notes
 
 ## PostSettingsPrivacy
 
-> PostSettingsPrivacy(ctx).IsPublic(isPublic).ShowEarnings(showEarnings).ShowOnLeaderboard(showOnLeaderboard).ShowVulnTypes(showVulnTypes).Execute()
+> PostSettingsPrivacy(ctx).IsPublic(isPublic).ShowDates(showDates).ShowOnLeaderboard(showOnLeaderboard).ShowVulnTypes(showVulnTypes).Execute()
 
 Update the per-section public visibility
 
@@ -340,13 +403,13 @@ import (
 
 func main() {
 	isPublic := "isPublic_example" // string | Send \\\"on\\\" to show the public profile, omit to hide it (optional)
-	showEarnings := "showEarnings_example" // string | Send \\\"on\\\" to enable, omit to disable (optional)
+	showDates := "showDates_example" // string | Send \\\"on\\\" to show dates on the public profile, omit to hide them (optional)
 	showOnLeaderboard := "showOnLeaderboard_example" // string | Send \\\"on\\\" to enable, omit to disable (optional)
 	showVulnTypes := "showVulnTypes_example" // string | Send \\\"on\\\" to enable, omit to disable (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.SettingsAPI.PostSettingsPrivacy(context.Background()).IsPublic(isPublic).ShowEarnings(showEarnings).ShowOnLeaderboard(showOnLeaderboard).ShowVulnTypes(showVulnTypes).Execute()
+	r, err := apiClient.SettingsAPI.PostSettingsPrivacy(context.Background()).IsPublic(isPublic).ShowDates(showDates).ShowOnLeaderboard(showOnLeaderboard).ShowVulnTypes(showVulnTypes).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `SettingsAPI.PostSettingsPrivacy``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -366,7 +429,7 @@ Other parameters are passed through a pointer to a apiPostSettingsPrivacyRequest
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **isPublic** | **string** | Send \\\&quot;on\\\&quot; to show the public profile, omit to hide it | 
- **showEarnings** | **string** | Send \\\&quot;on\\\&quot; to enable, omit to disable | 
+ **showDates** | **string** | Send \\\&quot;on\\\&quot; to show dates on the public profile, omit to hide them | 
  **showOnLeaderboard** | **string** | Send \\\&quot;on\\\&quot; to enable, omit to disable | 
  **showVulnTypes** | **string** | Send \\\&quot;on\\\&quot; to enable, omit to disable | 
 
