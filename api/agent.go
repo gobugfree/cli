@@ -16,7 +16,7 @@ const DefaultClientID = "agent"
 // Keycloak realm.
 const (
 	DefaultAppURL    = "https://app.gobugfree.com"
-	DefaultIssuerURL = "https://id.gobugfree.com/realms/gbf"
+	DefaultIssuerURL = "https://id.gobugfree.com/realms/gobugfree"
 )
 
 // DefaultScopes are the scopes the platform expects on an agent token. The
@@ -32,7 +32,7 @@ var DefaultScopes = []string{"openid", "profile"}
 type Agent struct {
 	// AppURL is the platform base URL, e.g. https://app.gobugfree.com.
 	AppURL string
-	// IssuerURL is the Keycloak realm, e.g. https://id.gobugfree.com/realms/gbf.
+	// IssuerURL is the Keycloak realm, e.g. https://id.gobugfree.com/realms/gobugfree.
 	IssuerURL string
 	// ClientID defaults to DefaultClientID.
 	ClientID string

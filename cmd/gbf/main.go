@@ -66,7 +66,7 @@ any request. Output is JSON when stdout is not a terminal or with --json as
 the first argument. login starts the device flow: open the printed URL, sign
 in, approve, and gbf continues; the URLs default to GBF_APP_URL and
 GBF_ISSUER_URL, else to https://app.gobugfree.com and
-https://id.gobugfree.com/realms/gbf. skill prints the agent skill that ships with gbf (an
+https://id.gobugfree.com/realms/gobugfree. skill prints the agent skill that ships with gbf (an
 installable SKILL.md); --install writes it to the skills directory of the
 agent named by --agent (claude: ~/.claude/skills, cursor: ~/.cursor/skills,
 codex: ~/.agents/skills, lmstudio: ~/.lmstudio/skills; default claude), or

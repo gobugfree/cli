@@ -90,7 +90,7 @@ func loggedIn(t *testing.T, f *fakePlatform) {
 	t.Setenv("GBF_APP_URL", "")
 	t.Setenv("GBF_ISSUER_URL", "")
 	t.Setenv("GBF_CLIENT_ID", "")
-	s := &session{AppURL: f.server.URL, IssuerURL: "https://iam.example/realms/gbf",
+	s := &session{AppURL: f.server.URL, IssuerURL: "https://iam.example/realms/gobugfree",
 		Token: &oauth2.Token{AccessToken: fakeJWT(t), Expiry: time.Now().Add(time.Hour)}}
 	if err := s.save(); err != nil {
 		t.Fatal(err)
@@ -124,7 +124,7 @@ func TestSessionRoundTrip(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "gbf", "session.json")
 	t.Setenv("GBF_SESSION_FILE", path)
-	s := &session{AppURL: "https://app.example", IssuerURL: "https://iam.example/realms/gbf",
+	s := &session{AppURL: "https://app.example", IssuerURL: "https://iam.example/realms/gobugfree",
 		Token: &oauth2.Token{AccessToken: "a", RefreshToken: "r", Expiry: time.Now().Add(time.Hour)}}
 	if err := s.save(); err != nil {
 		t.Fatal(err)

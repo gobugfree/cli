@@ -16,7 +16,7 @@ func fakeIssuer(t *testing.T) (*httptest.Server, *[]string) {
 	t.Helper()
 	var grants []string
 	mux := http.NewServeMux()
-	mux.HandleFunc("POST /realms/gbf/protocol/openid-connect/auth/device", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("POST /realms/gobugfree/protocol/openid-connect/auth/device", func(w http.ResponseWriter, r *http.Request) {
 		if r.FormValue("client_id") != "agent" {
 			http.Error(w, `{"error":"invalid_client"}`, http.StatusUnauthorized)
 			return
@@ -30,7 +30,7 @@ func fakeIssuer(t *testing.T) (*httptest.Server, *[]string) {
 			"interval":                  1,
 		})
 	})
-	mux.HandleFunc("POST /realms/gbf/protocol/openid-connect/token", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("POST /realms/gobugfree/protocol/openid-connect/token", func(w http.ResponseWriter, r *http.Request) {
 		grant := r.FormValue("grant_type")
 		grants = append(grants, grant)
 		switch grant {
@@ -62,7 +62,7 @@ func writeJSON(w http.ResponseWriter, v any) {
 
 func TestLogin(t *testing.T) {
 	issuer, grants := fakeIssuer(t)
-	agent := Agent{IssuerURL: issuer.URL + "/realms/gbf/"}
+	agent := Agent{IssuerURL: issuer.URL + "/realms/gobugfree/"}
 
 	var shown *oauth2.DeviceAuthResponse
 	token, err := agent.Login(context.Background(), func(r *oauth2.DeviceAuthResponse) { shown = r })
@@ -91,7 +91,7 @@ func TestNewClientSendsBearerAndRefreshes(t *testing.T) {
 	}))
 	t.Cleanup(app.Close)
 
-	agent := Agent{AppURL: app.URL + "/", IssuerURL: issuer.URL + "/realms/gbf"}
+	agent := Agent{AppURL: app.URL + "/", IssuerURL: issuer.URL + "/realms/gobugfree"}
 	expired := &oauth2.Token{AccessToken: "access-1", RefreshToken: "refresh-1", Expiry: time.Now().Add(-time.Minute)}
 	client := agent.NewClient(context.Background(), expired)
 

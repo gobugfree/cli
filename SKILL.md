@@ -67,7 +67,7 @@ gbf whoami
 
 `login` signs in to the production platform, https://app.gobugfree.com. If
 your user names another platform, pass `--app-url https://<platform>` and
-`--issuer-url https://<iam-host>/realms/gbf` (or export `GBF_APP_URL` and
+`--issuer-url https://<iam-host>/realms/gobugfree` (or export `GBF_APP_URL` and
 `GBF_ISSUER_URL`).
 
 If the platform sits behind a proxy that wants a header (Cloudflare Access
