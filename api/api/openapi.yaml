@@ -6732,18 +6732,6 @@ components:
       - content
     postNotificationsPreferences_request:
       properties:
-        engagement_access_requested:
-          description: "Organization members: send \"on\" for email on program access\
-            \ requests, omit to switch it off"
-          enum:
-          - "on"
-          type: string
-        engagement_invitation_responded:
-          description: "Organization members: send \"on\" for email on answers to\
-            \ program invitations, omit to switch it off"
-          enum:
-          - "on"
-          type: string
         engagement_rules_changed:
           description: "Send \"on\" for email on program rule changes, omit to switch\
             \ it off"

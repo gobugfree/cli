@@ -346,8 +346,6 @@ func (a *NotificationsAPIService) GetNotificationsPreferencesExecute(r Notificat
 type NotificationsAPIPostNotificationsPreferencesRequest struct {
 	ctx context.Context
 	ApiService *NotificationsAPIService
-	engagementAccessRequested *string
-	engagementInvitationResponded *string
 	engagementRulesChanged *string
 	engagementStatusChanged *string
 	orgReportAwaitingFeedback *string
@@ -361,18 +359,6 @@ type NotificationsAPIPostNotificationsPreferencesRequest struct {
 	reportStatusChanged *string
 	scanReportPublished *string
 	versionDecided *string
-}
-
-// Organization members: send \\\&quot;on\\\&quot; for email on program access requests, omit to switch it off
-func (r NotificationsAPIPostNotificationsPreferencesRequest) EngagementAccessRequested(engagementAccessRequested string) NotificationsAPIPostNotificationsPreferencesRequest {
-	r.engagementAccessRequested = &engagementAccessRequested
-	return r
-}
-
-// Organization members: send \\\&quot;on\\\&quot; for email on answers to program invitations, omit to switch it off
-func (r NotificationsAPIPostNotificationsPreferencesRequest) EngagementInvitationResponded(engagementInvitationResponded string) NotificationsAPIPostNotificationsPreferencesRequest {
-	r.engagementInvitationResponded = &engagementInvitationResponded
-	return r
 }
 
 // Send \\\&quot;on\\\&quot; for email on program rule changes, omit to switch it off
@@ -505,12 +491,6 @@ func (a *NotificationsAPIService) PostNotificationsPreferencesExecute(r Notifica
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	if r.engagementAccessRequested != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "engagement_access_requested", r.engagementAccessRequested, "", "")
-	}
-	if r.engagementInvitationResponded != nil {
-		parameterAddToHeaderOrQuery(localVarFormParams, "engagement_invitation_responded", r.engagementInvitationResponded, "", "")
 	}
 	if r.engagementRulesChanged != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "engagement_rules_changed", r.engagementRulesChanged, "", "")

@@ -206,7 +206,7 @@ Other parameters are passed through a pointer to a apiGetNotificationsPreference
 
 ## PostNotificationsPreferences
 
-> PostNotificationsPreferences(ctx).EngagementAccessRequested(engagementAccessRequested).EngagementInvitationResponded(engagementInvitationResponded).EngagementRulesChanged(engagementRulesChanged).EngagementStatusChanged(engagementStatusChanged).OrgReportAwaitingFeedback(orgReportAwaitingFeedback).OrgReportCommentAdded(orgReportCommentAdded).OrgReportStatusChanged(orgReportStatusChanged).OrgReportSubmitted(orgReportSubmitted).OrganizationJoinDecided(organizationJoinDecided).OrganizationJoinRequested(organizationJoinRequested).ReportCommentAdded(reportCommentAdded).ReportInfoRequested(reportInfoRequested).ReportStatusChanged(reportStatusChanged).ScanReportPublished(scanReportPublished).VersionDecided(versionDecided).Execute()
+> PostNotificationsPreferences(ctx).EngagementRulesChanged(engagementRulesChanged).EngagementStatusChanged(engagementStatusChanged).OrgReportAwaitingFeedback(orgReportAwaitingFeedback).OrgReportCommentAdded(orgReportCommentAdded).OrgReportStatusChanged(orgReportStatusChanged).OrgReportSubmitted(orgReportSubmitted).OrganizationJoinDecided(organizationJoinDecided).OrganizationJoinRequested(organizationJoinRequested).ReportCommentAdded(reportCommentAdded).ReportInfoRequested(reportInfoRequested).ReportStatusChanged(reportStatusChanged).ScanReportPublished(scanReportPublished).VersionDecided(versionDecided).Execute()
 
 Switch the user's email notifications per kind
 
@@ -223,8 +223,6 @@ import (
 )
 
 func main() {
-	engagementAccessRequested := "engagementAccessRequested_example" // string | Organization members: send \\\"on\\\" for email on program access requests, omit to switch it off (optional)
-	engagementInvitationResponded := "engagementInvitationResponded_example" // string | Organization members: send \\\"on\\\" for email on answers to program invitations, omit to switch it off (optional)
 	engagementRulesChanged := "engagementRulesChanged_example" // string | Send \\\"on\\\" for email on program rule changes, omit to switch it off (optional)
 	engagementStatusChanged := "engagementStatusChanged_example" // string | Send \\\"on\\\" for email on program status changes, omit to switch it off (optional)
 	orgReportAwaitingFeedback := "orgReportAwaitingFeedback_example" // string | Organization members: send \\\"on\\\" for email on reports awaiting your decision, omit to switch it off (optional)
@@ -241,7 +239,7 @@ func main() {
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.NotificationsAPI.PostNotificationsPreferences(context.Background()).EngagementAccessRequested(engagementAccessRequested).EngagementInvitationResponded(engagementInvitationResponded).EngagementRulesChanged(engagementRulesChanged).EngagementStatusChanged(engagementStatusChanged).OrgReportAwaitingFeedback(orgReportAwaitingFeedback).OrgReportCommentAdded(orgReportCommentAdded).OrgReportStatusChanged(orgReportStatusChanged).OrgReportSubmitted(orgReportSubmitted).OrganizationJoinDecided(organizationJoinDecided).OrganizationJoinRequested(organizationJoinRequested).ReportCommentAdded(reportCommentAdded).ReportInfoRequested(reportInfoRequested).ReportStatusChanged(reportStatusChanged).ScanReportPublished(scanReportPublished).VersionDecided(versionDecided).Execute()
+	r, err := apiClient.NotificationsAPI.PostNotificationsPreferences(context.Background()).EngagementRulesChanged(engagementRulesChanged).EngagementStatusChanged(engagementStatusChanged).OrgReportAwaitingFeedback(orgReportAwaitingFeedback).OrgReportCommentAdded(orgReportCommentAdded).OrgReportStatusChanged(orgReportStatusChanged).OrgReportSubmitted(orgReportSubmitted).OrganizationJoinDecided(organizationJoinDecided).OrganizationJoinRequested(organizationJoinRequested).ReportCommentAdded(reportCommentAdded).ReportInfoRequested(reportInfoRequested).ReportStatusChanged(reportStatusChanged).ScanReportPublished(scanReportPublished).VersionDecided(versionDecided).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `NotificationsAPI.PostNotificationsPreferences``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -260,8 +258,6 @@ Other parameters are passed through a pointer to a apiPostNotificationsPreferenc
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **engagementAccessRequested** | **string** | Organization members: send \\\&quot;on\\\&quot; for email on program access requests, omit to switch it off | 
- **engagementInvitationResponded** | **string** | Organization members: send \\\&quot;on\\\&quot; for email on answers to program invitations, omit to switch it off | 
  **engagementRulesChanged** | **string** | Send \\\&quot;on\\\&quot; for email on program rule changes, omit to switch it off | 
  **engagementStatusChanged** | **string** | Send \\\&quot;on\\\&quot; for email on program status changes, omit to switch it off | 
  **orgReportAwaitingFeedback** | **string** | Organization members: send \\\&quot;on\\\&quot; for email on reports awaiting your decision, omit to switch it off | 
