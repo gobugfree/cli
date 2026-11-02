@@ -4080,6 +4080,7 @@ components:
         status: status
         summary: summary
         title: title
+        updatedAt: 2000-01-23T04:56:07.000+00:00
         visibility: visibility
       properties:
         badges:
@@ -4123,6 +4124,9 @@ components:
           type: string
         title:
           type: string
+        updatedAt:
+          format: date-time
+          type: string
         visibility:
           type: string
       required:
@@ -4136,6 +4140,7 @@ components:
       - slug
       - status
       - title
+      - updatedAt
       - visibility
     EngagementListItemList:
       example:
@@ -4163,6 +4168,7 @@ components:
           status: status
           summary: summary
           title: title
+          updatedAt: 2000-01-23T04:56:07.000+00:00
           visibility: visibility
         - badges:
           - color: color
@@ -4187,6 +4193,7 @@ components:
           status: status
           summary: summary
           title: title
+          updatedAt: 2000-01-23T04:56:07.000+00:00
           visibility: visibility
       properties:
         items:

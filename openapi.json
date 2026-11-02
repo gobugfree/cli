@@ -320,6 +320,10 @@
           "title": {
             "type": "string"
           },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
           "visibility": {
             "type": "string"
           }
@@ -335,7 +339,8 @@
           "status",
           "member",
           "locked",
-          "invited"
+          "invited",
+          "updatedAt"
         ],
         "type": "object"
       },

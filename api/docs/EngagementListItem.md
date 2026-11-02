@@ -21,13 +21,14 @@ Name | Type | Description | Notes
 **Status** | **string** |  | 
 **Summary** | Pointer to **string** |  | [optional] 
 **Title** | **string** |  | 
+**UpdatedAt** | **time.Time** |  | 
 **Visibility** | **string** |  | 
 
 ## Methods
 
 ### NewEngagementListItem
 
-`func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, visibility string, ) *EngagementListItem`
+`func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementListItem`
 
 NewEngagementListItem instantiates a new EngagementListItem object
 This constructor will assign default values to properties that have it defined,
@@ -415,6 +416,26 @@ and a boolean to check if the value has been set.
 `func (o *EngagementListItem) SetTitle(v string)`
 
 SetTitle sets Title field to given value.
+
+
+### GetUpdatedAt
+
+`func (o *EngagementListItem) GetUpdatedAt() time.Time`
+
+GetUpdatedAt returns the UpdatedAt field if non-nil, zero value otherwise.
+
+### GetUpdatedAtOk
+
+`func (o *EngagementListItem) GetUpdatedAtOk() (*time.Time, bool)`
+
+GetUpdatedAtOk returns a tuple with the UpdatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetUpdatedAt
+
+`func (o *EngagementListItem) SetUpdatedAt(v time.Time)`
+
+SetUpdatedAt sets UpdatedAt field to given value.
 
 
 ### GetVisibility

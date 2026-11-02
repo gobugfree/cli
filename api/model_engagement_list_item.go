@@ -12,6 +12,7 @@ package api
 
 import (
 	"encoding/json"
+	"time"
 	"fmt"
 )
 
@@ -37,6 +38,7 @@ type EngagementListItem struct {
 	Status string `json:"status"`
 	Summary *string `json:"summary,omitempty"`
 	Title string `json:"title"`
+	UpdatedAt time.Time `json:"updatedAt"`
 	Visibility string `json:"visibility"`
 	AdditionalProperties map[string]interface{}
 }
@@ -47,7 +49,7 @@ type _EngagementListItem EngagementListItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, visibility string) *EngagementListItem {
+func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementListItem {
 	this := EngagementListItem{}
 	this.Id = id
 	this.Invited = invited
@@ -59,6 +61,7 @@ func NewEngagementListItem(id string, invited bool, kind string, locked bool, me
 	this.Slug = slug
 	this.Status = status
 	this.Title = title
+	this.UpdatedAt = updatedAt
 	this.Visibility = visibility
 	return &this
 }
@@ -535,6 +538,30 @@ func (o *EngagementListItem) SetTitle(v string) {
 	o.Title = v
 }
 
+// GetUpdatedAt returns the UpdatedAt field value
+func (o *EngagementListItem) GetUpdatedAt() time.Time {
+	if o == nil {
+		var ret time.Time
+		return ret
+	}
+
+	return o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value
+// and a boolean to check if the value has been set.
+func (o *EngagementListItem) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.UpdatedAt, true
+}
+
+// SetUpdatedAt sets field value
+func (o *EngagementListItem) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = v
+}
+
 // GetVisibility returns the Visibility field value
 func (o *EngagementListItem) GetVisibility() string {
 	if o == nil {
@@ -600,6 +627,7 @@ func (o EngagementListItem) ToMap() (map[string]interface{}, error) {
 		toSerialize["summary"] = o.Summary
 	}
 	toSerialize["title"] = o.Title
+	toSerialize["updatedAt"] = o.UpdatedAt
 	toSerialize["visibility"] = o.Visibility
 
 	for key, value := range o.AdditionalProperties {
@@ -624,6 +652,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 		"slug",
 		"status",
 		"title",
+		"updatedAt",
 		"visibility",
 	}
 
@@ -671,6 +700,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "summary")
 		delete(additionalProperties, "title")
+		delete(additionalProperties, "updatedAt")
 		delete(additionalProperties, "visibility")
 		o.AdditionalProperties = additionalProperties
 	}
