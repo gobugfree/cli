@@ -9,6 +9,7 @@ api_embed.go
 api_engagements.go
 api_feedback.go
 api_leaderboard.go
+api_legacy.go
 api_lists.go
 api_markdown.go
 api_notifications.go
@@ -59,6 +60,7 @@ docs/FeedbackList.md
 docs/HelpOperation.md
 docs/HelpTopic.md
 docs/LeaderboardAPI.md
+docs/LegacyAPI.md
 docs/LegacylinkLink.md
 docs/ListsAPI.md
 docs/ListviewView.md

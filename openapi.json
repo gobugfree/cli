@@ -778,7 +778,6 @@
         },
         "required": [
           "target",
-          "id",
           "path"
         ],
         "type": "object"
@@ -2199,9 +2198,6 @@
           "isPublic": {
             "type": "boolean"
           },
-          "legacyLook": {
-            "type": "boolean"
-          },
           "showDates": {
             "type": "boolean"
           },
@@ -2230,8 +2226,7 @@
           "isPublic",
           "showOnLeaderboard",
           "showVulnTypes",
-          "showDates",
-          "legacyLook"
+          "showDates"
         ],
         "type": "object"
       },
@@ -4777,6 +4772,71 @@
         "summary": "Download the filtered leaderboard as CSV or JSON",
         "tags": [
           "leaderboard"
+        ]
+      }
+    },
+    "/legacy": {
+      "get": {
+        "operationId": "getLegacy",
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Where athena's home led: a redirect to the program list (JSON: the target)",
+        "tags": [
+          "legacy"
+        ]
+      }
+    },
+    "/legacy/{rest}": {
+      "get": {
+        "operationId": "getLegacyByRest",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "rest",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacylinkLink"
+                }
+              }
+            },
+            "description": "The report or page the link leads to"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Where an athena link leads: a redirect to the report its id maps to, or to the page that replaced athena's (JSON: the target, 404 for an unknown id or path)",
+        "tags": [
+          "legacy"
         ]
       }
     },
@@ -8245,95 +8305,6 @@
           }
         },
         "summary": "Switch the interface language",
-        "tags": [
-          "settings"
-        ]
-      }
-    },
-    "/settings/leaderboard": {
-      "post": {
-        "operationId": "postSettingsLeaderboard",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "properties": {
-                  "show_on_leaderboard": {
-                    "description": "Send \"on\" to show the public profile and the leaderboard entry, omit to hide both",
-                    "enum": [
-                      "on"
-                    ],
-                    "type": "string"
-                  }
-                },
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "JSON when the request accepts application/json, HTML otherwise."
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "Show or hide the public profile and the leaderboard entry together: the classic look's one leaderboard switch",
-        "tags": [
-          "settings"
-        ]
-      }
-    },
-    "/settings/look": {
-      "post": {
-        "operationId": "postSettingsLook",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "properties": {
-                  "legacy_look": {
-                    "description": "Send \"on\" for the classic look, omit for the new look",
-                    "enum": [
-                      "on"
-                    ],
-                    "type": "string"
-                  },
-                  "redirect": {
-                    "type": "string"
-                  }
-                },
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "JSON when the request accepts application/json, HTML otherwise."
-          },
-          "default": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            },
-            "description": "Error"
-          }
-        },
-        "summary": "Switch between the new look and the classic look of the former portal",
         "tags": [
           "settings"
         ]

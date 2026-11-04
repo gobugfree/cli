@@ -67,6 +67,8 @@ type APIClient struct {
 
 	LeaderboardAPI *LeaderboardAPIService
 
+	LegacyAPI *LegacyAPIService
+
 	ListsAPI *ListsAPIService
 
 	MarkdownAPI *MarkdownAPIService
@@ -125,6 +127,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.EngagementsAPI = (*EngagementsAPIService)(&c.common)
 	c.FeedbackAPI = (*FeedbackAPIService)(&c.common)
 	c.LeaderboardAPI = (*LeaderboardAPIService)(&c.common)
+	c.LegacyAPI = (*LegacyAPIService)(&c.common)
 	c.ListsAPI = (*ListsAPIService)(&c.common)
 	c.MarkdownAPI = (*MarkdownAPIService)(&c.common)
 	c.NotificationsAPI = (*NotificationsAPIService)(&c.common)

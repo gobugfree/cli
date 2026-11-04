@@ -27,7 +27,6 @@ type UserSettings struct {
 	ExperienceLevel string `json:"experienceLevel"`
 	Handle string `json:"handle"`
 	IsPublic bool `json:"isPublic"`
-	LegacyLook bool `json:"legacyLook"`
 	ShowDates bool `json:"showDates"`
 	ShowOnLeaderboard bool `json:"showOnLeaderboard"`
 	ShowVulnTypes bool `json:"showVulnTypes"`
@@ -42,7 +41,7 @@ type _UserSettings UserSettings
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string) *UserSettings {
+func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string) *UserSettings {
 	this := UserSettings{}
 	this.Bio = bio
 	this.BountyExperience = bountyExperience
@@ -51,7 +50,6 @@ func NewUserSettings(bio string, bountyExperience string, country string, displa
 	this.ExperienceLevel = experienceLevel
 	this.Handle = handle
 	this.IsPublic = isPublic
-	this.LegacyLook = legacyLook
 	this.ShowDates = showDates
 	this.ShowOnLeaderboard = showOnLeaderboard
 	this.ShowVulnTypes = showVulnTypes
@@ -236,30 +234,6 @@ func (o *UserSettings) SetIsPublic(v bool) {
 	o.IsPublic = v
 }
 
-// GetLegacyLook returns the LegacyLook field value
-func (o *UserSettings) GetLegacyLook() bool {
-	if o == nil {
-		var ret bool
-		return ret
-	}
-
-	return o.LegacyLook
-}
-
-// GetLegacyLookOk returns a tuple with the LegacyLook field value
-// and a boolean to check if the value has been set.
-func (o *UserSettings) GetLegacyLookOk() (*bool, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.LegacyLook, true
-}
-
-// SetLegacyLook sets field value
-func (o *UserSettings) SetLegacyLook(v bool) {
-	o.LegacyLook = v
-}
-
 // GetShowDates returns the ShowDates field value
 func (o *UserSettings) GetShowDates() bool {
 	if o == nil {
@@ -397,7 +371,6 @@ func (o UserSettings) ToMap() (map[string]interface{}, error) {
 	toSerialize["experienceLevel"] = o.ExperienceLevel
 	toSerialize["handle"] = o.Handle
 	toSerialize["isPublic"] = o.IsPublic
-	toSerialize["legacyLook"] = o.LegacyLook
 	toSerialize["showDates"] = o.ShowDates
 	toSerialize["showOnLeaderboard"] = o.ShowOnLeaderboard
 	toSerialize["showVulnTypes"] = o.ShowVulnTypes
@@ -423,7 +396,6 @@ func (o *UserSettings) UnmarshalJSON(data []byte) (err error) {
 		"experienceLevel",
 		"handle",
 		"isPublic",
-		"legacyLook",
 		"showDates",
 		"showOnLeaderboard",
 		"showVulnTypes",
@@ -465,7 +437,6 @@ func (o *UserSettings) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "experienceLevel")
 		delete(additionalProperties, "handle")
 		delete(additionalProperties, "isPublic")
-		delete(additionalProperties, "legacyLook")
 		delete(additionalProperties, "showDates")
 		delete(additionalProperties, "showOnLeaderboard")
 		delete(additionalProperties, "showVulnTypes")

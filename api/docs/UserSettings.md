@@ -11,7 +11,6 @@ Name | Type | Description | Notes
 **ExperienceLevel** | **string** |  | 
 **Handle** | **string** |  | 
 **IsPublic** | **bool** |  | 
-**LegacyLook** | **bool** |  | 
 **ShowDates** | **bool** |  | 
 **ShowOnLeaderboard** | **bool** |  | 
 **ShowVulnTypes** | **bool** |  | 
@@ -22,7 +21,7 @@ Name | Type | Description | Notes
 
 ### NewUserSettings
 
-`func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, legacyLook bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string, ) *UserSettings`
+`func NewUserSettings(bio string, bountyExperience string, country string, displayName string, experienceLevel string, handle string, isPublic bool, showDates bool, showOnLeaderboard bool, showVulnTypes bool, userId int32, website string, ) *UserSettings`
 
 NewUserSettings instantiates a new UserSettings object
 This constructor will assign default values to properties that have it defined,
@@ -175,26 +174,6 @@ and a boolean to check if the value has been set.
 `func (o *UserSettings) SetIsPublic(v bool)`
 
 SetIsPublic sets IsPublic field to given value.
-
-
-### GetLegacyLook
-
-`func (o *UserSettings) GetLegacyLook() bool`
-
-GetLegacyLook returns the LegacyLook field if non-nil, zero value otherwise.
-
-### GetLegacyLookOk
-
-`func (o *UserSettings) GetLegacyLookOk() (*bool, bool)`
-
-GetLegacyLookOk returns a tuple with the LegacyLook field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetLegacyLook
-
-`func (o *UserSettings) SetLegacyLook(v bool)`
-
-SetLegacyLook sets LegacyLook field to given value.
 
 
 ### GetShowDates

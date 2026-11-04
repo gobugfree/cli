@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
+**Id** | Pointer to **string** |  | [optional] 
 **Path** | **string** |  | 
 **Target** | **string** |  | 
 
@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 
 ### NewLegacylinkLink
 
-`func NewLegacylinkLink(id string, path string, target string, ) *LegacylinkLink`
+`func NewLegacylinkLink(path string, target string, ) *LegacylinkLink`
 
 NewLegacylinkLink instantiates a new LegacylinkLink object
 This constructor will assign default values to properties that have it defined,
@@ -46,6 +46,11 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+### HasId
+
+`func (o *LegacylinkLink) HasId() bool`
+
+HasId returns a boolean if a field has been set.
 
 ### GetPath
 

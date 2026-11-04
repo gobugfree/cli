@@ -132,6 +132,8 @@ Class | Method | HTTP request | Description
 *FeedbackAPI* | [**PostFeedback**](docs/FeedbackAPI.md#postfeedback) | **Post** /feedback | Send product feedback
 *LeaderboardAPI* | [**GetLeaderboard**](docs/LeaderboardAPI.md#getleaderboard) | **Get** /leaderboard | The researcher leaderboard of the selected window; searchable by handle, sortable, paginated
 *LeaderboardAPI* | [**GetLeaderboardExport**](docs/LeaderboardAPI.md#getleaderboardexport) | **Get** /leaderboard/export | Download the filtered leaderboard as CSV or JSON
+*LegacyAPI* | [**GetLegacy**](docs/LegacyAPI.md#getlegacy) | **Get** /legacy | Where athena&#39;s home led: a redirect to the program list (JSON: the target)
+*LegacyAPI* | [**GetLegacyByRest**](docs/LegacyAPI.md#getlegacybyrest) | **Get** /legacy/{rest} | Where an athena link leads: a redirect to the report its id maps to, or to the page that replaced athena&#39;s (JSON: the target, 404 for an unknown id or path)
 *ListsAPI* | [**PostListsColumns**](docs/ListsAPI.md#postlistscolumns) | **Post** /lists/columns | Save the caller&#39;s visible columns and their order for a list; reset&#x3D;1 restores the default
 *ListsAPI* | [**PostListsLayout**](docs/ListsAPI.md#postlistslayout) | **Post** /lists/layout | Save the caller&#39;s layout of a split-view list: single (the list alone), split (the list beside the open record), or board (the kanban)
 *ListsAPI* | [**PostListsViews**](docs/ListsAPI.md#postlistsviews) | **Post** /lists/views | Save the current filters of a list as a named view of the caller (at most 20 per list, names unique per list)
@@ -201,8 +203,6 @@ Class | Method | HTTP request | Description
 *SettingsAPI* | [**GetSettingsSecurity**](docs/SettingsAPI.md#getsettingssecurity) | **Get** /settings/security | Own sign-in methods as Keycloak holds them (password, passkeys, security keys, authenticator app, recovery codes) and the linked external accounts; never a secret
 *SettingsAPI* | [**GetSettingsSkills**](docs/SettingsAPI.md#getsettingsskills) | **Get** /settings/skills | Own skills with their levels
 *SettingsAPI* | [**PostSettingsLanguage**](docs/SettingsAPI.md#postsettingslanguage) | **Post** /settings/language | Switch the interface language
-*SettingsAPI* | [**PostSettingsLeaderboard**](docs/SettingsAPI.md#postsettingsleaderboard) | **Post** /settings/leaderboard | Show or hide the public profile and the leaderboard entry together: the classic look&#39;s one leaderboard switch
-*SettingsAPI* | [**PostSettingsLook**](docs/SettingsAPI.md#postsettingslook) | **Post** /settings/look | Switch between the new look and the classic look of the former portal
 *SettingsAPI* | [**PostSettingsPrivacy**](docs/SettingsAPI.md#postsettingsprivacy) | **Post** /settings/privacy | Update the per-section public visibility
 *SettingsAPI* | [**PostSettingsProfile**](docs/SettingsAPI.md#postsettingsprofile) | **Post** /settings/profile | Update the researcher profile
 *SettingsAPI* | [**PostSettingsSecurityActions**](docs/SettingsAPI.md#postsettingssecurityactions) | **Post** /settings/security/actions | Start a sign-in method action in Keycloak (add a passkey, set up recovery codes, change the password, link Microsoft, remove a method) and send the browser there; browser sessions only, a JSON client gets 400
