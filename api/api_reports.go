@@ -2185,8 +2185,8 @@ func (a *ReportsAPIService) PostReportsContentExecute(r ReportsAPIPostReportsCon
 	if strlen(*r.content) < 1 {
 		return localVarReturnValue, nil, reportError("content must have at least 1 elements")
 	}
-	if strlen(*r.content) > 40000 {
-		return localVarReturnValue, nil, reportError("content must have less than 40000 elements")
+	if strlen(*r.content) > 100000 {
+		return localVarReturnValue, nil, reportError("content must have less than 100000 elements")
 	}
 
 	// to determine the Content-Type header
@@ -2501,8 +2501,8 @@ func (a *ReportsAPIService) PostReportsEditExecute(r ReportsAPIPostReportsEditRe
 	if strlen(*r.content) < 1 {
 		return nil, reportError("content must have at least 1 elements")
 	}
-	if strlen(*r.content) > 40000 {
-		return nil, reportError("content must have less than 40000 elements")
+	if strlen(*r.content) > 100000 {
+		return nil, reportError("content must have less than 100000 elements")
 	}
 
 	// to determine the Content-Type header
@@ -2990,8 +2990,8 @@ func (a *ReportsAPIService) PostReportsSubmitExecute(r ReportsAPIPostReportsSubm
 	if strlen(*r.content) < 1 {
 		return localVarReturnValue, nil, reportError("content must have at least 1 elements")
 	}
-	if strlen(*r.content) > 40000 {
-		return localVarReturnValue, nil, reportError("content must have less than 40000 elements")
+	if strlen(*r.content) > 100000 {
+		return localVarReturnValue, nil, reportError("content must have less than 100000 elements")
 	}
 
 	// to determine the Content-Type header

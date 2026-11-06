@@ -1332,8 +1332,8 @@ func (a *EngagementsAPIService) PostEngagementsSubmitExecute(r EngagementsAPIPos
 	if strlen(*r.content) < 1 {
 		return localVarReturnValue, nil, reportError("content must have at least 1 elements")
 	}
-	if strlen(*r.content) > 40000 {
-		return localVarReturnValue, nil, reportError("content must have less than 40000 elements")
+	if strlen(*r.content) > 100000 {
+		return localVarReturnValue, nil, reportError("content must have less than 100000 elements")
 	}
 
 	// to determine the Content-Type header
@@ -1595,8 +1595,8 @@ func (a *EngagementsAPIService) PostEngagementsSubmitDraftExecute(r EngagementsA
 	if strlen(*r.content) < 1 {
 		return localVarReturnValue, nil, reportError("content must have at least 1 elements")
 	}
-	if strlen(*r.content) > 40000 {
-		return localVarReturnValue, nil, reportError("content must have less than 40000 elements")
+	if strlen(*r.content) > 100000 {
+		return localVarReturnValue, nil, reportError("content must have less than 100000 elements")
 	}
 
 	// to determine the Content-Type header

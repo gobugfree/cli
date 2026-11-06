@@ -3842,7 +3842,7 @@
                   },
                   "content": {
                     "description": "The report body as one Markdown document. Its single H1 is the report title; the sections are Description, Steps to reproduce, Impact, and Proof of concept. Description and Proof of concept are required to submit",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   },
@@ -3969,7 +3969,7 @@
                   },
                   "content": {
                     "description": "The report body as one Markdown document. Its single H1 is the report title; the sections are Description, Steps to reproduce, Impact, and Proof of concept. A draft may leave sections empty",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   },
@@ -4548,7 +4548,7 @@
                 "properties": {
                   "content": {
                     "description": "The Markdown document to render",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   }
@@ -6651,7 +6651,7 @@
                 "properties": {
                   "content": {
                     "description": "The report body as one Markdown document. Sections: Description, Steps to reproduce, Impact, Proof of concept",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   },
@@ -6834,7 +6834,7 @@
                   },
                   "content": {
                     "description": "The report body as one Markdown document. Its single H1 is the report title; the sections are Description, Steps to reproduce, Impact, and Proof of concept. A draft may leave sections empty",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   },
@@ -7120,7 +7120,7 @@
                   },
                   "content": {
                     "description": "The report body as one Markdown document. Its single H1 is the report title; the sections are Description, Steps to reproduce, Impact, and Proof of concept. Description and Proof of concept are required to submit",
-                    "maxLength": 40000,
+                    "maxLength": 100000,
                     "minLength": 1,
                     "type": "string"
                   },
