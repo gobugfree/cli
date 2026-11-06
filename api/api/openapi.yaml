@@ -6106,7 +6106,7 @@ components:
           type: string
         return:
           description: The list URL to return to
-          maxLength: 2000
+          maxLength: 16000
           minLength: 1
           type: string
       required:
@@ -6131,7 +6131,7 @@ components:
           type: string
         return:
           description: The list URL to return to (browsers)
-          maxLength: 2000
+          maxLength: 16000
           type: string
       required:
       - layout
@@ -6150,11 +6150,11 @@ components:
           type: string
         query:
           description: "The filter query string to save, without page or markers"
-          maxLength: 2000
+          maxLength: 16000
           type: string
         return:
           description: The list URL to return to (browsers)
-          maxLength: 2000
+          maxLength: 16000
           type: string
       required:
       - list

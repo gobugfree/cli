@@ -106,8 +106,8 @@ func (a *ListsAPIService) PostListsColumnsExecute(r ListsAPIPostListsColumnsRequ
 	if strlen(*r.return_) < 1 {
 		return nil, reportError("return_ must have at least 1 elements")
 	}
-	if strlen(*r.return_) > 2000 {
-		return nil, reportError("return_ must have less than 2000 elements")
+	if strlen(*r.return_) > 16000 {
+		return nil, reportError("return_ must have less than 16000 elements")
 	}
 
 	// to determine the Content-Type header
