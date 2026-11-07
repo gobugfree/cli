@@ -983,6 +983,93 @@ paths:
         \ target)"
       tags:
       - legacy
+  /legacy/embedded/{program}/submit:
+    get:
+      operationId: getLegacyEmbeddedSubmit
+      parameters:
+      - explode: false
+        in: path
+        name: program
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacylinkLink"
+          description: The embedded form the link leads to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Where athena's embedded submission form leads, without a session:\
+        \ the embedded form of the program when it is open; 404 for any other program\
+        \ (JSON: the target)"
+      tags:
+      - legacy
+  /legacy/programs/embedded/{program}/submit:
+    get:
+      operationId: getLegacyProgramsEmbeddedSubmit
+      parameters:
+      - explode: false
+        in: path
+        name: program
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacylinkLink"
+          description: The embedded form the link leads to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Where athena's embedded submission form on its own site leads, without\
+        \ a session: the embedded form of the program when it is open; 404 for any\
+        \ other program (JSON: the target)"
+      tags:
+      - legacy
+  /legacy/programs/{program}:
+    get:
+      operationId: getLegacyProgramsByProgram
+      parameters:
+      - explode: false
+        in: path
+        name: program
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LegacylinkLink"
+          description: The page the link leads to
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Where athena's public program link leads: for a signed-in viewer the\
+        \ full program page, for anyone else the public program page of a public engagement;\
+        \ 404 without a session for any other program (JSON: the target)"
+      tags:
+      - legacy
   /legacy/{rest}:
     get:
       operationId: getLegacyByRest
@@ -1702,6 +1789,43 @@ paths:
           description: Error
       summary: "Public engagement directory: every active or paused engagement as\
         \ an anonymous viewer sees it; locked rows carry no scope and no rewards"
+      tags:
+      - public
+  /public/engagements/{org_slug}/{engagement_slug}:
+    get:
+      operationId: getPublicEngagementsByOrgSlugAndEngagementSlug
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EngagementPublicDetail"
+          description: The public program
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Public program page of a public active or paused engagement, without\
+        \ a session: the live version's program, scope, and bounty table, or only\
+        \ the summary while the briefing needs a sign-in (a verification level above\
+        \ email, or an NDA); 404 for every other engagement"
       tags:
       - public
   /public/engagements/{org_slug}/{engagement_slug}/logo:
@@ -3333,6 +3457,22 @@ components:
       required:
       - color
       - text
+    EngagementCVSSBand:
+      example:
+        maxScore: 1.4658129805029452
+        minScore: 5.962133916683182
+        severity: severity
+      properties:
+        maxScore:
+          type: number
+        minScore:
+          type: number
+        severity:
+          type: string
+      required:
+      - maxScore
+      - minScore
+      - severity
     EngagementDetail:
       example:
         accessData: accessData
@@ -3635,6 +3775,84 @@ components:
           default: null
       required:
       - items
+    EngagementProgram:
+      example:
+        cvssBands:
+        - maxScore: 1.4658129805029452
+          minScore: 5.962133916683182
+          severity: severity
+        - maxScore: 1.4658129805029452
+          minScore: 5.962133916683182
+          severity: severity
+        nonQualifiedText: nonQualifiedText
+        nonQualifiedVulns:
+        - nonQualifiedVulns
+        - nonQualifiedVulns
+        notes: notes
+        procedure:
+        - procedure
+        - procedure
+        qualifiedText: qualifiedText
+        qualifiedVulns:
+        - qualifiedVulns
+        - qualifiedVulns
+        rulesText: rulesText
+        safeHarbor: safeHarbor
+        scopeNotes: scopeNotes
+        summary: summary
+        testingAllowed:
+        - testingAllowed
+        - testingAllowed
+        testingDisallowed:
+        - testingDisallowed
+        - testingDisallowed
+      properties:
+        cvssBands:
+          items:
+            $ref: "#/components/schemas/EngagementCVSSBand"
+          type: array
+          default: null
+        nonQualifiedText:
+          type: string
+        nonQualifiedVulns:
+          items:
+            type: string
+          type: array
+          default: null
+        notes:
+          type: string
+        procedure:
+          items:
+            type: string
+          type: array
+          default: null
+        qualifiedText:
+          type: string
+        qualifiedVulns:
+          items:
+            type: string
+          type: array
+          default: null
+        rulesText:
+          type: string
+        safeHarbor:
+          type: string
+        scopeNotes:
+          type: string
+        summary:
+          type: string
+        testingAllowed:
+          items:
+            type: string
+          type: array
+          default: null
+        testingDisallowed:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - cvssBands
     EngagementProxyMessage:
       example:
         createdAt: 2000-01-23T04:56:07.000+00:00
@@ -3663,6 +3881,163 @@ components:
           default: null
       required:
       - items
+    EngagementPublicBounty:
+      example:
+        currency: currency
+        max: 0.8008281904610115
+        min: 6.027456183070403
+        severity: severity
+        text: text
+      properties:
+        currency:
+          type: string
+        max:
+          type: number
+        min:
+          type: number
+        severity:
+          type: string
+        text:
+          type: string
+      required:
+      - max
+      - min
+      - severity
+    EngagementPublicDetail:
+      example:
+        badges:
+        - color: color
+          text: text
+        - color: color
+          text: text
+        bounty:
+        - currency: currency
+          max: 0.8008281904610115
+          min: 6.027456183070403
+          severity: severity
+          text: text
+        - currency: currency
+          max: 0.8008281904610115
+          min: 6.027456183070403
+          severity: severity
+          text: text
+        briefingAccessible: true
+        endsOn: 2000-01-23T04:56:07.000+00:00
+        kind: kind
+        logoUrl: logoUrl
+        ndaRequired: true
+        orgAbout: orgAbout
+        orgName: orgName
+        orgSlug: orgSlug
+        program:
+          cvssBands:
+          - maxScore: 1.4658129805029452
+            minScore: 5.962133916683182
+            severity: severity
+          - maxScore: 1.4658129805029452
+            minScore: 5.962133916683182
+            severity: severity
+          nonQualifiedText: nonQualifiedText
+          nonQualifiedVulns:
+          - nonQualifiedVulns
+          - nonQualifiedVulns
+          notes: notes
+          procedure:
+          - procedure
+          - procedure
+          qualifiedText: qualifiedText
+          qualifiedVulns:
+          - qualifiedVulns
+          - qualifiedVulns
+          rulesText: rulesText
+          safeHarbor: safeHarbor
+          scopeNotes: scopeNotes
+          summary: summary
+          testingAllowed:
+          - testingAllowed
+          - testingAllowed
+          testingDisallowed:
+          - testingDisallowed
+          - testingDisallowed
+        requiredVerificationLevel: requiredVerificationLevel
+        scope:
+        - description: description
+          inScope: true
+          instructions: instructions
+          kind: kind
+          pattern: pattern
+        - description: description
+          inScope: true
+          instructions: instructions
+          kind: kind
+          pattern: pattern
+        signInUrl: signInUrl
+        slug: slug
+        startsOn: 2000-01-23T04:56:07.000+00:00
+        status: status
+        summary: summary
+        title: title
+      properties:
+        badges:
+          items:
+            $ref: "#/components/schemas/EngagementBadge"
+          type: array
+          default: null
+        bounty:
+          items:
+            $ref: "#/components/schemas/EngagementPublicBounty"
+          type: array
+          default: null
+        briefingAccessible:
+          type: boolean
+        endsOn:
+          format: date-time
+          type: string
+        kind:
+          type: string
+        logoUrl:
+          type: string
+        ndaRequired:
+          type: boolean
+        orgAbout:
+          type: string
+        orgName:
+          type: string
+        orgSlug:
+          type: string
+        program:
+          $ref: "#/components/schemas/EngagementProgram"
+        requiredVerificationLevel:
+          type: string
+        scope:
+          items:
+            $ref: "#/components/schemas/EngagementScopeItem"
+          type: array
+          default: null
+        signInUrl:
+          type: string
+        slug:
+          type: string
+        startsOn:
+          format: date-time
+          type: string
+        status:
+          type: string
+        summary:
+          type: string
+        title:
+          type: string
+      required:
+      - briefingAccessible
+      - kind
+      - ndaRequired
+      - orgName
+      - orgSlug
+      - requiredVerificationLevel
+      - signInUrl
+      - slug
+      - status
+      - title
     EngagementPublicItem:
       example:
         badges:
@@ -3744,6 +4119,28 @@ components:
           default: null
       required:
       - items
+    EngagementScopeItem:
+      example:
+        description: description
+        inScope: true
+        instructions: instructions
+        kind: kind
+        pattern: pattern
+      properties:
+        description:
+          type: string
+        inScope:
+          type: boolean
+        instructions:
+          type: string
+        kind:
+          type: string
+        pattern:
+          type: string
+      required:
+      - inScope
+      - kind
+      - pattern
     Error:
       example:
         fields:

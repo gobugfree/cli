@@ -109,6 +109,25 @@
         ],
         "type": "object"
       },
+      "EngagementCVSSBand": {
+        "properties": {
+          "maxScore": {
+            "type": "number"
+          },
+          "minScore": {
+            "type": "number"
+          },
+          "severity": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "severity",
+          "minScore",
+          "maxScore"
+        ],
+        "type": "object"
+      },
       "EngagementDetail": {
         "properties": {
           "accessData": {
@@ -354,6 +373,71 @@
         ],
         "type": "object"
       },
+      "EngagementProgram": {
+        "properties": {
+          "cvssBands": {
+            "items": {
+              "$ref": "#/components/schemas/EngagementCVSSBand"
+            },
+            "type": "array"
+          },
+          "nonQualifiedText": {
+            "type": "string"
+          },
+          "nonQualifiedVulns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "procedure": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "qualifiedText": {
+            "type": "string"
+          },
+          "qualifiedVulns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "rulesText": {
+            "type": "string"
+          },
+          "safeHarbor": {
+            "type": "string"
+          },
+          "scopeNotes": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "testingAllowed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "testingDisallowed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "cvssBands"
+        ],
+        "type": "object"
+      },
       "EngagementProxyMessage": {
         "properties": {
           "createdAt": {
@@ -381,6 +465,116 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "EngagementPublicBounty": {
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "max": {
+            "type": "number"
+          },
+          "min": {
+            "type": "number"
+          },
+          "severity": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "severity",
+          "min",
+          "max"
+        ],
+        "type": "object"
+      },
+      "EngagementPublicDetail": {
+        "properties": {
+          "badges": {
+            "items": {
+              "$ref": "#/components/schemas/EngagementBadge"
+            },
+            "type": "array"
+          },
+          "bounty": {
+            "items": {
+              "$ref": "#/components/schemas/EngagementPublicBounty"
+            },
+            "type": "array"
+          },
+          "briefingAccessible": {
+            "type": "boolean"
+          },
+          "endsOn": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": "string"
+          },
+          "ndaRequired": {
+            "type": "boolean"
+          },
+          "orgAbout": {
+            "type": "string"
+          },
+          "orgName": {
+            "type": "string"
+          },
+          "orgSlug": {
+            "type": "string"
+          },
+          "program": {
+            "$ref": "#/components/schemas/EngagementProgram"
+          },
+          "requiredVerificationLevel": {
+            "type": "string"
+          },
+          "scope": {
+            "items": {
+              "$ref": "#/components/schemas/EngagementScopeItem"
+            },
+            "type": "array"
+          },
+          "signInUrl": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "startsOn": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "orgSlug",
+          "orgName",
+          "slug",
+          "title",
+          "kind",
+          "status",
+          "requiredVerificationLevel",
+          "briefingAccessible",
+          "ndaRequired",
+          "signInUrl"
         ],
         "type": "object"
       },
@@ -438,6 +632,31 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "EngagementScopeItem": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "inScope": {
+            "type": "boolean"
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "pattern": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "pattern",
+          "kind",
+          "inScope"
         ],
         "type": "object"
       },
@@ -3957,6 +4176,129 @@
         ]
       }
     },
+    "/legacy/embedded/{program}/submit": {
+      "get": {
+        "operationId": "getLegacyEmbeddedSubmit",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacylinkLink"
+                }
+              }
+            },
+            "description": "The embedded form the link leads to"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Where athena's embedded submission form leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)",
+        "tags": [
+          "legacy"
+        ]
+      }
+    },
+    "/legacy/programs/embedded/{program}/submit": {
+      "get": {
+        "operationId": "getLegacyProgramsEmbeddedSubmit",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacylinkLink"
+                }
+              }
+            },
+            "description": "The embedded form the link leads to"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Where athena's embedded submission form on its own site leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)",
+        "tags": [
+          "legacy"
+        ]
+      }
+    },
+    "/legacy/programs/{program}": {
+      "get": {
+        "operationId": "getLegacyProgramsByProgram",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "program",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LegacylinkLink"
+                }
+              }
+            },
+            "description": "The page the link leads to"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)",
+        "tags": [
+          "legacy"
+        ]
+      }
+    },
     "/legacy/{rest}": {
       "get": {
         "operationId": "getLegacyByRest",
@@ -5464,6 +5806,55 @@
           }
         },
         "summary": "Public engagement directory: every active or paused engagement as an anonymous viewer sees it; locked rows carry no scope and no rewards",
+        "tags": [
+          "public"
+        ]
+      }
+    },
+    "/public/engagements/{org_slug}/{engagement_slug}": {
+      "get": {
+        "operationId": "getPublicEngagementsByOrgSlugAndEngagementSlug",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "engagement_slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngagementPublicDetail"
+                }
+              }
+            },
+            "description": "The public program"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while the briefing needs a sign-in (a verification level above email, or an NDA); 404 for every other engagement",
         "tags": [
           "public"
         ]

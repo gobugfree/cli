@@ -107,6 +107,9 @@ Class | Method | HTTP request | Description
 *LeaderboardAPI* | [**GetLeaderboardExport**](docs/LeaderboardAPI.md#getleaderboardexport) | **Get** /leaderboard/export | Download the filtered leaderboard as CSV or JSON
 *LegacyAPI* | [**GetLegacy**](docs/LegacyAPI.md#getlegacy) | **Get** /legacy | Where athena&#39;s home led: a redirect to the program list (JSON: the target)
 *LegacyAPI* | [**GetLegacyByRest**](docs/LegacyAPI.md#getlegacybyrest) | **Get** /legacy/{rest} | Where an athena link leads: a redirect to the report its id maps to, or to the page that replaced athena&#39;s (JSON: the target, 404 for an unknown id or path)
+*LegacyAPI* | [**GetLegacyEmbeddedSubmit**](docs/LegacyAPI.md#getlegacyembeddedsubmit) | **Get** /legacy/embedded/{program}/submit | Where athena&#39;s embedded submission form leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)
+*LegacyAPI* | [**GetLegacyProgramsByProgram**](docs/LegacyAPI.md#getlegacyprogramsbyprogram) | **Get** /legacy/programs/{program} | Where athena&#39;s public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)
+*LegacyAPI* | [**GetLegacyProgramsEmbeddedSubmit**](docs/LegacyAPI.md#getlegacyprogramsembeddedsubmit) | **Get** /legacy/programs/embedded/{program}/submit | Where athena&#39;s embedded submission form on its own site leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)
 *ListsAPI* | [**PostListsColumns**](docs/ListsAPI.md#postlistscolumns) | **Post** /lists/columns | Save the caller&#39;s visible columns and their order for a list; reset&#x3D;1 restores the default
 *ListsAPI* | [**PostListsLayout**](docs/ListsAPI.md#postlistslayout) | **Post** /lists/layout | Save the caller&#39;s layout of a split-view list: single (the list alone), split (the list beside the open record), or board (the kanban)
 *ListsAPI* | [**PostListsViews**](docs/ListsAPI.md#postlistsviews) | **Post** /lists/views | Save the current filters of a list as a named view of the caller (at most 20 per list, names unique per list)
@@ -138,6 +141,7 @@ Class | Method | HTTP request | Description
 *ProfileAPI* | [**PostProfileExternalDelete**](docs/ProfileAPI.md#postprofileexternaldelete) | **Post** /profile/external/{id}/delete | Remove an own external profile
 *ProfileAPI* | [**PostProfileExternalRevoke**](docs/ProfileAPI.md#postprofileexternalrevoke) | **Post** /profile/external/{id}/revoke | Revoke an own verified external profile
 *PublicAPI* | [**GetPublicEngagements**](docs/PublicAPI.md#getpublicengagements) | **Get** /public/engagements | Public engagement directory: every active or paused engagement as an anonymous viewer sees it; locked rows carry no scope and no rewards
+*PublicAPI* | [**GetPublicEngagementsByOrgSlugAndEngagementSlug**](docs/PublicAPI.md#getpublicengagementsbyorgslugandengagementslug) | **Get** /public/engagements/{org_slug}/{engagement_slug} | Public program page of a public active or paused engagement, without a session: the live version&#39;s program, scope, and bounty table, or only the summary while the briefing needs a sign-in (a verification level above email, or an NDA); 404 for every other engagement
 *PublicAPI* | [**GetPublicEngagementsLogo**](docs/PublicAPI.md#getpublicengagementslogo) | **Get** /public/engagements/{org_slug}/{engagement_slug}/logo | The organization logo of an engagement the public directory lists; 404 otherwise
 *PublicAPI* | [**GetPublicEventsLeaderboard**](docs/PublicAPI.md#getpubliceventsleaderboard) | **Get** /public/events/{event_slug}/leaderboard | The public leaderboard of a live hacking event: the event&#39;s numbers, the ranked participants (handles only where the researcher chose to be on leaderboards), and one card per partner program; 404 while the event keeps it to staff
 *ReportClaimAPI* | [**GetReportClaimByToken**](docs/ReportClaimAPI.md#getreportclaimbytoken) | **Get** /report-claim/{token} | The anonymous report a claim link names, for a researcher whose account email matches; 404 for an invalid, used, or expired link, 403 with fields.reason when a program gate or the email refuses
@@ -193,15 +197,20 @@ Class | Method | HTTP request | Description
  - [BadgeCatalogItem](docs/BadgeCatalogItem.md)
  - [BadgeCatalogItemList](docs/BadgeCatalogItemList.md)
  - [EngagementBadge](docs/EngagementBadge.md)
+ - [EngagementCVSSBand](docs/EngagementCVSSBand.md)
  - [EngagementDetail](docs/EngagementDetail.md)
  - [EngagementFile](docs/EngagementFile.md)
  - [EngagementLeaderboard](docs/EngagementLeaderboard.md)
  - [EngagementListItem](docs/EngagementListItem.md)
  - [EngagementListItemList](docs/EngagementListItemList.md)
+ - [EngagementProgram](docs/EngagementProgram.md)
  - [EngagementProxyMessage](docs/EngagementProxyMessage.md)
  - [EngagementProxyMessageList](docs/EngagementProxyMessageList.md)
+ - [EngagementPublicBounty](docs/EngagementPublicBounty.md)
+ - [EngagementPublicDetail](docs/EngagementPublicDetail.md)
  - [EngagementPublicItem](docs/EngagementPublicItem.md)
  - [EngagementPublicItemList](docs/EngagementPublicItemList.md)
+ - [EngagementScopeItem](docs/EngagementScopeItem.md)
  - [Error](docs/Error.md)
  - [EventPublicEntry](docs/EventPublicEntry.md)
  - [EventPublicLeaderboard](docs/EventPublicLeaderboard.md)

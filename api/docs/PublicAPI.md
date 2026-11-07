@@ -5,6 +5,7 @@ All URIs are relative to *https://app.gobugfree.com*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetPublicEngagements**](PublicAPI.md#GetPublicEngagements) | **Get** /public/engagements | Public engagement directory: every active or paused engagement as an anonymous viewer sees it; locked rows carry no scope and no rewards
+[**GetPublicEngagementsByOrgSlugAndEngagementSlug**](PublicAPI.md#GetPublicEngagementsByOrgSlugAndEngagementSlug) | **Get** /public/engagements/{org_slug}/{engagement_slug} | Public program page of a public active or paused engagement, without a session: the live version&#39;s program, scope, and bounty table, or only the summary while the briefing needs a sign-in (a verification level above email, or an NDA); 404 for every other engagement
 [**GetPublicEngagementsLogo**](PublicAPI.md#GetPublicEngagementsLogo) | **Get** /public/engagements/{org_slug}/{engagement_slug}/logo | The organization logo of an engagement the public directory lists; 404 otherwise
 [**GetPublicEventsLeaderboard**](PublicAPI.md#GetPublicEventsLeaderboard) | **Get** /public/events/{event_slug}/leaderboard | The public leaderboard of a live hacking event: the event&#39;s numbers, the ranked participants (handles only where the researcher chose to be on leaderboards), and one card per partner program; 404 while the event keeps it to staff
 
@@ -54,6 +55,77 @@ Other parameters are passed through a pointer to a apiGetPublicEngagementsReques
 ### Return type
 
 [**EngagementPublicItemList**](EngagementPublicItemList.md)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetPublicEngagementsByOrgSlugAndEngagementSlug
+
+> EngagementPublicDetail GetPublicEngagementsByOrgSlugAndEngagementSlug(ctx, orgSlug, engagementSlug).Execute()
+
+Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while the briefing needs a sign-in (a verification level above email, or an NDA); 404 for every other engagement
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.PublicAPI.GetPublicEngagementsByOrgSlugAndEngagementSlug(context.Background(), orgSlug, engagementSlug).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `PublicAPI.GetPublicEngagementsByOrgSlugAndEngagementSlug``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetPublicEngagementsByOrgSlugAndEngagementSlug`: EngagementPublicDetail
+	fmt.Fprintf(os.Stdout, "Response from `PublicAPI.GetPublicEngagementsByOrgSlugAndEngagementSlug`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPublicEngagementsByOrgSlugAndEngagementSlugRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**EngagementPublicDetail**](EngagementPublicDetail.md)
 
 ### Authorization
 
