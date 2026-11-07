@@ -27,7 +27,6 @@ type EngagementDetail struct {
 	BriefingAccessible bool `json:"briefingAccessible"`
 	Cleared bool `json:"cleared"`
 	CreatedAt time.Time `json:"createdAt"`
-	DisclosurePolicy string `json:"disclosurePolicy"`
 	EndsOn *time.Time `json:"endsOn,omitempty"`
 	Id string `json:"id"`
 	Kind string `json:"kind"`
@@ -55,12 +54,11 @@ type _EngagementDetail EngagementDetail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, disclosurePolicy string, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementDetail {
+func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementDetail {
 	this := EngagementDetail{}
 	this.BriefingAccessible = briefingAccessible
 	this.Cleared = cleared
 	this.CreatedAt = createdAt
-	this.DisclosurePolicy = disclosurePolicy
 	this.Id = id
 	this.Kind = kind
 	this.Locked = locked
@@ -251,30 +249,6 @@ func (o *EngagementDetail) GetCreatedAtOk() (*time.Time, bool) {
 // SetCreatedAt sets field value
 func (o *EngagementDetail) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
-}
-
-// GetDisclosurePolicy returns the DisclosurePolicy field value
-func (o *EngagementDetail) GetDisclosurePolicy() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.DisclosurePolicy
-}
-
-// GetDisclosurePolicyOk returns a tuple with the DisclosurePolicy field value
-// and a boolean to check if the value has been set.
-func (o *EngagementDetail) GetDisclosurePolicyOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.DisclosurePolicy, true
-}
-
-// SetDisclosurePolicy sets field value
-func (o *EngagementDetail) SetDisclosurePolicy(v string) {
-	o.DisclosurePolicy = v
 }
 
 // GetEndsOn returns the EndsOn field value if set, zero value otherwise.
@@ -771,7 +745,6 @@ func (o EngagementDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize["briefingAccessible"] = o.BriefingAccessible
 	toSerialize["cleared"] = o.Cleared
 	toSerialize["createdAt"] = o.CreatedAt
-	toSerialize["disclosurePolicy"] = o.DisclosurePolicy
 	if !IsNil(o.EndsOn) {
 		toSerialize["endsOn"] = o.EndsOn
 	}
@@ -816,7 +789,6 @@ func (o *EngagementDetail) UnmarshalJSON(data []byte) (err error) {
 		"briefingAccessible",
 		"cleared",
 		"createdAt",
-		"disclosurePolicy",
 		"id",
 		"kind",
 		"locked",
@@ -865,7 +837,6 @@ func (o *EngagementDetail) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "briefingAccessible")
 		delete(additionalProperties, "cleared")
 		delete(additionalProperties, "createdAt")
-		delete(additionalProperties, "disclosurePolicy")
 		delete(additionalProperties, "endsOn")
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "kind")

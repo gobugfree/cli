@@ -136,9 +136,6 @@
             "format": "date-time",
             "type": "string"
           },
-          "disclosurePolicy": {
-            "type": "string"
-          },
           "endsOn": {
             "format": "date-time",
             "type": "string"
@@ -207,7 +204,6 @@
           "title",
           "kind",
           "visibility",
-          "disclosurePolicy",
           "status",
           "createdAt",
           "updatedAt",

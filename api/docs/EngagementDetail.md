@@ -10,7 +10,6 @@ Name | Type | Description | Notes
 **BriefingAccessible** | **bool** |  | 
 **Cleared** | **bool** |  | 
 **CreatedAt** | **time.Time** |  | 
-**DisclosurePolicy** | **string** |  | 
 **EndsOn** | Pointer to **time.Time** |  | [optional] 
 **Id** | **string** |  | 
 **Kind** | **string** |  | 
@@ -34,7 +33,7 @@ Name | Type | Description | Notes
 
 ### NewEngagementDetail
 
-`func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, disclosurePolicy string, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementDetail`
+`func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementDetail`
 
 NewEngagementDetail instantiates a new EngagementDetail object
 This constructor will assign default values to properties that have it defined,
@@ -182,26 +181,6 @@ and a boolean to check if the value has been set.
 `func (o *EngagementDetail) SetCreatedAt(v time.Time)`
 
 SetCreatedAt sets CreatedAt field to given value.
-
-
-### GetDisclosurePolicy
-
-`func (o *EngagementDetail) GetDisclosurePolicy() string`
-
-GetDisclosurePolicy returns the DisclosurePolicy field if non-nil, zero value otherwise.
-
-### GetDisclosurePolicyOk
-
-`func (o *EngagementDetail) GetDisclosurePolicyOk() (*string, bool)`
-
-GetDisclosurePolicyOk returns a tuple with the DisclosurePolicy field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDisclosurePolicy
-
-`func (o *EngagementDetail) SetDisclosurePolicy(v string)`
-
-SetDisclosurePolicy sets DisclosurePolicy field to given value.
 
 
 ### GetEndsOn
