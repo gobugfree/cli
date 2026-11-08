@@ -61,7 +61,10 @@ docs/EventPublicPartner.md
 docs/EventPublicStats.md
 docs/Feedback.md
 docs/FeedbackAPI.md
+docs/FeedbackFile.md
 docs/FeedbackList.md
+docs/FeedbackMessage.md
+docs/FeedbackThread.md
 docs/HelpOperation.md
 docs/HelpTopic.md
 docs/LeaderboardAPI.md
@@ -159,7 +162,10 @@ model_event_public_leaderboard.go
 model_event_public_partner.go
 model_event_public_stats.go
 model_feedback.go
+model_feedback_file.go
 model_feedback_list.go
+model_feedback_message.go
+model_feedback_thread.go
 model_help_operation.go
 model_help_topic.go
 model_legacylink_link.go

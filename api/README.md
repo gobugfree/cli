@@ -101,8 +101,12 @@ Class | Method | HTTP request | Description
 *EngagementsAPI* | [**PostEngagementsRulesAccept**](docs/EngagementsAPI.md#postengagementsrulesaccept) | **Post** /engagements/{org_slug}/{engagement_slug}/rules/accept | Accept the engagement&#39;s published rules of engagement; required before submitting reports, re-required after a new version publishes
 *EngagementsAPI* | [**PostEngagementsSubmit**](docs/EngagementsAPI.md#postengagementssubmit) | **Post** /engagements/{org_slug}/{engagement_slug}/submit | Create and submit a vulnerability report in one call; members and, for active public engagements, fully onboarded researchers. 400 names the missing fields; 409 pending_budget_exceeded keeps the content as the draft named by draftId. To submit an existing draft use postReportsSubmit
 *EngagementsAPI* | [**PostEngagementsSubmitDraft**](docs/EngagementsAPI.md#postengagementssubmitdraft) | **Post** /engagements/{org_slug}/{engagement_slug}/submit/draft | Save a private draft report; no completeness validation, only a title is required. Submit it later with postReportsSubmit
-*FeedbackAPI* | [**GetFeedback**](docs/FeedbackAPI.md#getfeedback) | **Get** /feedback | The feedback overlay and the signed-in user&#39;s earlier feedback
+*FeedbackAPI* | [**GetFeedback**](docs/FeedbackAPI.md#getfeedback) | **Get** /feedback | The signed-in user&#39;s feedback threads, and the feedback overlay for htmx
+*FeedbackAPI* | [**GetFeedbackByFeedbackId**](docs/FeedbackAPI.md#getfeedbackbyfeedbackid) | **Get** /feedback/{feedback_id} | One of the signed-in user&#39;s feedback threads with its replies
+*FeedbackAPI* | [**GetFeedbackFilesByFileId**](docs/FeedbackAPI.md#getfeedbackfilesbyfileid) | **Get** /feedback/{feedback_id}/files/{file_id} | One file of the signed-in user&#39;s feedback thread: an image inline, anything else as a download
 *FeedbackAPI* | [**PostFeedback**](docs/FeedbackAPI.md#postfeedback) | **Post** /feedback | Send product feedback
+*FeedbackAPI* | [**PostFeedbackDelete**](docs/FeedbackAPI.md#postfeedbackdelete) | **Post** /feedback/{feedback_id}/delete | Delete one of the signed-in user&#39;s feedback threads with its replies
+*FeedbackAPI* | [**PostFeedbackReply**](docs/FeedbackAPI.md#postfeedbackreply) | **Post** /feedback/{feedback_id}/reply | Reply in one of the signed-in user&#39;s feedback threads
 *LeaderboardAPI* | [**GetLeaderboard**](docs/LeaderboardAPI.md#getleaderboard) | **Get** /leaderboard | The researcher leaderboard of the selected window; searchable by handle, sortable, paginated
 *LeaderboardAPI* | [**GetLeaderboardExport**](docs/LeaderboardAPI.md#getleaderboardexport) | **Get** /leaderboard/export | Download the filtered leaderboard as CSV or JSON
 *LegacyAPI* | [**GetLegacy**](docs/LegacyAPI.md#getlegacy) | **Get** /legacy | Where athena&#39;s home led: a redirect to the program list (JSON: the target)
@@ -217,7 +221,10 @@ Class | Method | HTTP request | Description
  - [EventPublicPartner](docs/EventPublicPartner.md)
  - [EventPublicStats](docs/EventPublicStats.md)
  - [Feedback](docs/Feedback.md)
+ - [FeedbackFile](docs/FeedbackFile.md)
  - [FeedbackList](docs/FeedbackList.md)
+ - [FeedbackMessage](docs/FeedbackMessage.md)
+ - [FeedbackThread](docs/FeedbackThread.md)
  - [HelpOperation](docs/HelpOperation.md)
  - [HelpTopic](docs/HelpTopic.md)
  - [LegacylinkLink](docs/LegacylinkLink.md)

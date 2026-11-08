@@ -4,19 +4,22 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AwaitingStaff** | **bool** |  | 
 **CreatedAt** | **string** |  | 
 **Id** | **int32** |  | 
 **Kind** | **string** |  | 
+**LastMessageAt** | **string** |  | 
 **Message** | **string** |  | 
 **Page** | Pointer to **string** |  | [optional] 
 **Rating** | Pointer to **int32** |  | [optional] 
+**ReplyCount** | **int32** |  | 
 **Status** | **string** |  | 
 
 ## Methods
 
 ### NewFeedback
 
-`func NewFeedback(createdAt string, id int32, kind string, message string, status string, ) *Feedback`
+`func NewFeedback(awaitingStaff bool, createdAt string, id int32, kind string, lastMessageAt string, message string, replyCount int32, status string, ) *Feedback`
 
 NewFeedback instantiates a new Feedback object
 This constructor will assign default values to properties that have it defined,
@@ -30,6 +33,26 @@ will change when the set of required properties is changed
 NewFeedbackWithDefaults instantiates a new Feedback object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetAwaitingStaff
+
+`func (o *Feedback) GetAwaitingStaff() bool`
+
+GetAwaitingStaff returns the AwaitingStaff field if non-nil, zero value otherwise.
+
+### GetAwaitingStaffOk
+
+`func (o *Feedback) GetAwaitingStaffOk() (*bool, bool)`
+
+GetAwaitingStaffOk returns a tuple with the AwaitingStaff field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAwaitingStaff
+
+`func (o *Feedback) SetAwaitingStaff(v bool)`
+
+SetAwaitingStaff sets AwaitingStaff field to given value.
+
 
 ### GetCreatedAt
 
@@ -89,6 +112,26 @@ and a boolean to check if the value has been set.
 `func (o *Feedback) SetKind(v string)`
 
 SetKind sets Kind field to given value.
+
+
+### GetLastMessageAt
+
+`func (o *Feedback) GetLastMessageAt() string`
+
+GetLastMessageAt returns the LastMessageAt field if non-nil, zero value otherwise.
+
+### GetLastMessageAtOk
+
+`func (o *Feedback) GetLastMessageAtOk() (*string, bool)`
+
+GetLastMessageAtOk returns a tuple with the LastMessageAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastMessageAt
+
+`func (o *Feedback) SetLastMessageAt(v string)`
+
+SetLastMessageAt sets LastMessageAt field to given value.
 
 
 ### GetMessage
@@ -160,6 +203,26 @@ SetRating sets Rating field to given value.
 `func (o *Feedback) HasRating() bool`
 
 HasRating returns a boolean if a field has been set.
+
+### GetReplyCount
+
+`func (o *Feedback) GetReplyCount() int32`
+
+GetReplyCount returns the ReplyCount field if non-nil, zero value otherwise.
+
+### GetReplyCountOk
+
+`func (o *Feedback) GetReplyCountOk() (*int32, bool)`
+
+GetReplyCountOk returns a tuple with the ReplyCount field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetReplyCount
+
+`func (o *Feedback) SetReplyCount(v int32)`
+
+SetReplyCount sets ReplyCount field to given value.
+
 
 ### GetStatus
 

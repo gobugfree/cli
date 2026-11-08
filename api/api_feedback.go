@@ -16,6 +16,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 
@@ -32,7 +33,7 @@ func (r FeedbackAPIGetFeedbackRequest) Execute() (*FeedbackList, *http.Response,
 }
 
 /*
-GetFeedback The feedback overlay and the signed-in user's earlier feedback
+GetFeedback The signed-in user's feedback threads, and the feedback overlay for htmx
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return FeedbackAPIGetFeedbackRequest
@@ -127,6 +128,217 @@ func (a *FeedbackAPIService) GetFeedbackExecute(r FeedbackAPIGetFeedbackRequest)
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type FeedbackAPIGetFeedbackByFeedbackIdRequest struct {
+	ctx context.Context
+	ApiService *FeedbackAPIService
+	feedbackId string
+}
+
+func (r FeedbackAPIGetFeedbackByFeedbackIdRequest) Execute() (*FeedbackThread, *http.Response, error) {
+	return r.ApiService.GetFeedbackByFeedbackIdExecute(r)
+}
+
+/*
+GetFeedbackByFeedbackId One of the signed-in user's feedback threads with its replies
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param feedbackId
+ @return FeedbackAPIGetFeedbackByFeedbackIdRequest
+*/
+func (a *FeedbackAPIService) GetFeedbackByFeedbackId(ctx context.Context, feedbackId string) FeedbackAPIGetFeedbackByFeedbackIdRequest {
+	return FeedbackAPIGetFeedbackByFeedbackIdRequest{
+		ApiService: a,
+		ctx: ctx,
+		feedbackId: feedbackId,
+	}
+}
+
+// Execute executes the request
+//  @return FeedbackThread
+func (a *FeedbackAPIService) GetFeedbackByFeedbackIdExecute(r FeedbackAPIGetFeedbackByFeedbackIdRequest) (*FeedbackThread, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FeedbackThread
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FeedbackAPIService.GetFeedbackByFeedbackId")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/feedback/{feedback_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"feedback_id"+"}", url.PathEscape(parameterValueToString(r.feedbackId, "feedbackId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type FeedbackAPIGetFeedbackFilesByFileIdRequest struct {
+	ctx context.Context
+	ApiService *FeedbackAPIService
+	feedbackId string
+	fileId string
+}
+
+func (r FeedbackAPIGetFeedbackFilesByFileIdRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetFeedbackFilesByFileIdExecute(r)
+}
+
+/*
+GetFeedbackFilesByFileId One file of the signed-in user's feedback thread: an image inline, anything else as a download
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param feedbackId
+ @param fileId
+ @return FeedbackAPIGetFeedbackFilesByFileIdRequest
+*/
+func (a *FeedbackAPIService) GetFeedbackFilesByFileId(ctx context.Context, feedbackId string, fileId string) FeedbackAPIGetFeedbackFilesByFileIdRequest {
+	return FeedbackAPIGetFeedbackFilesByFileIdRequest{
+		ApiService: a,
+		ctx: ctx,
+		feedbackId: feedbackId,
+		fileId: fileId,
+	}
+}
+
+// Execute executes the request
+func (a *FeedbackAPIService) GetFeedbackFilesByFileIdExecute(r FeedbackAPIGetFeedbackFilesByFileIdRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FeedbackAPIService.GetFeedbackFilesByFileId")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/feedback/{feedback_id}/files/{file_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"feedback_id"+"}", url.PathEscape(parameterValueToString(r.feedbackId, "feedbackId")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"file_id"+"}", url.PathEscape(parameterValueToString(r.fileId, "fileId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
 type FeedbackAPIPostFeedbackRequest struct {
 	ctx context.Context
 	ApiService *FeedbackAPIService
@@ -136,7 +348,7 @@ type FeedbackAPIPostFeedbackRequest struct {
 	rating *string
 }
 
-// bug, idea, praise, or other
+// bug, idea, question, praise, or other
 func (r FeedbackAPIPostFeedbackRequest) Kind(kind string) FeedbackAPIPostFeedbackRequest {
 	r.kind = &kind
 	return r
@@ -238,6 +450,230 @@ func (a *FeedbackAPIService) PostFeedbackExecute(r FeedbackAPIPostFeedbackReques
 	if r.rating != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "rating", r.rating, "", "")
 	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type FeedbackAPIPostFeedbackDeleteRequest struct {
+	ctx context.Context
+	ApiService *FeedbackAPIService
+	feedbackId string
+}
+
+func (r FeedbackAPIPostFeedbackDeleteRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostFeedbackDeleteExecute(r)
+}
+
+/*
+PostFeedbackDelete Delete one of the signed-in user's feedback threads with its replies
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param feedbackId
+ @return FeedbackAPIPostFeedbackDeleteRequest
+*/
+func (a *FeedbackAPIService) PostFeedbackDelete(ctx context.Context, feedbackId string) FeedbackAPIPostFeedbackDeleteRequest {
+	return FeedbackAPIPostFeedbackDeleteRequest{
+		ApiService: a,
+		ctx: ctx,
+		feedbackId: feedbackId,
+	}
+}
+
+// Execute executes the request
+func (a *FeedbackAPIService) PostFeedbackDeleteExecute(r FeedbackAPIPostFeedbackDeleteRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FeedbackAPIService.PostFeedbackDelete")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/feedback/{feedback_id}/delete"
+	localVarPath = strings.Replace(localVarPath, "{"+"feedback_id"+"}", url.PathEscape(parameterValueToString(r.feedbackId, "feedbackId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type FeedbackAPIPostFeedbackReplyRequest struct {
+	ctx context.Context
+	ApiService *FeedbackAPIService
+	feedbackId string
+	body *string
+}
+
+// The reply text
+func (r FeedbackAPIPostFeedbackReplyRequest) Body(body string) FeedbackAPIPostFeedbackReplyRequest {
+	r.body = &body
+	return r
+}
+
+func (r FeedbackAPIPostFeedbackReplyRequest) Execute() (*FeedbackThread, *http.Response, error) {
+	return r.ApiService.PostFeedbackReplyExecute(r)
+}
+
+/*
+PostFeedbackReply Reply in one of the signed-in user's feedback threads
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param feedbackId
+ @return FeedbackAPIPostFeedbackReplyRequest
+*/
+func (a *FeedbackAPIService) PostFeedbackReply(ctx context.Context, feedbackId string) FeedbackAPIPostFeedbackReplyRequest {
+	return FeedbackAPIPostFeedbackReplyRequest{
+		ApiService: a,
+		ctx: ctx,
+		feedbackId: feedbackId,
+	}
+}
+
+// Execute executes the request
+//  @return FeedbackThread
+func (a *FeedbackAPIService) PostFeedbackReplyExecute(r FeedbackAPIPostFeedbackReplyRequest) (*FeedbackThread, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *FeedbackThread
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FeedbackAPIService.PostFeedbackReply")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/feedback/{feedback_id}/reply"
+	localVarPath = strings.Replace(localVarPath, "{"+"feedback_id"+"}", url.PathEscape(parameterValueToString(r.feedbackId, "feedbackId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.body == nil {
+		return localVarReturnValue, nil, reportError("body is required and must be specified")
+	}
+	if strlen(*r.body) < 1 {
+		return localVarReturnValue, nil, reportError("body must have at least 1 elements")
+	}
+	if strlen(*r.body) > 4000 {
+		return localVarReturnValue, nil, reportError("body must have less than 4000 elements")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/x-www-form-urlencoded"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	parameterAddToHeaderOrQuery(localVarFormParams, "body", r.body, "", "")
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err

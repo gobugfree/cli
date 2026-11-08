@@ -20,12 +20,15 @@ var _ MappedNullable = &Feedback{}
 
 // Feedback struct for Feedback
 type Feedback struct {
+	AwaitingStaff bool `json:"awaitingStaff"`
 	CreatedAt string `json:"createdAt"`
 	Id int32 `json:"id"`
 	Kind string `json:"kind"`
+	LastMessageAt string `json:"lastMessageAt"`
 	Message string `json:"message"`
 	Page *string `json:"page,omitempty"`
 	Rating *int32 `json:"rating,omitempty"`
+	ReplyCount int32 `json:"replyCount"`
 	Status string `json:"status"`
 	AdditionalProperties map[string]interface{}
 }
@@ -36,12 +39,15 @@ type _Feedback Feedback
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewFeedback(createdAt string, id int32, kind string, message string, status string) *Feedback {
+func NewFeedback(awaitingStaff bool, createdAt string, id int32, kind string, lastMessageAt string, message string, replyCount int32, status string) *Feedback {
 	this := Feedback{}
+	this.AwaitingStaff = awaitingStaff
 	this.CreatedAt = createdAt
 	this.Id = id
 	this.Kind = kind
+	this.LastMessageAt = lastMessageAt
 	this.Message = message
+	this.ReplyCount = replyCount
 	this.Status = status
 	return &this
 }
@@ -52,6 +58,30 @@ func NewFeedback(createdAt string, id int32, kind string, message string, status
 func NewFeedbackWithDefaults() *Feedback {
 	this := Feedback{}
 	return &this
+}
+
+// GetAwaitingStaff returns the AwaitingStaff field value
+func (o *Feedback) GetAwaitingStaff() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.AwaitingStaff
+}
+
+// GetAwaitingStaffOk returns a tuple with the AwaitingStaff field value
+// and a boolean to check if the value has been set.
+func (o *Feedback) GetAwaitingStaffOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.AwaitingStaff, true
+}
+
+// SetAwaitingStaff sets field value
+func (o *Feedback) SetAwaitingStaff(v bool) {
+	o.AwaitingStaff = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -124,6 +154,30 @@ func (o *Feedback) GetKindOk() (*string, bool) {
 // SetKind sets field value
 func (o *Feedback) SetKind(v string) {
 	o.Kind = v
+}
+
+// GetLastMessageAt returns the LastMessageAt field value
+func (o *Feedback) GetLastMessageAt() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.LastMessageAt
+}
+
+// GetLastMessageAtOk returns a tuple with the LastMessageAt field value
+// and a boolean to check if the value has been set.
+func (o *Feedback) GetLastMessageAtOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.LastMessageAt, true
+}
+
+// SetLastMessageAt sets field value
+func (o *Feedback) SetLastMessageAt(v string) {
+	o.LastMessageAt = v
 }
 
 // GetMessage returns the Message field value
@@ -214,6 +268,30 @@ func (o *Feedback) SetRating(v int32) {
 	o.Rating = &v
 }
 
+// GetReplyCount returns the ReplyCount field value
+func (o *Feedback) GetReplyCount() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.ReplyCount
+}
+
+// GetReplyCountOk returns a tuple with the ReplyCount field value
+// and a boolean to check if the value has been set.
+func (o *Feedback) GetReplyCountOk() (*int32, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.ReplyCount, true
+}
+
+// SetReplyCount sets field value
+func (o *Feedback) SetReplyCount(v int32) {
+	o.ReplyCount = v
+}
+
 // GetStatus returns the Status field value
 func (o *Feedback) GetStatus() string {
 	if o == nil {
@@ -248,9 +326,11 @@ func (o Feedback) MarshalJSON() ([]byte, error) {
 
 func (o Feedback) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	toSerialize["awaitingStaff"] = o.AwaitingStaff
 	toSerialize["createdAt"] = o.CreatedAt
 	toSerialize["id"] = o.Id
 	toSerialize["kind"] = o.Kind
+	toSerialize["lastMessageAt"] = o.LastMessageAt
 	toSerialize["message"] = o.Message
 	if !IsNil(o.Page) {
 		toSerialize["page"] = o.Page
@@ -258,6 +338,7 @@ func (o Feedback) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Rating) {
 		toSerialize["rating"] = o.Rating
 	}
+	toSerialize["replyCount"] = o.ReplyCount
 	toSerialize["status"] = o.Status
 
 	for key, value := range o.AdditionalProperties {
@@ -272,10 +353,13 @@ func (o *Feedback) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"awaitingStaff",
 		"createdAt",
 		"id",
 		"kind",
+		"lastMessageAt",
 		"message",
+		"replyCount",
 		"status",
 	}
 
@@ -306,12 +390,15 @@ func (o *Feedback) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "awaitingStaff")
 		delete(additionalProperties, "createdAt")
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "kind")
+		delete(additionalProperties, "lastMessageAt")
 		delete(additionalProperties, "message")
 		delete(additionalProperties, "page")
 		delete(additionalProperties, "rating")
+		delete(additionalProperties, "replyCount")
 		delete(additionalProperties, "status")
 		o.AdditionalProperties = additionalProperties
 	}

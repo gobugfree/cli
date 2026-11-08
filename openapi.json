@@ -863,6 +863,9 @@
       },
       "Feedback": {
         "properties": {
+          "awaitingStaff": {
+            "type": "boolean"
+          },
           "createdAt": {
             "type": "string"
           },
@@ -870,6 +873,9 @@
             "type": "integer"
           },
           "kind": {
+            "type": "string"
+          },
+          "lastMessageAt": {
             "type": "string"
           },
           "message": {
@@ -881,6 +887,9 @@
           "rating": {
             "type": "integer"
           },
+          "replyCount": {
+            "type": "integer"
+          },
           "status": {
             "type": "string"
           }
@@ -890,7 +899,37 @@
           "kind",
           "message",
           "status",
+          "replyCount",
+          "lastMessageAt",
+          "awaitingStaff",
           "createdAt"
+        ],
+        "type": "object"
+      },
+      "FeedbackFile": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "mimeType",
+          "size",
+          "url"
         ],
         "type": "object"
       },
@@ -905,6 +944,65 @@
         },
         "required": [
           "items"
+        ],
+        "type": "object"
+      },
+      "FeedbackMessage": {
+        "properties": {
+          "author": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "byStaff": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/FeedbackFile"
+            },
+            "type": "array"
+          },
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "author",
+          "byStaff",
+          "body",
+          "files",
+          "createdAt"
+        ],
+        "type": "object"
+      },
+      "FeedbackThread": {
+        "properties": {
+          "feedback": {
+            "$ref": "#/components/schemas/Feedback"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/FeedbackFile"
+            },
+            "type": "array"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/FeedbackMessage"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "feedback",
+          "files",
+          "messages"
         ],
         "type": "object"
       },
@@ -3987,7 +4085,7 @@
             "description": "Error"
           }
         },
-        "summary": "The feedback overlay and the signed-in user's earlier feedback",
+        "summary": "The signed-in user's feedback threads, and the feedback overlay for htmx",
         "tags": [
           "feedback"
         ]
@@ -4000,10 +4098,11 @@
               "schema": {
                 "properties": {
                   "kind": {
-                    "description": "bug, idea, praise, or other",
+                    "description": "bug, idea, question, praise, or other",
                     "enum": [
                       "bug",
                       "idea",
+                      "question",
                       "praise",
                       "other"
                     ],
@@ -4066,6 +4165,185 @@
           }
         },
         "summary": "Send product feedback",
+        "tags": [
+          "feedback"
+        ]
+      }
+    },
+    "/feedback/{feedback_id}": {
+      "get": {
+        "operationId": "getFeedbackByFeedbackId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "feedback_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackThread"
+                }
+              }
+            },
+            "description": "The thread"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "One of the signed-in user's feedback threads with its replies",
+        "tags": [
+          "feedback"
+        ]
+      }
+    },
+    "/feedback/{feedback_id}/delete": {
+      "post": {
+        "operationId": "postFeedbackDelete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "feedback_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Delete one of the signed-in user's feedback threads with its replies",
+        "tags": [
+          "feedback"
+        ]
+      }
+    },
+    "/feedback/{feedback_id}/files/{file_id}": {
+      "get": {
+        "operationId": "getFeedbackFilesByFileId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "feedback_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "file_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "One file of the signed-in user's feedback thread: an image inline, anything else as a download",
+        "tags": [
+          "feedback"
+        ]
+      }
+    },
+    "/feedback/{feedback_id}/reply": {
+      "post": {
+        "operationId": "postFeedbackReply",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "feedback_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "body": {
+                    "description": "The reply text",
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "body"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackThread"
+                }
+              }
+            },
+            "description": "The thread with the reply"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Reply in one of the signed-in user's feedback threads",
         "tags": [
           "feedback"
         ]
