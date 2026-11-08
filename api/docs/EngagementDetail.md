@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Cleared** | **bool** |  | 
 **CreatedAt** | **time.Time** |  | 
 **EndsOn** | Pointer to **time.Time** |  | [optional] 
+**Hidden** | **bool** |  | 
 **Id** | **string** |  | 
 **Kind** | **string** |  | 
 **Leaderboard** | Pointer to [**[]EngagementLeaderboard**](EngagementLeaderboard.md) |  | [optional] 
@@ -33,7 +34,7 @@ Name | Type | Description | Notes
 
 ### NewEngagementDetail
 
-`func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementDetail`
+`func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, hidden bool, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementDetail`
 
 NewEngagementDetail instantiates a new EngagementDetail object
 This constructor will assign default values to properties that have it defined,
@@ -207,6 +208,26 @@ SetEndsOn sets EndsOn field to given value.
 `func (o *EngagementDetail) HasEndsOn() bool`
 
 HasEndsOn returns a boolean if a field has been set.
+
+### GetHidden
+
+`func (o *EngagementDetail) GetHidden() bool`
+
+GetHidden returns the Hidden field if non-nil, zero value otherwise.
+
+### GetHiddenOk
+
+`func (o *EngagementDetail) GetHiddenOk() (*bool, bool)`
+
+GetHiddenOk returns a tuple with the Hidden field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHidden
+
+`func (o *EngagementDetail) SetHidden(v bool)`
+
+SetHidden sets Hidden field to given value.
+
 
 ### GetId
 

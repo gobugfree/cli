@@ -22,6 +22,7 @@ var _ MappedNullable = &EngagementListItem{}
 // EngagementListItem struct for EngagementListItem
 type EngagementListItem struct {
 	Badges []EngagementBadge `json:"badges,omitempty"`
+	Hidden bool `json:"hidden"`
 	Id string `json:"id"`
 	Industry *string `json:"industry,omitempty"`
 	Invited bool `json:"invited"`
@@ -49,8 +50,9 @@ type _EngagementListItem EngagementListItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementListItem {
+func NewEngagementListItem(hidden bool, id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementListItem {
 	this := EngagementListItem{}
+	this.Hidden = hidden
 	this.Id = id
 	this.Invited = invited
 	this.Kind = kind
@@ -104,6 +106,30 @@ func (o *EngagementListItem) HasBadges() bool {
 // SetBadges gets a reference to the given []EngagementBadge and assigns it to the Badges field.
 func (o *EngagementListItem) SetBadges(v []EngagementBadge) {
 	o.Badges = v
+}
+
+// GetHidden returns the Hidden field value
+func (o *EngagementListItem) GetHidden() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Hidden
+}
+
+// GetHiddenOk returns a tuple with the Hidden field value
+// and a boolean to check if the value has been set.
+func (o *EngagementListItem) GetHiddenOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Hidden, true
+}
+
+// SetHidden sets field value
+func (o *EngagementListItem) SetHidden(v bool) {
+	o.Hidden = v
 }
 
 // GetId returns the Id field value
@@ -599,6 +625,7 @@ func (o EngagementListItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Badges) {
 		toSerialize["badges"] = o.Badges
 	}
+	toSerialize["hidden"] = o.Hidden
 	toSerialize["id"] = o.Id
 	if !IsNil(o.Industry) {
 		toSerialize["industry"] = o.Industry
@@ -642,6 +669,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"hidden",
 		"id",
 		"invited",
 		"kind",
@@ -684,6 +712,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "badges")
+		delete(additionalProperties, "hidden")
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "industry")
 		delete(additionalProperties, "invited")

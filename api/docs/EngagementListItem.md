@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Badges** | Pointer to [**[]EngagementBadge**](EngagementBadge.md) |  | [optional] 
+**Hidden** | **bool** |  | 
 **Id** | **string** |  | 
 **Industry** | Pointer to **string** |  | [optional] 
 **Invited** | **bool** |  | 
@@ -28,7 +29,7 @@ Name | Type | Description | Notes
 
 ### NewEngagementListItem
 
-`func NewEngagementListItem(id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementListItem`
+`func NewEngagementListItem(hidden bool, id string, invited bool, kind string, locked bool, member bool, orgName string, orgSlug string, slug string, status string, title string, updatedAt time.Time, visibility string, ) *EngagementListItem`
 
 NewEngagementListItem instantiates a new EngagementListItem object
 This constructor will assign default values to properties that have it defined,
@@ -67,6 +68,26 @@ SetBadges sets Badges field to given value.
 `func (o *EngagementListItem) HasBadges() bool`
 
 HasBadges returns a boolean if a field has been set.
+
+### GetHidden
+
+`func (o *EngagementListItem) GetHidden() bool`
+
+GetHidden returns the Hidden field if non-nil, zero value otherwise.
+
+### GetHiddenOk
+
+`func (o *EngagementListItem) GetHiddenOk() (*bool, bool)`
+
+GetHiddenOk returns a tuple with the Hidden field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetHidden
+
+`func (o *EngagementListItem) SetHidden(v bool)`
+
+SetHidden sets Hidden field to given value.
+
 
 ### GetId
 

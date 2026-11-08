@@ -140,7 +140,7 @@ func (r EngagementsAPIGetEngagementsByOrgSlugAndEngagementSlugRequest) Execute()
 }
 
 /*
-GetEngagementsByOrgSlugAndEngagementSlug Engagement detail; public engagements for any user, full details of other engagements for members only (ADR-0009); non-members of a private or invite_only engagement, and pending invitees, get the locked teaser with locked true and access, everyone else 404
+GetEngagementsByOrgSlugAndEngagementSlug Engagement detail; public engagements for any user, hidden or not, full details of other engagements for members only (ADR-0009); non-members of a listed private or invite_only engagement or of a hidden private one, and pending invitees, get the locked teaser with locked true and access, everyone else 404
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param orgSlug

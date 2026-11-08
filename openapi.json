@@ -159,6 +159,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "hidden": {
+            "type": "boolean"
+          },
           "id": {
             "format": "uuid",
             "type": "string"
@@ -223,6 +226,7 @@
           "title",
           "kind",
           "visibility",
+          "hidden",
           "status",
           "createdAt",
           "updatedAt",
@@ -282,6 +286,9 @@
               "$ref": "#/components/schemas/EngagementBadge"
             },
             "type": "array"
+          },
+          "hidden": {
+            "type": "boolean"
           },
           "id": {
             "format": "uuid",
@@ -351,6 +358,7 @@
           "title",
           "kind",
           "visibility",
+          "hidden",
           "status",
           "member",
           "locked",
@@ -3262,7 +3270,7 @@
             "description": "Error"
           }
         },
-        "summary": "Engagement detail; public engagements for any user, full details of other engagements for members only (ADR-0009); non-members of a private or invite_only engagement, and pending invitees, get the locked teaser with locked true and access, everyone else 404",
+        "summary": "Engagement detail; public engagements for any user, hidden or not, full details of other engagements for members only (ADR-0009); non-members of a listed private or invite_only engagement or of a hidden private one, and pending invitees, get the locked teaser with locked true and access, everyone else 404",
         "tags": [
           "engagements"
         ]

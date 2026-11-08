@@ -28,6 +28,7 @@ type EngagementDetail struct {
 	Cleared bool `json:"cleared"`
 	CreatedAt time.Time `json:"createdAt"`
 	EndsOn *time.Time `json:"endsOn,omitempty"`
+	Hidden bool `json:"hidden"`
 	Id string `json:"id"`
 	Kind string `json:"kind"`
 	Leaderboard []EngagementLeaderboard `json:"leaderboard,omitempty"`
@@ -54,11 +55,12 @@ type _EngagementDetail EngagementDetail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementDetail {
+func NewEngagementDetail(briefingAccessible bool, cleared bool, createdAt time.Time, hidden bool, id string, kind string, locked bool, messageProxyEnabled bool, ndaAccepted bool, ndaRequired bool, requiredVerificationLevel string, rulesAccepted bool, slug string, status string, title string, updatedAt time.Time, visibility string) *EngagementDetail {
 	this := EngagementDetail{}
 	this.BriefingAccessible = briefingAccessible
 	this.Cleared = cleared
 	this.CreatedAt = createdAt
+	this.Hidden = hidden
 	this.Id = id
 	this.Kind = kind
 	this.Locked = locked
@@ -281,6 +283,30 @@ func (o *EngagementDetail) HasEndsOn() bool {
 // SetEndsOn gets a reference to the given time.Time and assigns it to the EndsOn field.
 func (o *EngagementDetail) SetEndsOn(v time.Time) {
 	o.EndsOn = &v
+}
+
+// GetHidden returns the Hidden field value
+func (o *EngagementDetail) GetHidden() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Hidden
+}
+
+// GetHiddenOk returns a tuple with the Hidden field value
+// and a boolean to check if the value has been set.
+func (o *EngagementDetail) GetHiddenOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Hidden, true
+}
+
+// SetHidden sets field value
+func (o *EngagementDetail) SetHidden(v bool) {
+	o.Hidden = v
 }
 
 // GetId returns the Id field value
@@ -748,6 +774,7 @@ func (o EngagementDetail) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.EndsOn) {
 		toSerialize["endsOn"] = o.EndsOn
 	}
+	toSerialize["hidden"] = o.Hidden
 	toSerialize["id"] = o.Id
 	toSerialize["kind"] = o.Kind
 	if !IsNil(o.Leaderboard) {
@@ -789,6 +816,7 @@ func (o *EngagementDetail) UnmarshalJSON(data []byte) (err error) {
 		"briefingAccessible",
 		"cleared",
 		"createdAt",
+		"hidden",
 		"id",
 		"kind",
 		"locked",
@@ -838,6 +866,7 @@ func (o *EngagementDetail) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "cleared")
 		delete(additionalProperties, "createdAt")
 		delete(additionalProperties, "endsOn")
+		delete(additionalProperties, "hidden")
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "kind")
 		delete(additionalProperties, "leaderboard")
