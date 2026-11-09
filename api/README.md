@@ -107,8 +107,7 @@ Class | Method | HTTP request | Description
 *FeedbackAPI* | [**PostFeedback**](docs/FeedbackAPI.md#postfeedback) | **Post** /feedback | Send product feedback
 *FeedbackAPI* | [**PostFeedbackDelete**](docs/FeedbackAPI.md#postfeedbackdelete) | **Post** /feedback/{feedback_id}/delete | Delete one of the signed-in user&#39;s feedback threads with its replies
 *FeedbackAPI* | [**PostFeedbackReply**](docs/FeedbackAPI.md#postfeedbackreply) | **Post** /feedback/{feedback_id}/reply | Reply in one of the signed-in user&#39;s feedback threads
-*LeaderboardAPI* | [**GetLeaderboard**](docs/LeaderboardAPI.md#getleaderboard) | **Get** /leaderboard | The researcher leaderboard of the selected window; searchable by handle, sortable, paginated
-*LeaderboardAPI* | [**GetLeaderboardExport**](docs/LeaderboardAPI.md#getleaderboardexport) | **Get** /leaderboard/export | Download the filtered leaderboard as CSV or JSON
+*LeaderboardAPI* | [**GetLeaderboard**](docs/LeaderboardAPI.md#getleaderboard) | **Get** /leaderboard | The researcher leaderboard of the selected window; sortable, paginated
 *LegacyAPI* | [**GetLegacy**](docs/LegacyAPI.md#getlegacy) | **Get** /legacy | Where athena&#39;s home led: a redirect to the program list (JSON: the target)
 *LegacyAPI* | [**GetLegacyByRest**](docs/LegacyAPI.md#getlegacybyrest) | **Get** /legacy/{rest} | Where an athena link leads: a redirect to the report its id maps to, or to the page that replaced athena&#39;s (JSON: the target, 404 for an unknown id or path)
 *LegacyAPI* | [**GetLegacyEmbeddedSubmit**](docs/LegacyAPI.md#getlegacyembeddedsubmit) | **Get** /legacy/embedded/{program}/submit | Where athena&#39;s embedded submission form leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)

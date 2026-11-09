@@ -1064,23 +1064,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Error
-      summary: "The researcher leaderboard of the selected window; searchable by handle,\
-        \ sortable, paginated"
-      tags:
-      - leaderboard
-  /leaderboard/export:
-    get:
-      operationId: getLeaderboardExport
-      responses:
-        "200":
-          description: "JSON when the request accepts application/json, HTML otherwise."
-        default:
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Error
-      summary: Download the filtered leaderboard as CSV or JSON
+      summary: "The researcher leaderboard of the selected window; sortable, paginated"
       tags:
       - leaderboard
   /legacy:
