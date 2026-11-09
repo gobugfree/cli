@@ -22,6 +22,7 @@ var _ MappedNullable = &EngagementListItem{}
 // EngagementListItem struct for EngagementListItem
 type EngagementListItem struct {
 	Badges []EngagementBadge `json:"badges,omitempty"`
+	EndsOn *string `json:"endsOn,omitempty"`
 	Hidden bool `json:"hidden"`
 	Id string `json:"id"`
 	Industry *string `json:"industry,omitempty"`
@@ -36,6 +37,7 @@ type EngagementListItem struct {
 	RewardMin *float32 `json:"rewardMin,omitempty"`
 	ScopeKinds []string `json:"scopeKinds,omitempty"`
 	Slug string `json:"slug"`
+	StartsOn *string `json:"startsOn,omitempty"`
 	Status string `json:"status"`
 	Summary *string `json:"summary,omitempty"`
 	Title string `json:"title"`
@@ -106,6 +108,38 @@ func (o *EngagementListItem) HasBadges() bool {
 // SetBadges gets a reference to the given []EngagementBadge and assigns it to the Badges field.
 func (o *EngagementListItem) SetBadges(v []EngagementBadge) {
 	o.Badges = v
+}
+
+// GetEndsOn returns the EndsOn field value if set, zero value otherwise.
+func (o *EngagementListItem) GetEndsOn() string {
+	if o == nil || IsNil(o.EndsOn) {
+		var ret string
+		return ret
+	}
+	return *o.EndsOn
+}
+
+// GetEndsOnOk returns a tuple with the EndsOn field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EngagementListItem) GetEndsOnOk() (*string, bool) {
+	if o == nil || IsNil(o.EndsOn) {
+		return nil, false
+	}
+	return o.EndsOn, true
+}
+
+// HasEndsOn returns a boolean if a field has been set.
+func (o *EngagementListItem) HasEndsOn() bool {
+	if o != nil && !IsNil(o.EndsOn) {
+		return true
+	}
+
+	return false
+}
+
+// SetEndsOn gets a reference to the given string and assigns it to the EndsOn field.
+func (o *EngagementListItem) SetEndsOn(v string) {
+	o.EndsOn = &v
 }
 
 // GetHidden returns the Hidden field value
@@ -484,6 +518,38 @@ func (o *EngagementListItem) SetSlug(v string) {
 	o.Slug = v
 }
 
+// GetStartsOn returns the StartsOn field value if set, zero value otherwise.
+func (o *EngagementListItem) GetStartsOn() string {
+	if o == nil || IsNil(o.StartsOn) {
+		var ret string
+		return ret
+	}
+	return *o.StartsOn
+}
+
+// GetStartsOnOk returns a tuple with the StartsOn field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EngagementListItem) GetStartsOnOk() (*string, bool) {
+	if o == nil || IsNil(o.StartsOn) {
+		return nil, false
+	}
+	return o.StartsOn, true
+}
+
+// HasStartsOn returns a boolean if a field has been set.
+func (o *EngagementListItem) HasStartsOn() bool {
+	if o != nil && !IsNil(o.StartsOn) {
+		return true
+	}
+
+	return false
+}
+
+// SetStartsOn gets a reference to the given string and assigns it to the StartsOn field.
+func (o *EngagementListItem) SetStartsOn(v string) {
+	o.StartsOn = &v
+}
+
 // GetStatus returns the Status field value
 func (o *EngagementListItem) GetStatus() string {
 	if o == nil {
@@ -625,6 +691,9 @@ func (o EngagementListItem) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Badges) {
 		toSerialize["badges"] = o.Badges
 	}
+	if !IsNil(o.EndsOn) {
+		toSerialize["endsOn"] = o.EndsOn
+	}
 	toSerialize["hidden"] = o.Hidden
 	toSerialize["id"] = o.Id
 	if !IsNil(o.Industry) {
@@ -649,6 +718,9 @@ func (o EngagementListItem) ToMap() (map[string]interface{}, error) {
 		toSerialize["scopeKinds"] = o.ScopeKinds
 	}
 	toSerialize["slug"] = o.Slug
+	if !IsNil(o.StartsOn) {
+		toSerialize["startsOn"] = o.StartsOn
+	}
 	toSerialize["status"] = o.Status
 	if !IsNil(o.Summary) {
 		toSerialize["summary"] = o.Summary
@@ -712,6 +784,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
 		delete(additionalProperties, "badges")
+		delete(additionalProperties, "endsOn")
 		delete(additionalProperties, "hidden")
 		delete(additionalProperties, "id")
 		delete(additionalProperties, "industry")
@@ -726,6 +799,7 @@ func (o *EngagementListItem) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "rewardMin")
 		delete(additionalProperties, "scopeKinds")
 		delete(additionalProperties, "slug")
+		delete(additionalProperties, "startsOn")
 		delete(additionalProperties, "status")
 		delete(additionalProperties, "summary")
 		delete(additionalProperties, "title")

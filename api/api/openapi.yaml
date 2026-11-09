@@ -3738,6 +3738,7 @@ components:
           text: text
         - color: color
           text: text
+        endsOn: endsOn
         hidden: true
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         industry: industry
@@ -3754,6 +3755,7 @@ components:
         - scopeKinds
         - scopeKinds
         slug: slug
+        startsOn: startsOn
         status: status
         summary: summary
         title: title
@@ -3765,6 +3767,8 @@ components:
             $ref: "#/components/schemas/EngagementBadge"
           type: array
           default: null
+        endsOn:
+          type: string
         hidden:
           type: boolean
         id:
@@ -3796,6 +3800,8 @@ components:
           type: array
           default: null
         slug:
+          type: string
+        startsOn:
           type: string
         status:
           type: string
@@ -3830,6 +3836,7 @@ components:
             text: text
           - color: color
             text: text
+          endsOn: endsOn
           hidden: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           industry: industry
@@ -3846,6 +3853,7 @@ components:
           - scopeKinds
           - scopeKinds
           slug: slug
+          startsOn: startsOn
           status: status
           summary: summary
           title: title
@@ -3856,6 +3864,7 @@ components:
             text: text
           - color: color
             text: text
+          endsOn: endsOn
           hidden: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           industry: industry
@@ -3872,6 +3881,7 @@ components:
           - scopeKinds
           - scopeKinds
           slug: slug
+          startsOn: startsOn
           status: status
           summary: summary
           title: title

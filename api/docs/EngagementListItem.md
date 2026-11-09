@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Badges** | Pointer to [**[]EngagementBadge**](EngagementBadge.md) |  | [optional] 
+**EndsOn** | Pointer to **string** |  | [optional] 
 **Hidden** | **bool** |  | 
 **Id** | **string** |  | 
 **Industry** | Pointer to **string** |  | [optional] 
@@ -19,6 +20,7 @@ Name | Type | Description | Notes
 **RewardMin** | Pointer to **float32** |  | [optional] 
 **ScopeKinds** | Pointer to **[]string** |  | [optional] 
 **Slug** | **string** |  | 
+**StartsOn** | Pointer to **string** |  | [optional] 
 **Status** | **string** |  | 
 **Summary** | Pointer to **string** |  | [optional] 
 **Title** | **string** |  | 
@@ -68,6 +70,31 @@ SetBadges sets Badges field to given value.
 `func (o *EngagementListItem) HasBadges() bool`
 
 HasBadges returns a boolean if a field has been set.
+
+### GetEndsOn
+
+`func (o *EngagementListItem) GetEndsOn() string`
+
+GetEndsOn returns the EndsOn field if non-nil, zero value otherwise.
+
+### GetEndsOnOk
+
+`func (o *EngagementListItem) GetEndsOnOk() (*string, bool)`
+
+GetEndsOnOk returns a tuple with the EndsOn field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetEndsOn
+
+`func (o *EngagementListItem) SetEndsOn(v string)`
+
+SetEndsOn sets EndsOn field to given value.
+
+### HasEndsOn
+
+`func (o *EngagementListItem) HasEndsOn() bool`
+
+HasEndsOn returns a boolean if a field has been set.
 
 ### GetHidden
 
@@ -373,6 +400,31 @@ and a boolean to check if the value has been set.
 
 SetSlug sets Slug field to given value.
 
+
+### GetStartsOn
+
+`func (o *EngagementListItem) GetStartsOn() string`
+
+GetStartsOn returns the StartsOn field if non-nil, zero value otherwise.
+
+### GetStartsOnOk
+
+`func (o *EngagementListItem) GetStartsOnOk() (*string, bool)`
+
+GetStartsOnOk returns a tuple with the StartsOn field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetStartsOn
+
+`func (o *EngagementListItem) SetStartsOn(v string)`
+
+SetStartsOn sets StartsOn field to given value.
+
+### HasStartsOn
+
+`func (o *EngagementListItem) HasStartsOn() bool`
+
+HasStartsOn returns a boolean if a field has been set.
 
 ### GetStatus
 

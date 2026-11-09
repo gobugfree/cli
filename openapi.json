@@ -287,6 +287,9 @@
             },
             "type": "array"
           },
+          "endsOn": {
+            "type": "string"
+          },
           "hidden": {
             "type": "boolean"
           },
@@ -331,6 +334,9 @@
             "type": "array"
           },
           "slug": {
+            "type": "string"
+          },
+          "startsOn": {
             "type": "string"
           },
           "status": {
