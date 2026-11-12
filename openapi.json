@@ -6294,7 +6294,7 @@
             "description": "Error"
           }
         },
-        "summary": "Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while the briefing needs a sign-in (a verification level above email, or an NDA); 404 for every other engagement",
+        "summary": "Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; 404 for every other engagement",
         "tags": [
           "public"
         ]
