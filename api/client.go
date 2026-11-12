@@ -63,6 +63,8 @@ type APIClient struct {
 
 	EngagementsAPI *EngagementsAPIService
 
+	EventInviteAPI *EventInviteAPIService
+
 	FeedbackAPI *FeedbackAPIService
 
 	LeaderboardAPI *LeaderboardAPIService
@@ -125,6 +127,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.DomainConfirmationAPI = (*DomainConfirmationAPIService)(&c.common)
 	c.EmbedAPI = (*EmbedAPIService)(&c.common)
 	c.EngagementsAPI = (*EngagementsAPIService)(&c.common)
+	c.EventInviteAPI = (*EventInviteAPIService)(&c.common)
 	c.FeedbackAPI = (*FeedbackAPIService)(&c.common)
 	c.LeaderboardAPI = (*LeaderboardAPIService)(&c.common)
 	c.LegacyAPI = (*LegacyAPIService)(&c.common)

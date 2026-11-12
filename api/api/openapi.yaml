@@ -865,6 +865,88 @@ paths:
         \ is required. Submit it later with postReportsSubmit"
       tags:
       - engagements
+  /event-invite/{token}:
+    get:
+      operationId: getEventInviteByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventInvite"
+          description: The event the link names
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The live hacking event an invite link names, with its window and its\
+        \ programs, served without a session too; 404 for an unknown, replaced, or\
+        \ revoked link and once the event ended"
+      tags:
+      - event-invite
+    post:
+      operationId: postEventInviteByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventInvite"
+          description: The joined event
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Accept the invite link: the caller joins the event's roster and is\
+        \ admitted to every bundled engagement; accepting twice changes nothing; without\
+        \ a session a browser is sent to the sign-in and joins on the way back, a\
+        \ JSON caller gets 401"
+      tags:
+      - event-invite
+  /event-invite/{token}/logo:
+    get:
+      operationId: getEventInviteLogo
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The logo of the event an invite link names, served without a session\
+        \ too; 404 without one and for an invalid link"
+      tags:
+      - event-invite
   /feedback:
     get:
       operationId: getFeedback
@@ -4286,6 +4368,66 @@ components:
       - message
       - requestId
       - status
+      - title
+    EventInvite:
+      example:
+        description: description
+        endsAt: 2000-01-23T04:56:07.000+00:00
+        joined: true
+        programs:
+        - engagementSlug: engagementSlug
+          organization: organization
+          organizationSlug: organizationSlug
+          title: title
+        - engagementSlug: engagementSlug
+          organization: organization
+          organizationSlug: organizationSlug
+          title: title
+        startsAt: 2000-01-23T04:56:07.000+00:00
+        title: title
+      properties:
+        description:
+          type: string
+        endsAt:
+          format: date-time
+          type: string
+        joined:
+          type: boolean
+        programs:
+          items:
+            $ref: "#/components/schemas/EventInviteProgram"
+          type: array
+          default: null
+        startsAt:
+          format: date-time
+          type: string
+        title:
+          type: string
+      required:
+      - endsAt
+      - joined
+      - programs
+      - startsAt
+      - title
+    EventInviteProgram:
+      example:
+        engagementSlug: engagementSlug
+        organization: organization
+        organizationSlug: organizationSlug
+        title: title
+      properties:
+        engagementSlug:
+          type: string
+        organization:
+          type: string
+        organizationSlug:
+          type: string
+        title:
+          type: string
+      required:
+      - engagementSlug
+      - organization
+      - organizationSlug
       - title
     EventPublicEntry:
       example:

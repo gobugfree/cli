@@ -7,6 +7,7 @@ api_docs.go
 api_domain_confirmation.go
 api_embed.go
 api_engagements.go
+api_event_invite.go
 api_feedback.go
 api_leaderboard.go
 api_legacy.go
@@ -55,6 +56,9 @@ docs/EngagementPublicItemList.md
 docs/EngagementScopeItem.md
 docs/EngagementsAPI.md
 docs/Error.md
+docs/EventInvite.md
+docs/EventInviteAPI.md
+docs/EventInviteProgram.md
 docs/EventPublicEntry.md
 docs/EventPublicLeaderboard.md
 docs/EventPublicPartner.md
@@ -157,6 +161,8 @@ model_engagement_public_item.go
 model_engagement_public_item_list.go
 model_engagement_scope_item.go
 model_error.go
+model_event_invite.go
+model_event_invite_program.go
 model_event_public_entry.go
 model_event_public_leaderboard.go
 model_event_public_partner.go

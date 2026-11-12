@@ -101,6 +101,9 @@ Class | Method | HTTP request | Description
 *EngagementsAPI* | [**PostEngagementsRulesAccept**](docs/EngagementsAPI.md#postengagementsrulesaccept) | **Post** /engagements/{org_slug}/{engagement_slug}/rules/accept | Accept the engagement&#39;s published rules of engagement; required before submitting reports, re-required after a new version publishes
 *EngagementsAPI* | [**PostEngagementsSubmit**](docs/EngagementsAPI.md#postengagementssubmit) | **Post** /engagements/{org_slug}/{engagement_slug}/submit | Create and submit a vulnerability report in one call; members and, for active public engagements, fully onboarded researchers. 400 names the missing fields; 409 pending_budget_exceeded keeps the content as the draft named by draftId. To submit an existing draft use postReportsSubmit
 *EngagementsAPI* | [**PostEngagementsSubmitDraft**](docs/EngagementsAPI.md#postengagementssubmitdraft) | **Post** /engagements/{org_slug}/{engagement_slug}/submit/draft | Save a private draft report; no completeness validation, only a title is required. Submit it later with postReportsSubmit
+*EventInviteAPI* | [**GetEventInviteByToken**](docs/EventInviteAPI.md#geteventinvitebytoken) | **Get** /event-invite/{token} | The live hacking event an invite link names, with its window and its programs, served without a session too; 404 for an unknown, replaced, or revoked link and once the event ended
+*EventInviteAPI* | [**GetEventInviteLogo**](docs/EventInviteAPI.md#geteventinvitelogo) | **Get** /event-invite/{token}/logo | The logo of the event an invite link names, served without a session too; 404 without one and for an invalid link
+*EventInviteAPI* | [**PostEventInviteByToken**](docs/EventInviteAPI.md#posteventinvitebytoken) | **Post** /event-invite/{token} | Accept the invite link: the caller joins the event&#39;s roster and is admitted to every bundled engagement; accepting twice changes nothing; without a session a browser is sent to the sign-in and joins on the way back, a JSON caller gets 401
 *FeedbackAPI* | [**GetFeedback**](docs/FeedbackAPI.md#getfeedback) | **Get** /feedback | The signed-in user&#39;s feedback threads, and the feedback overlay for htmx
 *FeedbackAPI* | [**GetFeedbackByFeedbackId**](docs/FeedbackAPI.md#getfeedbackbyfeedbackid) | **Get** /feedback/{feedback_id} | One of the signed-in user&#39;s feedback threads with its replies
 *FeedbackAPI* | [**GetFeedbackFilesByFileId**](docs/FeedbackAPI.md#getfeedbackfilesbyfileid) | **Get** /feedback/{feedback_id}/files/{file_id} | One file of the signed-in user&#39;s feedback thread: an image inline, anything else as a download
@@ -215,6 +218,8 @@ Class | Method | HTTP request | Description
  - [EngagementPublicItemList](docs/EngagementPublicItemList.md)
  - [EngagementScopeItem](docs/EngagementScopeItem.md)
  - [Error](docs/Error.md)
+ - [EventInvite](docs/EventInvite.md)
+ - [EventInviteProgram](docs/EventInviteProgram.md)
  - [EventPublicEntry](docs/EventPublicEntry.md)
  - [EventPublicLeaderboard](docs/EventPublicLeaderboard.md)
  - [EventPublicPartner](docs/EventPublicPartner.md)
