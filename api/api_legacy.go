@@ -346,7 +346,7 @@ func (r LegacyAPIGetLegacyProgramsByProgramRequest) Execute() (*LegacylinkLink, 
 }
 
 /*
-GetLegacyProgramsByProgram Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)
+GetLegacyProgramsByProgram Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement or of a locked one the directory lists; 404 without a session for any other program (JSON: the target)
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param program

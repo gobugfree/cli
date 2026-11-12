@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**GetLegacy**](LegacyAPI.md#GetLegacy) | **Get** /legacy | Where athena&#39;s home led: a redirect to the program list (JSON: the target)
 [**GetLegacyByRest**](LegacyAPI.md#GetLegacyByRest) | **Get** /legacy/{rest} | Where an athena link leads: a redirect to the report its id maps to, or to the page that replaced athena&#39;s (JSON: the target, 404 for an unknown id or path)
 [**GetLegacyEmbeddedSubmit**](LegacyAPI.md#GetLegacyEmbeddedSubmit) | **Get** /legacy/embedded/{program}/submit | Where athena&#39;s embedded submission form leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)
-[**GetLegacyProgramsByProgram**](LegacyAPI.md#GetLegacyProgramsByProgram) | **Get** /legacy/programs/{program} | Where athena&#39;s public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)
+[**GetLegacyProgramsByProgram**](LegacyAPI.md#GetLegacyProgramsByProgram) | **Get** /legacy/programs/{program} | Where athena&#39;s public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement or of a locked one the directory lists; 404 without a session for any other program (JSON: the target)
 [**GetLegacyProgramsEmbeddedSubmit**](LegacyAPI.md#GetLegacyProgramsEmbeddedSubmit) | **Get** /legacy/programs/embedded/{program}/submit | Where athena&#39;s embedded submission form on its own site leads, without a session: the embedded form of the program when it is open; 404 for any other program (JSON: the target)
 
 
@@ -209,7 +209,7 @@ Name | Type | Description  | Notes
 
 > LegacylinkLink GetLegacyProgramsByProgram(ctx, program).Execute()
 
-Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)
+Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement or of a locked one the directory lists; 404 without a session for any other program (JSON: the target)
 
 ### Example
 

@@ -531,6 +531,9 @@
           "kind": {
             "type": "string"
           },
+          "locked": {
+            "type": "boolean"
+          },
           "logoUrl": {
             "type": "string"
           },
@@ -586,6 +589,7 @@
           "kind",
           "status",
           "requiredVerificationLevel",
+          "locked",
           "briefingAccessible",
           "ndaRequired",
           "signInUrl"
@@ -4733,7 +4737,7 @@
             "description": "Error"
           }
         },
-        "summary": "Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement; 404 without a session for any other program (JSON: the target)",
+        "summary": "Where athena's public program link leads: for a signed-in viewer the full program page, for anyone else the public program page of a public engagement or of a locked one the directory lists; 404 without a session for any other program (JSON: the target)",
         "tags": [
           "legacy"
         ]
@@ -6294,7 +6298,7 @@
             "description": "Error"
           }
         },
-        "summary": "Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; 404 for every other engagement",
+        "summary": "Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; the identity and summary only of a locked engagement the directory lists; 404 for every other engagement",
         "tags": [
           "public"
         ]

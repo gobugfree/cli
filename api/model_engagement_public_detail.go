@@ -26,6 +26,7 @@ type EngagementPublicDetail struct {
 	BriefingAccessible bool `json:"briefingAccessible"`
 	EndsOn *time.Time `json:"endsOn,omitempty"`
 	Kind string `json:"kind"`
+	Locked bool `json:"locked"`
 	LogoUrl *string `json:"logoUrl,omitempty"`
 	NdaRequired bool `json:"ndaRequired"`
 	OrgAbout *string `json:"orgAbout,omitempty"`
@@ -49,10 +50,11 @@ type _EngagementPublicDetail EngagementPublicDetail
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewEngagementPublicDetail(briefingAccessible bool, kind string, ndaRequired bool, orgName string, orgSlug string, requiredVerificationLevel string, signInUrl string, slug string, status string, title string) *EngagementPublicDetail {
+func NewEngagementPublicDetail(briefingAccessible bool, kind string, locked bool, ndaRequired bool, orgName string, orgSlug string, requiredVerificationLevel string, signInUrl string, slug string, status string, title string) *EngagementPublicDetail {
 	this := EngagementPublicDetail{}
 	this.BriefingAccessible = briefingAccessible
 	this.Kind = kind
+	this.Locked = locked
 	this.NdaRequired = ndaRequired
 	this.OrgName = orgName
 	this.OrgSlug = orgSlug
@@ -214,6 +216,30 @@ func (o *EngagementPublicDetail) GetKindOk() (*string, bool) {
 // SetKind sets field value
 func (o *EngagementPublicDetail) SetKind(v string) {
 	o.Kind = v
+}
+
+// GetLocked returns the Locked field value
+func (o *EngagementPublicDetail) GetLocked() bool {
+	if o == nil {
+		var ret bool
+		return ret
+	}
+
+	return o.Locked
+}
+
+// GetLockedOk returns a tuple with the Locked field value
+// and a boolean to check if the value has been set.
+func (o *EngagementPublicDetail) GetLockedOk() (*bool, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Locked, true
+}
+
+// SetLocked sets field value
+func (o *EngagementPublicDetail) SetLocked(v bool) {
+	o.Locked = v
 }
 
 // GetLogoUrl returns the LogoUrl field value if set, zero value otherwise.
@@ -621,6 +647,7 @@ func (o EngagementPublicDetail) ToMap() (map[string]interface{}, error) {
 		toSerialize["endsOn"] = o.EndsOn
 	}
 	toSerialize["kind"] = o.Kind
+	toSerialize["locked"] = o.Locked
 	if !IsNil(o.LogoUrl) {
 		toSerialize["logoUrl"] = o.LogoUrl
 	}
@@ -662,6 +689,7 @@ func (o *EngagementPublicDetail) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"briefingAccessible",
 		"kind",
+		"locked",
 		"ndaRequired",
 		"orgName",
 		"orgSlug",
@@ -704,6 +732,7 @@ func (o *EngagementPublicDetail) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "briefingAccessible")
 		delete(additionalProperties, "endsOn")
 		delete(additionalProperties, "kind")
+		delete(additionalProperties, "locked")
 		delete(additionalProperties, "logoUrl")
 		delete(additionalProperties, "ndaRequired")
 		delete(additionalProperties, "orgAbout")

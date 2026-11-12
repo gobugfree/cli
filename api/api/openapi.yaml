@@ -1248,8 +1248,9 @@ paths:
                 $ref: "#/components/schemas/Error"
           description: Error
       summary: "Where athena's public program link leads: for a signed-in viewer the\
-        \ full program page, for anyone else the public program page of a public engagement;\
-        \ 404 without a session for any other program (JSON: the target)"
+        \ full program page, for anyone else the public program page of a public engagement\
+        \ or of a locked one the directory lists; 404 without a session for any other\
+        \ program (JSON: the target)"
       tags:
       - legacy
   /legacy/{rest}:
@@ -2006,8 +2007,9 @@ paths:
           description: Error
       summary: "Public program page of a public active or paused engagement, without\
         \ a session: the live version's program, scope, and bounty table, or only\
-        \ the summary while an NDA keeps the briefing behind the sign-in; 404 for\
-        \ every other engagement"
+        \ the summary while an NDA keeps the briefing behind the sign-in; the identity\
+        \ and summary only of a locked engagement the directory lists; 404 for every\
+        \ other engagement"
       tags:
       - public
   /public/engagements/{org_slug}/{engagement_slug}/logo:
@@ -4126,6 +4128,7 @@ components:
         briefingAccessible: true
         endsOn: 2000-01-23T04:56:07.000+00:00
         kind: kind
+        locked: true
         logoUrl: logoUrl
         ndaRequired: true
         orgAbout: orgAbout
@@ -4197,6 +4200,8 @@ components:
           type: string
         kind:
           type: string
+        locked:
+          type: boolean
         logoUrl:
           type: string
         ndaRequired:
@@ -4232,6 +4237,7 @@ components:
       required:
       - briefingAccessible
       - kind
+      - locked
       - ndaRequired
       - orgName
       - orgSlug

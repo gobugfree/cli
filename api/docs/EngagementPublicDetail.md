@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **BriefingAccessible** | **bool** |  | 
 **EndsOn** | Pointer to **time.Time** |  | [optional] 
 **Kind** | **string** |  | 
+**Locked** | **bool** |  | 
 **LogoUrl** | Pointer to **string** |  | [optional] 
 **NdaRequired** | **bool** |  | 
 **OrgAbout** | Pointer to **string** |  | [optional] 
@@ -28,7 +29,7 @@ Name | Type | Description | Notes
 
 ### NewEngagementPublicDetail
 
-`func NewEngagementPublicDetail(briefingAccessible bool, kind string, ndaRequired bool, orgName string, orgSlug string, requiredVerificationLevel string, signInUrl string, slug string, status string, title string, ) *EngagementPublicDetail`
+`func NewEngagementPublicDetail(briefingAccessible bool, kind string, locked bool, ndaRequired bool, orgName string, orgSlug string, requiredVerificationLevel string, signInUrl string, slug string, status string, title string, ) *EngagementPublicDetail`
 
 NewEngagementPublicDetail instantiates a new EngagementPublicDetail object
 This constructor will assign default values to properties that have it defined,
@@ -156,6 +157,26 @@ and a boolean to check if the value has been set.
 `func (o *EngagementPublicDetail) SetKind(v string)`
 
 SetKind sets Kind field to given value.
+
+
+### GetLocked
+
+`func (o *EngagementPublicDetail) GetLocked() bool`
+
+GetLocked returns the Locked field if non-nil, zero value otherwise.
+
+### GetLockedOk
+
+`func (o *EngagementPublicDetail) GetLockedOk() (*bool, bool)`
+
+GetLockedOk returns a tuple with the Locked field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLocked
+
+`func (o *EngagementPublicDetail) SetLocked(v bool)`
+
+SetLocked sets Locked field to given value.
 
 
 ### GetLogoUrl

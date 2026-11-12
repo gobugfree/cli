@@ -140,7 +140,7 @@ func (r PublicAPIGetPublicEngagementsByOrgSlugAndEngagementSlugRequest) Execute(
 }
 
 /*
-GetPublicEngagementsByOrgSlugAndEngagementSlug Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; 404 for every other engagement
+GetPublicEngagementsByOrgSlugAndEngagementSlug Public program page of a public active or paused engagement, without a session: the live version's program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; the identity and summary only of a locked engagement the directory lists; 404 for every other engagement
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param orgSlug
