@@ -21,6 +21,7 @@ var _ MappedNullable = &EngagementPublicDetail{}
 
 // EngagementPublicDetail struct for EngagementPublicDetail
 type EngagementPublicDetail struct {
+	AnonymousSubmitUrl *string `json:"anonymousSubmitUrl,omitempty"`
 	Badges []EngagementBadge `json:"badges,omitempty"`
 	Bounty []EngagementPublicBounty `json:"bounty,omitempty"`
 	BriefingAccessible bool `json:"briefingAccessible"`
@@ -72,6 +73,38 @@ func NewEngagementPublicDetail(briefingAccessible bool, kind string, locked bool
 func NewEngagementPublicDetailWithDefaults() *EngagementPublicDetail {
 	this := EngagementPublicDetail{}
 	return &this
+}
+
+// GetAnonymousSubmitUrl returns the AnonymousSubmitUrl field value if set, zero value otherwise.
+func (o *EngagementPublicDetail) GetAnonymousSubmitUrl() string {
+	if o == nil || IsNil(o.AnonymousSubmitUrl) {
+		var ret string
+		return ret
+	}
+	return *o.AnonymousSubmitUrl
+}
+
+// GetAnonymousSubmitUrlOk returns a tuple with the AnonymousSubmitUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EngagementPublicDetail) GetAnonymousSubmitUrlOk() (*string, bool) {
+	if o == nil || IsNil(o.AnonymousSubmitUrl) {
+		return nil, false
+	}
+	return o.AnonymousSubmitUrl, true
+}
+
+// HasAnonymousSubmitUrl returns a boolean if a field has been set.
+func (o *EngagementPublicDetail) HasAnonymousSubmitUrl() bool {
+	if o != nil && !IsNil(o.AnonymousSubmitUrl) {
+		return true
+	}
+
+	return false
+}
+
+// SetAnonymousSubmitUrl gets a reference to the given string and assigns it to the AnonymousSubmitUrl field.
+func (o *EngagementPublicDetail) SetAnonymousSubmitUrl(v string) {
+	o.AnonymousSubmitUrl = &v
 }
 
 // GetBadges returns the Badges field value if set, zero value otherwise.
@@ -636,6 +669,9 @@ func (o EngagementPublicDetail) MarshalJSON() ([]byte, error) {
 
 func (o EngagementPublicDetail) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.AnonymousSubmitUrl) {
+		toSerialize["anonymousSubmitUrl"] = o.AnonymousSubmitUrl
+	}
 	if !IsNil(o.Badges) {
 		toSerialize["badges"] = o.Badges
 	}
@@ -727,6 +763,7 @@ func (o *EngagementPublicDetail) UnmarshalJSON(data []byte) (err error) {
 	additionalProperties := make(map[string]interface{})
 
 	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "anonymousSubmitUrl")
 		delete(additionalProperties, "badges")
 		delete(additionalProperties, "bounty")
 		delete(additionalProperties, "briefingAccessible")

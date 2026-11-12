@@ -509,6 +509,9 @@
       },
       "EngagementPublicDetail": {
         "properties": {
+          "anonymousSubmitUrl": {
+            "type": "string"
+          },
           "badges": {
             "items": {
               "$ref": "#/components/schemas/EngagementBadge"
@@ -3225,7 +3228,7 @@
             "description": "Error"
           }
         },
-        "summary": "The embedded vulnerability submission form of a public VDP, frameable by its allowed origins; 404 for any other engagement",
+        "summary": "The anonymous vulnerability submission form of a public VDP that embeds it or requires no verification, frameable by the allowed origins of the embed setting; 404 for any other engagement",
         "tags": [
           "embed"
         ]

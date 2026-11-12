@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**AnonymousSubmitUrl** | Pointer to **string** |  | [optional] 
 **Badges** | Pointer to [**[]EngagementBadge**](EngagementBadge.md) |  | [optional] 
 **Bounty** | Pointer to [**[]EngagementPublicBounty**](EngagementPublicBounty.md) |  | [optional] 
 **BriefingAccessible** | **bool** |  | 
@@ -43,6 +44,31 @@ will change when the set of required properties is changed
 NewEngagementPublicDetailWithDefaults instantiates a new EngagementPublicDetail object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetAnonymousSubmitUrl
+
+`func (o *EngagementPublicDetail) GetAnonymousSubmitUrl() string`
+
+GetAnonymousSubmitUrl returns the AnonymousSubmitUrl field if non-nil, zero value otherwise.
+
+### GetAnonymousSubmitUrlOk
+
+`func (o *EngagementPublicDetail) GetAnonymousSubmitUrlOk() (*string, bool)`
+
+GetAnonymousSubmitUrlOk returns a tuple with the AnonymousSubmitUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAnonymousSubmitUrl
+
+`func (o *EngagementPublicDetail) SetAnonymousSubmitUrl(v string)`
+
+SetAnonymousSubmitUrl sets AnonymousSubmitUrl field to given value.
+
+### HasAnonymousSubmitUrl
+
+`func (o *EngagementPublicDetail) HasAnonymousSubmitUrl() bool`
+
+HasAnonymousSubmitUrl returns a boolean if a field has been set.
 
 ### GetBadges
 

@@ -35,7 +35,7 @@ func (r EmbedAPIGetEmbedByOrgSlugAndEngagementSlugRequest) Execute() (*http.Resp
 }
 
 /*
-GetEmbedByOrgSlugAndEngagementSlug The embedded vulnerability submission form of a public VDP, frameable by its allowed origins; 404 for any other engagement
+GetEmbedByOrgSlugAndEngagementSlug The anonymous vulnerability submission form of a public VDP that embeds it or requires no verification, frameable by the allowed origins of the embed setting; 404 for any other engagement
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param orgSlug

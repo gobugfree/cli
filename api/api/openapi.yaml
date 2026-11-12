@@ -381,8 +381,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Error
-      summary: "The embedded vulnerability submission form of a public VDP, frameable\
-        \ by its allowed origins; 404 for any other engagement"
+      summary: "The anonymous vulnerability submission form of a public VDP that embeds\
+        \ it or requires no verification, frameable by the allowed origins of the\
+        \ embed setting; 404 for any other engagement"
       tags:
       - embed
     post:
@@ -4109,6 +4110,7 @@ components:
       - severity
     EngagementPublicDetail:
       example:
+        anonymousSubmitUrl: anonymousSubmitUrl
         badges:
         - color: color
           text: text
@@ -4183,6 +4185,8 @@ components:
         summary: summary
         title: title
       properties:
+        anonymousSubmitUrl:
+          type: string
         badges:
           items:
             $ref: "#/components/schemas/EngagementBadge"

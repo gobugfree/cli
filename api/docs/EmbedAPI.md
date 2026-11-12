@@ -4,7 +4,7 @@ All URIs are relative to *https://app.gobugfree.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetEmbedByOrgSlugAndEngagementSlug**](EmbedAPI.md#GetEmbedByOrgSlugAndEngagementSlug) | **Get** /embed/{org_slug}/{engagement_slug} | The embedded vulnerability submission form of a public VDP, frameable by its allowed origins; 404 for any other engagement
+[**GetEmbedByOrgSlugAndEngagementSlug**](EmbedAPI.md#GetEmbedByOrgSlugAndEngagementSlug) | **Get** /embed/{org_slug}/{engagement_slug} | The anonymous vulnerability submission form of a public VDP that embeds it or requires no verification, frameable by the allowed origins of the embed setting; 404 for any other engagement
 [**GetEmbedResizeJs**](EmbedAPI.md#GetEmbedResizeJs) | **Get** /embed/resize.js | The script a customer page loads with the embed snippet; it sizes the frame to the form
 [**PostEmbedByOrgSlugAndEngagementSlug**](EmbedAPI.md#PostEmbedByOrgSlugAndEngagementSlug) | **Post** /embed/{org_slug}/{engagement_slug} | Submit a report anonymously through the embedded form with its proof of work; 429 when the per-IP budget is spent
 
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 > GetEmbedByOrgSlugAndEngagementSlug(ctx, orgSlug, engagementSlug).Execute()
 
-The embedded vulnerability submission form of a public VDP, frameable by its allowed origins; 404 for any other engagement
+The anonymous vulnerability submission form of a public VDP that embeds it or requires no verification, frameable by the allowed origins of the embed setting; 404 for any other engagement
 
 ### Example
 
