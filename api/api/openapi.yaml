@@ -7259,7 +7259,6 @@ components:
           enum:
           - github
           - x
-          - linkedin
           - discord
           - offsec
           - hackthebox
