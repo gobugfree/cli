@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**GetPublicEngagements**](PublicAPI.md#GetPublicEngagements) | **Get** /public/engagements | Public engagement directory: every active or paused engagement as an anonymous viewer sees it; locked rows carry no scope and no rewards
 [**GetPublicEngagementsByOrgSlugAndEngagementSlug**](PublicAPI.md#GetPublicEngagementsByOrgSlugAndEngagementSlug) | **Get** /public/engagements/{org_slug}/{engagement_slug} | Public program page of a public active or paused engagement, without a session: the live version&#39;s program, scope, and bounty table, or only the summary while an NDA keeps the briefing behind the sign-in; the identity and summary only of a locked engagement the directory lists; 404 for every other engagement
-[**GetPublicEngagementsLogo**](PublicAPI.md#GetPublicEngagementsLogo) | **Get** /public/engagements/{org_slug}/{engagement_slug}/logo | The organization logo of an engagement the public directory lists; 404 otherwise
+[**GetPublicEngagementsLogo**](PublicAPI.md#GetPublicEngagementsLogo) | **Get** /public/engagements/{org_slug}/{engagement_slug}/logo | The organization logo of an engagement whose public page anyone may open; 404 otherwise
 [**GetPublicEventsLeaderboard**](PublicAPI.md#GetPublicEventsLeaderboard) | **Get** /public/events/{event_slug}/leaderboard | The public leaderboard of a live hacking event: the event&#39;s numbers, the ranked participants (handles only where the researcher chose to be on leaderboards), and one card per partner program; 404 while the event keeps it to staff
 
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Notes
 
 > GetPublicEngagementsLogo(ctx, orgSlug, engagementSlug).Execute()
 
-The organization logo of an engagement the public directory lists; 404 otherwise
+The organization logo of an engagement whose public page anyone may open; 404 otherwise
 
 ### Example
 

@@ -6343,7 +6343,7 @@
             "description": "Error"
           }
         },
-        "summary": "The organization logo of an engagement the public directory lists; 404 otherwise",
+        "summary": "The organization logo of an engagement whose public page anyone may open; 404 otherwise",
         "tags": [
           "public"
         ]

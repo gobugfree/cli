@@ -253,7 +253,7 @@ func (r PublicAPIGetPublicEngagementsLogoRequest) Execute() (*http.Response, err
 }
 
 /*
-GetPublicEngagementsLogo The organization logo of an engagement the public directory lists; 404 otherwise
+GetPublicEngagementsLogo The organization logo of an engagement whose public page anyone may open; 404 otherwise
 
  @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param orgSlug
