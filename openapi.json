@@ -6061,10 +6061,7 @@
                   "provider": {
                     "enum": [
                       "github",
-                      "x",
-                      "discord",
-                      "offsec",
-                      "hackthebox"
+                      "x"
                     ],
                     "maxLength": 40,
                     "minLength": 1,
