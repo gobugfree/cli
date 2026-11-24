@@ -1402,6 +1402,98 @@ paths:
       summary: Render a Markdown document as the readers see it; nothing is stored
       tags:
       - markdown
+  /meeting/{token}:
+    get:
+      operationId: getMeetingByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Any day of the week to show (YYYY-MM-DD); the first bookable
+          week when left out
+        explode: true
+        in: query
+        name: week
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeetingBookingPage"
+          description: The meeting with the free times of the week or the booked time
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The page behind a meeting invitation's link: the meeting, and the\
+        \ free times of one week at which every attendee is free, or the booked time;\
+        \ public, the token in the path is the credential"
+      tags:
+      - meeting
+    post:
+      operationId: postMeetingByToken
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postMeetingByToken_request"
+        required: true
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Book one of the free times of a meeting invitation: the meeting is\
+        \ written into the host's calendar, which invites everyone; 409 when the time\
+        \ was just taken"
+      tags:
+      - meeting
+  /meeting/{token}/cancel:
+    post:
+      operationId: postMeetingCancel
+      parameters:
+      - explode: false
+        in: path
+        name: token
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Cancel the time booked with a meeting invitation's link before the\
+        \ meeting begins, so another time can be picked with the same link"
+      tags:
+      - meeting
   /notifications:
     get:
       description: "Lists 50 notifications. When older ones exist, the answer carries\
@@ -4993,6 +5085,103 @@ components:
       - mcp
       - openapi
       - resourceMetadata
+    MeetingBooked:
+      example:
+        endsAt: 2000-01-23T04:56:07.000+00:00
+        startsAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        endsAt:
+          format: date-time
+          type: string
+        startsAt:
+          format: date-time
+          type: string
+      required:
+      - endsAt
+      - startsAt
+    MeetingBookingPage:
+      example:
+        booked:
+          endsAt: 2000-01-23T04:56:07.000+00:00
+          startsAt: 2000-01-23T04:56:07.000+00:00
+        days:
+        - date: date
+          slots:
+          - 2000-01-23T04:56:07.000+00:00
+          - 2000-01-23T04:56:07.000+00:00
+        - date: date
+          slots:
+          - 2000-01-23T04:56:07.000+00:00
+          - 2000-01-23T04:56:07.000+00:00
+        description: description
+        location: location
+        meeting: meeting
+        minutes: 0
+        online: true
+        organization: organization
+        status: status
+        timeZone: timeZone
+        week: week
+        with:
+        - with
+        - with
+      properties:
+        booked:
+          $ref: "#/components/schemas/MeetingBooked"
+        days:
+          items:
+            $ref: "#/components/schemas/MeetingDay"
+          type: array
+          default: null
+        description:
+          type: string
+        location:
+          type: string
+        meeting:
+          type: string
+        minutes:
+          type: integer
+        online:
+          type: boolean
+        organization:
+          type: string
+        status:
+          type: string
+        timeZone:
+          type: string
+        week:
+          type: string
+        with:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - meeting
+      - minutes
+      - online
+      - organization
+      - status
+      - timeZone
+      - with
+    MeetingDay:
+      example:
+        date: date
+        slots:
+        - 2000-01-23T04:56:07.000+00:00
+        - 2000-01-23T04:56:07.000+00:00
+      properties:
+        date:
+          type: string
+        slots:
+          items:
+            format: date-time
+            type: string
+          type: array
+          default: null
+      required:
+      - date
+      - slots
     MessageEmailPreference:
       example:
         audience: audience
@@ -7001,6 +7190,32 @@ components:
           type: string
       required:
       - content
+    postMeetingByToken_request:
+      properties:
+        email:
+          description: Address the calendar invitation is sent to
+          format: email
+          maxLength: 254
+          minLength: 1
+          type: string
+        name:
+          description: Name of the person who books
+          maxLength: 120
+          minLength: 1
+          type: string
+        note:
+          description: Anything the hosts should know
+          maxLength: 1000
+          type: string
+        start:
+          description: "The picked start time, one of the free times of the page (RFC\
+            \ 3339)"
+          minLength: 1
+          type: string
+      required:
+      - email
+      - name
+      - start
     postNotificationsPreferences_request:
       properties:
         engagement_rules_changed:

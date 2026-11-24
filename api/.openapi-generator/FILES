@@ -13,6 +13,7 @@ api_leaderboard.go
 api_legacy.go
 api_lists.go
 api_markdown.go
+api_meeting.go
 api_notifications.go
 api_onboarding.go
 api_organization_invitations.go
@@ -78,6 +79,10 @@ docs/ListsAPI.md
 docs/ListviewView.md
 docs/MarkdownAPI.md
 docs/McpAgents.md
+docs/MeetingAPI.md
+docs/MeetingBooked.md
+docs/MeetingBookingPage.md
+docs/MeetingDay.md
 docs/MessageEmailPreference.md
 docs/MessageEmailPreferenceList.md
 docs/MessageNotification.md
@@ -177,6 +182,9 @@ model_help_topic.go
 model_legacylink_link.go
 model_listview_view.go
 model_mcp_agents.go
+model_meeting_booked.go
+model_meeting_booking_page.go
+model_meeting_day.go
 model_message_email_preference.go
 model_message_email_preference_list.go
 model_message_notification.go

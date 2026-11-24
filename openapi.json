@@ -1224,6 +1224,98 @@
         ],
         "type": "object"
       },
+      "MeetingBooked": {
+        "properties": {
+          "endsAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "startsAt",
+          "endsAt"
+        ],
+        "type": "object"
+      },
+      "MeetingBookingPage": {
+        "properties": {
+          "booked": {
+            "$ref": "#/components/schemas/MeetingBooked"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/MeetingDay"
+            },
+            "type": "array"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "meeting": {
+            "type": "string"
+          },
+          "minutes": {
+            "type": "integer"
+          },
+          "online": {
+            "type": "boolean"
+          },
+          "organization": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "timeZone": {
+            "type": "string"
+          },
+          "week": {
+            "type": "string"
+          },
+          "with": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "organization",
+          "meeting",
+          "minutes",
+          "online",
+          "with",
+          "timeZone",
+          "status"
+        ],
+        "type": "object"
+      },
+      "MeetingDay": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "slots": {
+            "items": {
+              "format": "date-time",
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "date",
+          "slots"
+        ],
+        "type": "object"
+      },
       "MessageEmailPreference": {
         "properties": {
           "audience": {
@@ -5064,6 +5156,161 @@
         "summary": "Render a Markdown document as the readers see it; nothing is stored",
         "tags": [
           "markdown"
+        ]
+      }
+    },
+    "/meeting/{token}": {
+      "get": {
+        "operationId": "getMeetingByToken",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Any day of the week to show (YYYY-MM-DD); the first bookable week when left out",
+            "in": "query",
+            "name": "week",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeetingBookingPage"
+                }
+              }
+            },
+            "description": "The meeting with the free times of the week or the booked time"
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "The page behind a meeting invitation's link: the meeting, and the free times of one week at which every attendee is free, or the booked time; public, the token in the path is the credential",
+        "tags": [
+          "meeting"
+        ]
+      },
+      "post": {
+        "operationId": "postMeetingByToken",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "Address the calendar invitation is sent to",
+                    "format": "email",
+                    "maxLength": 254,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Name of the person who books",
+                    "maxLength": 120,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "note": {
+                    "description": "Anything the hosts should know",
+                    "maxLength": 1000,
+                    "type": "string"
+                  },
+                  "start": {
+                    "description": "The picked start time, one of the free times of the page (RFC 3339)",
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "start",
+                  "name",
+                  "email"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Book one of the free times of a meeting invitation: the meeting is written into the host's calendar, which invites everyone; 409 when the time was just taken",
+        "tags": [
+          "meeting"
+        ]
+      }
+    },
+    "/meeting/{token}/cancel": {
+      "post": {
+        "operationId": "postMeetingCancel",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON when the request accepts application/json, HTML otherwise."
+          },
+          "default": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Error"
+          }
+        },
+        "summary": "Cancel the time booked with a meeting invitation's link before the meeting begins, so another time can be picked with the same link",
+        "tags": [
+          "meeting"
         ]
       }
     },

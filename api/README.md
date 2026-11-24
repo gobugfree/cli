@@ -121,6 +121,9 @@ Class | Method | HTTP request | Description
 *ListsAPI* | [**PostListsViews**](docs/ListsAPI.md#postlistsviews) | **Post** /lists/views | Save the current filters of a list as a named view of the caller (at most 20 per list, names unique per list)
 *ListsAPI* | [**PostListsViewsDelete**](docs/ListsAPI.md#postlistsviewsdelete) | **Post** /lists/views/{id}/delete | Delete one of the caller&#39;s saved views; 404 when it is not theirs
 *MarkdownAPI* | [**PostMarkdownPreview**](docs/MarkdownAPI.md#postmarkdownpreview) | **Post** /markdown/preview | Render a Markdown document as the readers see it; nothing is stored
+*MeetingAPI* | [**GetMeetingByToken**](docs/MeetingAPI.md#getmeetingbytoken) | **Get** /meeting/{token} | The page behind a meeting invitation&#39;s link: the meeting, and the free times of one week at which every attendee is free, or the booked time; public, the token in the path is the credential
+*MeetingAPI* | [**PostMeetingByToken**](docs/MeetingAPI.md#postmeetingbytoken) | **Post** /meeting/{token} | Book one of the free times of a meeting invitation: the meeting is written into the host&#39;s calendar, which invites everyone; 409 when the time was just taken
+*MeetingAPI* | [**PostMeetingCancel**](docs/MeetingAPI.md#postmeetingcancel) | **Post** /meeting/{token}/cancel | Cancel the time booked with a meeting invitation&#39;s link before the meeting begins, so another time can be picked with the same link
 *NotificationsAPI* | [**GetNotifications**](docs/NotificationsAPI.md#getnotifications) | **Get** /notifications | The user&#39;s notifications, newest first, a page at a time
 *NotificationsAPI* | [**GetNotificationsByNotificationId**](docs/NotificationsAPI.md#getnotificationsbynotificationid) | **Get** /notifications/{notification_id} | Open one notification: marks it read and forwards to its entity; 404 for other users&#39; notifications (ADR-0009)
 *NotificationsAPI* | [**GetNotificationsPreferences**](docs/NotificationsAPI.md#getnotificationspreferences) | **Get** /notifications/preferences | The user&#39;s email notification switches, one per notification kind
@@ -234,6 +237,9 @@ Class | Method | HTTP request | Description
  - [LegacylinkLink](docs/LegacylinkLink.md)
  - [ListviewView](docs/ListviewView.md)
  - [McpAgents](docs/McpAgents.md)
+ - [MeetingBooked](docs/MeetingBooked.md)
+ - [MeetingBookingPage](docs/MeetingBookingPage.md)
+ - [MeetingDay](docs/MeetingDay.md)
  - [MessageEmailPreference](docs/MessageEmailPreference.md)
  - [MessageEmailPreferenceList](docs/MessageEmailPreferenceList.md)
  - [MessageNotification](docs/MessageNotification.md)
