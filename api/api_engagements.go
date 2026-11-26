@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"os"
 )
 
 
@@ -521,6 +522,641 @@ func (a *EngagementsAPIService) GetEngagementsSubmitExecute(r EngagementsAPIGetE
 	if r.submitted != nil {
 		parameterAddToHeaderOrQuery(localVarQueryParams, "submitted", r.submitted, "form", "")
 	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverableDownloadRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	documentId string
+}
+
+func (r EngagementsAPIGetTesterDeliverableDownloadRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTesterDeliverableDownloadExecute(r)
+}
+
+/*
+GetTesterDeliverableDownload Download one deliverable file; only a clean file streams, and the organization reaches released files only
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @param documentId
+ @return EngagementsAPIGetTesterDeliverableDownloadRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverableDownload(ctx context.Context, orgSlug string, engagementSlug string, documentId string) EngagementsAPIGetTesterDeliverableDownloadRequest {
+	return EngagementsAPIGetTesterDeliverableDownloadRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+		documentId: documentId,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) GetTesterDeliverableDownloadExecute(r EngagementsAPIGetTesterDeliverableDownloadRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverableDownload")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/download"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"document_id"+"}", url.PathEscape(parameterValueToString(r.documentId, "documentId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverablesRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+}
+
+func (r EngagementsAPIGetTesterDeliverablesRequest) Execute() (*DocumentDeliverables, *http.Response, error) {
+	return r.ApiService.GetTesterDeliverablesExecute(r)
+}
+
+/*
+GetTesterDeliverables The deliverables of the engagement: the statement and the files; the organization reads what staff released, a tester and staff read the drafts too
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @return EngagementsAPIGetTesterDeliverablesRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverables(ctx context.Context, orgSlug string, engagementSlug string) EngagementsAPIGetTesterDeliverablesRequest {
+	return EngagementsAPIGetTesterDeliverablesRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+	}
+}
+
+// Execute executes the request
+//  @return DocumentDeliverables
+func (a *EngagementsAPIService) GetTesterDeliverablesExecute(r EngagementsAPIGetTesterDeliverablesRequest) (*DocumentDeliverables, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *DocumentDeliverables
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverables")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+}
+
+func (r EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTesterDeliverablesFindingsTemplateExecute(r)
+}
+
+/*
+GetTesterDeliverablesFindingsTemplate The empty findings file of the engagement: one finding with every key, the asset from the live scope
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @return EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverablesFindingsTemplate(ctx context.Context, orgSlug string, engagementSlug string) EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest {
+	return EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) GetTesterDeliverablesFindingsTemplateExecute(r EngagementsAPIGetTesterDeliverablesFindingsTemplateRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverablesFindingsTemplate")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/findings-template"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	number string
+}
+
+func (r EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTesterDeliverablesStatementVersionDiffExecute(r)
+}
+
+/*
+GetTesterDeliverablesStatementVersionDiff What one version of the statement changed against the version before it
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @param number
+ @return EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionDiff(ctx context.Context, orgSlug string, engagementSlug string, number string) EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest {
+	return EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+		number: number,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionDiffExecute(r EngagementsAPIGetTesterDeliverablesStatementVersionDiffRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverablesStatementVersionDiff")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/diff"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", url.PathEscape(parameterValueToString(r.number, "number")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	number string
+}
+
+func (r EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTesterDeliverablesStatementVersionDocumentExecute(r)
+}
+
+/*
+GetTesterDeliverablesStatementVersionDocument One version of the statement as its exchange document (text/markdown)
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @param number
+ @return EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionDocument(ctx context.Context, orgSlug string, engagementSlug string, number string) EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest {
+	return EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+		number: number,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionDocumentExecute(r EngagementsAPIGetTesterDeliverablesStatementVersionDocumentRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverablesStatementVersionDocument")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/document"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", url.PathEscape(parameterValueToString(r.number, "number")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+}
+
+func (r EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest) Execute() (*http.Response, error) {
+	return r.ApiService.GetTesterDeliverablesStatementVersionsExportExecute(r)
+}
+
+/*
+GetTesterDeliverablesStatementVersionsExport Download the statement's version history as CSV or JSON
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @return EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest
+*/
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionsExport(ctx context.Context, orgSlug string, engagementSlug string) EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest {
+	return EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) GetTesterDeliverablesStatementVersionsExportExecute(r EngagementsAPIGetTesterDeliverablesStatementVersionsExportRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.GetTesterDeliverablesStatementVersionsExport")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/export"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1699,4 +2335,496 @@ func (a *EngagementsAPIService) PostEngagementsSubmitDraftExecute(r EngagementsA
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type EngagementsAPIPostTesterDeliverableFileRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	file *os.File
+}
+
+func (r EngagementsAPIPostTesterDeliverableFileRequest) File(file *os.File) EngagementsAPIPostTesterDeliverableFileRequest {
+	r.file = file
+	return r
+}
+
+func (r EngagementsAPIPostTesterDeliverableFileRequest) Execute() (*DocumentDeliverable, *http.Response, error) {
+	return r.ApiService.PostTesterDeliverableFileExecute(r)
+}
+
+/*
+PostTesterDeliverableFile Upload one deliverable file as a draft (multipart: the file as 'file', an optional 'summary', and 'withoutAuthor'); a JSON findings file, in the platform's format or as a findings list, is validated finding by finding and refused with the problems
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @return EngagementsAPIPostTesterDeliverableFileRequest
+*/
+func (a *EngagementsAPIService) PostTesterDeliverableFile(ctx context.Context, orgSlug string, engagementSlug string) EngagementsAPIPostTesterDeliverableFileRequest {
+	return EngagementsAPIPostTesterDeliverableFileRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+	}
+}
+
+// Execute executes the request
+//  @return DocumentDeliverable
+func (a *EngagementsAPIService) PostTesterDeliverableFileExecute(r EngagementsAPIPostTesterDeliverableFileRequest) (*DocumentDeliverable, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *DocumentDeliverable
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.PostTesterDeliverableFile")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/files"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.file == nil {
+		return localVarReturnValue, nil, reportError("file is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"multipart/form-data"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	var fileLocalVarFormFileName string
+	var fileLocalVarFileName     string
+	var fileLocalVarFileBytes    []byte
+
+	fileLocalVarFormFileName = "file"
+	fileLocalVarFile := r.file
+
+	if fileLocalVarFile != nil {
+		fbs, _ := io.ReadAll(fileLocalVarFile)
+
+		fileLocalVarFileBytes = fbs
+		fileLocalVarFileName = fileLocalVarFile.Name()
+		fileLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: fileLocalVarFileBytes, fileName: fileLocalVarFileName, formFileName: fileLocalVarFormFileName})
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type EngagementsAPIPostTesterDeliverableFileDeleteRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	documentId string
+}
+
+func (r EngagementsAPIPostTesterDeliverableFileDeleteRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostTesterDeliverableFileDeleteExecute(r)
+}
+
+/*
+PostTesterDeliverableFileDelete Delete a draft file with its blob; staff may also take back a released one
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @param documentId
+ @return EngagementsAPIPostTesterDeliverableFileDeleteRequest
+*/
+func (a *EngagementsAPIService) PostTesterDeliverableFileDelete(ctx context.Context, orgSlug string, engagementSlug string, documentId string) EngagementsAPIPostTesterDeliverableFileDeleteRequest {
+	return EngagementsAPIPostTesterDeliverableFileDeleteRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+		documentId: documentId,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) PostTesterDeliverableFileDeleteExecute(r EngagementsAPIPostTesterDeliverableFileDeleteRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.PostTesterDeliverableFileDelete")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/delete"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"document_id"+"}", url.PathEscape(parameterValueToString(r.documentId, "documentId")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type EngagementsAPIPostTesterDeliverablesStatementRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	closing *string
+	from *string
+	opening *string
+}
+
+// Text printed after the findings, Markdown
+func (r EngagementsAPIPostTesterDeliverablesStatementRequest) Closing(closing string) EngagementsAPIPostTesterDeliverablesStatementRequest {
+	r.closing = &closing
+	return r
+}
+
+// Send &#39;event&#39; to return to the event page after saving
+func (r EngagementsAPIPostTesterDeliverablesStatementRequest) From(from string) EngagementsAPIPostTesterDeliverablesStatementRequest {
+	r.from = &from
+	return r
+}
+
+// Text printed before the findings, Markdown
+func (r EngagementsAPIPostTesterDeliverablesStatementRequest) Opening(opening string) EngagementsAPIPostTesterDeliverablesStatementRequest {
+	r.opening = &opening
+	return r
+}
+
+func (r EngagementsAPIPostTesterDeliverablesStatementRequest) Execute() (*DocumentStatementState, *http.Response, error) {
+	return r.ApiService.PostTesterDeliverablesStatementExecute(r)
+}
+
+/*
+PostTesterDeliverablesStatement Save the opening and closing statement as its next version; the organization reads it once staff release it
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @return EngagementsAPIPostTesterDeliverablesStatementRequest
+*/
+func (a *EngagementsAPIService) PostTesterDeliverablesStatement(ctx context.Context, orgSlug string, engagementSlug string) EngagementsAPIPostTesterDeliverablesStatementRequest {
+	return EngagementsAPIPostTesterDeliverablesStatementRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+	}
+}
+
+// Execute executes the request
+//  @return DocumentStatementState
+func (a *EngagementsAPIService) PostTesterDeliverablesStatementExecute(r EngagementsAPIPostTesterDeliverablesStatementRequest) (*DocumentStatementState, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *DocumentStatementState
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.PostTesterDeliverablesStatement")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/statement"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/x-www-form-urlencoded"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.closing != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "closing", r.closing, "", "")
+	}
+	if r.from != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "from", r.from, "", "")
+	}
+	if r.opening != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "opening", r.opening, "", "")
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest struct {
+	ctx context.Context
+	ApiService *EngagementsAPIService
+	orgSlug string
+	engagementSlug string
+	number string
+}
+
+func (r EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest) Execute() (*http.Response, error) {
+	return r.ApiService.PostTesterDeliverablesStatementVersionRestoreExecute(r)
+}
+
+/*
+PostTesterDeliverablesStatementVersionRestore Make an old version of the statement its next version
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param orgSlug
+ @param engagementSlug
+ @param number
+ @return EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest
+*/
+func (a *EngagementsAPIService) PostTesterDeliverablesStatementVersionRestore(ctx context.Context, orgSlug string, engagementSlug string, number string) EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest {
+	return EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest{
+		ApiService: a,
+		ctx: ctx,
+		orgSlug: orgSlug,
+		engagementSlug: engagementSlug,
+		number: number,
+	}
+}
+
+// Execute executes the request
+func (a *EngagementsAPIService) PostTesterDeliverablesStatementVersionRestoreExecute(r EngagementsAPIPostTesterDeliverablesStatementVersionRestoreRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngagementsAPIService.PostTesterDeliverablesStatementVersionRestore")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/restore"
+	localVarPath = strings.Replace(localVarPath, "{"+"org_slug"+"}", url.PathEscape(parameterValueToString(r.orgSlug, "orgSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"engagement_slug"+"}", url.PathEscape(parameterValueToString(r.engagementSlug, "engagementSlug")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"number"+"}", url.PathEscape(parameterValueToString(r.number, "number")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+			var v Error
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+					newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }

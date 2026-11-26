@@ -346,6 +346,7 @@ func (a *NotificationsAPIService) GetNotificationsPreferencesExecute(r Notificat
 type NotificationsAPIPostNotificationsPreferencesRequest struct {
 	ctx context.Context
 	ApiService *NotificationsAPIService
+	deliverableReleased *string
 	engagementRulesChanged *string
 	engagementStatusChanged *string
 	orgReportAwaitingFeedback *string
@@ -359,6 +360,12 @@ type NotificationsAPIPostNotificationsPreferencesRequest struct {
 	reportStatusChanged *string
 	scanReportPublished *string
 	versionDecided *string
+}
+
+// Organization members: send \\\&quot;on\\\&quot; for email on released engagement deliverables, omit to switch it off
+func (r NotificationsAPIPostNotificationsPreferencesRequest) DeliverableReleased(deliverableReleased string) NotificationsAPIPostNotificationsPreferencesRequest {
+	r.deliverableReleased = &deliverableReleased
+	return r
 }
 
 // Send \\\&quot;on\\\&quot; for email on program rule changes, omit to switch it off
@@ -491,6 +498,9 @@ func (a *NotificationsAPIService) PostNotificationsPreferencesExecute(r Notifica
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.deliverableReleased != nil {
+		parameterAddToHeaderOrQuery(localVarFormParams, "deliverable_released", r.deliverableReleased, "", "")
 	}
 	if r.engagementRulesChanged != nil {
 		parameterAddToHeaderOrQuery(localVarFormParams, "engagement_rules_changed", r.engagementRulesChanged, "", "")

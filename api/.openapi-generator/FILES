@@ -38,6 +38,10 @@ docs/BadgeCatalogItemList.md
 docs/BadgesAPI.md
 docs/DevAPI.md
 docs/DocsAPI.md
+docs/DocumentDeliverable.md
+docs/DocumentDeliverableFindings.md
+docs/DocumentDeliverables.md
+docs/DocumentStatementState.md
 docs/DomainConfirmationAPI.md
 docs/EmbedAPI.md
 docs/EngagementBadge.md
@@ -150,6 +154,10 @@ model_admission_state.go
 model_apidoc_reference.go
 model_badge_catalog_item.go
 model_badge_catalog_item_list.go
+model_document_deliverable.go
+model_document_deliverable_findings.go
+model_document_deliverables.go
+model_document_statement_state.go
 model_engagement_badge.go
 model_engagement_cvss_band.go
 model_engagement_detail.go

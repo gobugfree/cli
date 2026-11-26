@@ -9,6 +9,12 @@ Method | HTTP request | Description
 [**GetEngagementsFilesByName**](EngagementsAPI.md#GetEngagementsFilesByName) | **Get** /engagements/{org_slug}/{engagement_slug}/files/{name} | Download a program file of the published version: the NDA once the verification gate is passed, an attachment once cleared to test (verification, NDA, and rules accepted); 404 otherwise
 [**GetEngagementsMessageProxy**](EngagementsAPI.md#GetEngagementsMessageProxy) | **Get** /engagements/{org_slug}/{engagement_slug}/message-proxy | Authentication codes forwarded from the engagement&#39;s 2FA-protected test accounts within the last 15 minutes; requires testing access and accepted rules
 [**GetEngagementsSubmit**](EngagementsAPI.md#GetEngagementsSubmit) | **Get** /engagements/{org_slug}/{engagement_slug}/submit | The report submission form of one engagement: the caller&#39;s pending-report budget, the weakness catalog, the severity presets with their CVSS vectors, the reward bands, and the caller&#39;s recent accuracy
+[**GetTesterDeliverableDownload**](EngagementsAPI.md#GetTesterDeliverableDownload) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/download | Download one deliverable file; only a clean file streams, and the organization reaches released files only
+[**GetTesterDeliverables**](EngagementsAPI.md#GetTesterDeliverables) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables | The deliverables of the engagement: the statement and the files; the organization reads what staff released, a tester and staff read the drafts too
+[**GetTesterDeliverablesFindingsTemplate**](EngagementsAPI.md#GetTesterDeliverablesFindingsTemplate) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables/findings-template | The empty findings file of the engagement: one finding with every key, the asset from the live scope
+[**GetTesterDeliverablesStatementVersionDiff**](EngagementsAPI.md#GetTesterDeliverablesStatementVersionDiff) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/diff | What one version of the statement changed against the version before it
+[**GetTesterDeliverablesStatementVersionDocument**](EngagementsAPI.md#GetTesterDeliverablesStatementVersionDocument) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/document | One version of the statement as its exchange document (text/markdown)
+[**GetTesterDeliverablesStatementVersionsExport**](EngagementsAPI.md#GetTesterDeliverablesStatementVersionsExport) | **Get** /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/export | Download the statement&#39;s version history as CSV or JSON
 [**PostEngagementsAccessRequest**](EngagementsAPI.md#PostEngagementsAccessRequest) | **Post** /engagements/{org_slug}/{engagement_slug}/access-request | Request access to a listed private engagement; the test account fields are required when the engagement asks for test accounts; 404 unless the engagement takes requests from the caller, 409 on a second request or a pending invitation
 [**PostEngagementsInvitationAccept**](EngagementsAPI.md#PostEngagementsInvitationAccept) | **Post** /engagements/{org_slug}/{engagement_slug}/invitation/accept | Accept the caller&#39;s pending invitation and join the engagement; 404 without one
 [**PostEngagementsInvitationDecline**](EngagementsAPI.md#PostEngagementsInvitationDecline) | **Post** /engagements/{org_slug}/{engagement_slug}/invitation/decline | Decline the caller&#39;s pending invitation; 404 without one
@@ -16,6 +22,10 @@ Method | HTTP request | Description
 [**PostEngagementsRulesAccept**](EngagementsAPI.md#PostEngagementsRulesAccept) | **Post** /engagements/{org_slug}/{engagement_slug}/rules/accept | Accept the engagement&#39;s published rules of engagement; required before submitting reports, re-required after a new version publishes
 [**PostEngagementsSubmit**](EngagementsAPI.md#PostEngagementsSubmit) | **Post** /engagements/{org_slug}/{engagement_slug}/submit | Create and submit a vulnerability report in one call; members and, for active public engagements, fully onboarded researchers. 400 names the missing fields; 409 pending_budget_exceeded keeps the content as the draft named by draftId. To submit an existing draft use postReportsSubmit
 [**PostEngagementsSubmitDraft**](EngagementsAPI.md#PostEngagementsSubmitDraft) | **Post** /engagements/{org_slug}/{engagement_slug}/submit/draft | Save a private draft report; no completeness validation, only a title is required. Submit it later with postReportsSubmit
+[**PostTesterDeliverableFile**](EngagementsAPI.md#PostTesterDeliverableFile) | **Post** /engagements/{org_slug}/{engagement_slug}/deliverables/files | Upload one deliverable file as a draft (multipart: the file as &#39;file&#39;, an optional &#39;summary&#39;, and &#39;withoutAuthor&#39;); a JSON findings file, in the platform&#39;s format or as a findings list, is validated finding by finding and refused with the problems
+[**PostTesterDeliverableFileDelete**](EngagementsAPI.md#PostTesterDeliverableFileDelete) | **Post** /engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/delete | Delete a draft file with its blob; staff may also take back a released one
+[**PostTesterDeliverablesStatement**](EngagementsAPI.md#PostTesterDeliverablesStatement) | **Post** /engagements/{org_slug}/{engagement_slug}/deliverables/statement | Save the opening and closing statement as its next version; the organization reads it once staff release it
+[**PostTesterDeliverablesStatementVersionRestore**](EngagementsAPI.md#PostTesterDeliverablesStatementVersionRestore) | **Post** /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/restore | Make an old version of the statement its next version
 
 
 
@@ -346,6 +356,431 @@ Name | Type | Description  | Notes
 
 
  **submitted** | **string** | The id of a report the caller just submitted to this engagement, shown as a confirmation | 
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverableDownload
+
+> GetTesterDeliverableDownload(ctx, orgSlug, engagementSlug, documentId).Execute()
+
+Download one deliverable file; only a clean file streams, and the organization reaches released files only
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	documentId := "documentId_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.GetTesterDeliverableDownload(context.Background(), orgSlug, engagementSlug, documentId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverableDownload``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+**documentId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverableDownloadRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverables
+
+> DocumentDeliverables GetTesterDeliverables(ctx, orgSlug, engagementSlug).Execute()
+
+The deliverables of the engagement: the statement and the files; the organization reads what staff released, a tester and staff read the drafts too
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.EngagementsAPI.GetTesterDeliverables(context.Background(), orgSlug, engagementSlug).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverables``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetTesterDeliverables`: DocumentDeliverables
+	fmt.Fprintf(os.Stdout, "Response from `EngagementsAPI.GetTesterDeliverables`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverablesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**DocumentDeliverables**](DocumentDeliverables.md)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverablesFindingsTemplate
+
+> GetTesterDeliverablesFindingsTemplate(ctx, orgSlug, engagementSlug).Execute()
+
+The empty findings file of the engagement: one finding with every key, the asset from the live scope
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.GetTesterDeliverablesFindingsTemplate(context.Background(), orgSlug, engagementSlug).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverablesFindingsTemplate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverablesFindingsTemplateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverablesStatementVersionDiff
+
+> GetTesterDeliverablesStatementVersionDiff(ctx, orgSlug, engagementSlug, number).Execute()
+
+What one version of the statement changed against the version before it
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	number := "number_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.GetTesterDeliverablesStatementVersionDiff(context.Background(), orgSlug, engagementSlug, number).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverablesStatementVersionDiff``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+**number** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverablesStatementVersionDiffRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverablesStatementVersionDocument
+
+> GetTesterDeliverablesStatementVersionDocument(ctx, orgSlug, engagementSlug, number).Execute()
+
+One version of the statement as its exchange document (text/markdown)
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	number := "number_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.GetTesterDeliverablesStatementVersionDocument(context.Background(), orgSlug, engagementSlug, number).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverablesStatementVersionDocument``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+**number** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverablesStatementVersionDocumentRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## GetTesterDeliverablesStatementVersionsExport
+
+> GetTesterDeliverablesStatementVersionsExport(ctx, orgSlug, engagementSlug).Execute()
+
+Download the statement's version history as CSV or JSON
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.GetTesterDeliverablesStatementVersionsExport(context.Background(), orgSlug, engagementSlug).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.GetTesterDeliverablesStatementVersionsExport``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetTesterDeliverablesStatementVersionsExportRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -919,6 +1354,300 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PostTesterDeliverableFile
+
+> DocumentDeliverable PostTesterDeliverableFile(ctx, orgSlug, engagementSlug).File(file).Execute()
+
+Upload one deliverable file as a draft (multipart: the file as 'file', an optional 'summary', and 'withoutAuthor'); a JSON findings file, in the platform's format or as a findings list, is validated finding by finding and refused with the problems
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	file := os.NewFile(1234, "some_file") // *os.File | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.EngagementsAPI.PostTesterDeliverableFile(context.Background(), orgSlug, engagementSlug).File(file).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.PostTesterDeliverableFile``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `PostTesterDeliverableFile`: DocumentDeliverable
+	fmt.Fprintf(os.Stdout, "Response from `EngagementsAPI.PostTesterDeliverableFile`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPostTesterDeliverableFileRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **file** | ***os.File** |  | 
+
+### Return type
+
+[**DocumentDeliverable**](DocumentDeliverable.md)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PostTesterDeliverableFileDelete
+
+> PostTesterDeliverableFileDelete(ctx, orgSlug, engagementSlug, documentId).Execute()
+
+Delete a draft file with its blob; staff may also take back a released one
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	documentId := "documentId_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.PostTesterDeliverableFileDelete(context.Background(), orgSlug, engagementSlug, documentId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.PostTesterDeliverableFileDelete``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+**documentId** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPostTesterDeliverableFileDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PostTesterDeliverablesStatement
+
+> DocumentStatementState PostTesterDeliverablesStatement(ctx, orgSlug, engagementSlug).Closing(closing).From(from).Opening(opening).Execute()
+
+Save the opening and closing statement as its next version; the organization reads it once staff release it
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	closing := "closing_example" // string | Text printed after the findings, Markdown (optional)
+	from := "from_example" // string | Send 'event' to return to the event page after saving (optional)
+	opening := "opening_example" // string | Text printed before the findings, Markdown (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.EngagementsAPI.PostTesterDeliverablesStatement(context.Background(), orgSlug, engagementSlug).Closing(closing).From(from).Opening(opening).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.PostTesterDeliverablesStatement``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `PostTesterDeliverablesStatement`: DocumentStatementState
+	fmt.Fprintf(os.Stdout, "Response from `EngagementsAPI.PostTesterDeliverablesStatement`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPostTesterDeliverablesStatementRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **closing** | **string** | Text printed after the findings, Markdown | 
+ **from** | **string** | Send &#39;event&#39; to return to the event page after saving | 
+ **opening** | **string** | Text printed before the findings, Markdown | 
+
+### Return type
+
+[**DocumentStatementState**](DocumentStatementState.md)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## PostTesterDeliverablesStatementVersionRestore
+
+> PostTesterDeliverablesStatementVersionRestore(ctx, orgSlug, engagementSlug, number).Execute()
+
+Make an old version of the statement its next version
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/gobugfree/cli/v3/api"
+)
+
+func main() {
+	orgSlug := "orgSlug_example" // string | 
+	engagementSlug := "engagementSlug_example" // string | 
+	number := "number_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.EngagementsAPI.PostTesterDeliverablesStatementVersionRestore(context.Background(), orgSlug, engagementSlug, number).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `EngagementsAPI.PostTesterDeliverablesStatementVersionRestore``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**orgSlug** | **string** |  | 
+**engagementSlug** | **string** |  | 
+**number** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiPostTesterDeliverablesStatementVersionRestoreRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+[bearer](../README.md#bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

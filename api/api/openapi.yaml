@@ -526,6 +526,376 @@ paths:
         \ pending invitation"
       tags:
       - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables:
+    get:
+      operationId: getTesterDeliverables
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentDeliverables"
+          description: The statement and the files
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The deliverables of the engagement: the statement and the files; the\
+        \ organization reads what staff released, a tester and staff read the drafts\
+        \ too"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/files:
+    post:
+      operationId: postTesterDeliverableFile
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/postTesterDeliverableFile_request"
+        description: The deliverable file
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentDeliverable"
+          description: The stored draft
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Upload one deliverable file as a draft (multipart: the file as 'file',\
+        \ an optional 'summary', and 'withoutAuthor'); a JSON findings file, in the\
+        \ platform's format or as a findings list, is validated finding by finding\
+        \ and refused with the problems"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/delete:
+    post:
+      operationId: postTesterDeliverableFileDelete
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: document_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Delete a draft file with its blob; staff may also take back a released
+        one
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/files/{document_id}/download:
+    get:
+      operationId: getTesterDeliverableDownload
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: document_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "Download one deliverable file; only a clean file streams, and the\
+        \ organization reaches released files only"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/findings-template:
+    get:
+      operationId: getTesterDeliverablesFindingsTemplate
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: "The empty findings file of the engagement: one finding with every\
+        \ key, the asset from the live scope"
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/statement:
+    post:
+      operationId: postTesterDeliverablesStatement
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/postTesterDeliverablesStatement_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentStatementState"
+          description: The saved statement
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Save the opening and closing statement as its next version; the organization
+        reads it once staff release it
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/export:
+    get:
+      operationId: getTesterDeliverablesStatementVersionsExport
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Download the statement's version history as CSV or JSON
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/diff:
+    get:
+      operationId: getTesterDeliverablesStatementVersionDiff
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: What one version of the statement changed against the version before
+        it
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/document:
+    get:
+      operationId: getTesterDeliverablesStatementVersionDocument
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: One version of the statement as its exchange document (text/markdown)
+      tags:
+      - engagements
+  /engagements/{org_slug}/{engagement_slug}/deliverables/statement/versions/{number}/restore:
+    post:
+      operationId: postTesterDeliverablesStatementVersionRestore
+      parameters:
+      - explode: false
+        in: path
+        name: org_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: engagement_slug
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: number
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: "JSON when the request accepts application/json, HTML otherwise."
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Make an old version of the statement its next version
+      tags:
+      - engagements
   /engagements/{org_slug}/{engagement_slug}/files/{name}:
     get:
       operationId: getEngagementsFilesByName
@@ -3723,6 +4093,146 @@ components:
           default: null
       required:
       - items
+    DocumentDeliverable:
+      example:
+        downloadPath: downloadPath
+        findings:
+          count: 0
+          reportIds:
+          - reportIds
+          - reportIds
+          withoutAuthor: true
+        id: 6
+        name: name
+        releasedAt: 2000-01-23T04:56:07.000+00:00
+        scanStatus: scanStatus
+        size: 1
+        summary: summary
+        uploadedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        downloadPath:
+          type: string
+        findings:
+          $ref: "#/components/schemas/DocumentDeliverableFindings"
+        id:
+          type: integer
+        name:
+          type: string
+        releasedAt:
+          format: date-time
+          type: string
+        scanStatus:
+          type: string
+        size:
+          type: integer
+        summary:
+          type: string
+        uploadedAt:
+          format: date-time
+          type: string
+      required:
+      - id
+      - name
+      - scanStatus
+      - size
+      - uploadedAt
+    DocumentDeliverableFindings:
+      example:
+        count: 0
+        reportIds:
+        - reportIds
+        - reportIds
+        withoutAuthor: true
+      properties:
+        count:
+          type: integer
+        reportIds:
+          items:
+            type: string
+          type: array
+          default: null
+        withoutAuthor:
+          type: boolean
+      required:
+      - count
+      - reportIds
+      - withoutAuthor
+    DocumentDeliverables:
+      example:
+        engagement: engagement
+        files:
+        - downloadPath: downloadPath
+          findings:
+            count: 0
+            reportIds:
+            - reportIds
+            - reportIds
+            withoutAuthor: true
+          id: 6
+          name: name
+          releasedAt: 2000-01-23T04:56:07.000+00:00
+          scanStatus: scanStatus
+          size: 1
+          summary: summary
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+        - downloadPath: downloadPath
+          findings:
+            count: 0
+            reportIds:
+            - reportIds
+            - reportIds
+            withoutAuthor: true
+          id: 6
+          name: name
+          releasedAt: 2000-01-23T04:56:07.000+00:00
+          scanStatus: scanStatus
+          size: 1
+          summary: summary
+          uploadedAt: 2000-01-23T04:56:07.000+00:00
+        statement:
+          closing: closing
+          hasDraft: true
+          opening: opening
+          releasedVersion: 5
+          version: 5
+      properties:
+        engagement:
+          type: string
+        files:
+          items:
+            $ref: "#/components/schemas/DocumentDeliverable"
+          type: array
+          default: null
+        statement:
+          $ref: "#/components/schemas/DocumentStatementState"
+      required:
+      - engagement
+      - files
+      - statement
+    DocumentStatementState:
+      example:
+        closing: closing
+        hasDraft: true
+        opening: opening
+        releasedVersion: 5
+        version: 5
+      properties:
+        closing:
+          type: string
+        hasDraft:
+          type: boolean
+        opening:
+          type: string
+        releasedVersion:
+          type: integer
+        version:
+          type: integer
+      required:
+      - closing
+      - hasDraft
+      - opening
+      - releasedVersion
+      - version
     EngagementBadge:
       example:
         color: color
@@ -6946,6 +7456,28 @@ components:
           format: email
           maxLength: 320
           type: string
+    postTesterDeliverableFile_request:
+      properties:
+        file:
+          format: binary
+          type: string
+      required:
+      - file
+    postTesterDeliverablesStatement_request:
+      properties:
+        closing:
+          description: "Text printed after the findings, Markdown"
+          maxLength: 20000
+          type: string
+        from:
+          description: Send 'event' to return to the event page after saving
+          enum:
+          - event
+          type: string
+        opening:
+          description: "Text printed before the findings, Markdown"
+          maxLength: 20000
+          type: string
     postEngagementsNdaAccept_request:
       properties:
         accept:
@@ -7218,6 +7750,12 @@ components:
       - start
     postNotificationsPreferences_request:
       properties:
+        deliverable_released:
+          description: "Organization members: send \"on\" for email on released engagement\
+            \ deliverables, omit to switch it off"
+          enum:
+          - "on"
+          type: string
         engagement_rules_changed:
           description: "Send \"on\" for email on program rule changes, omit to switch\
             \ it off"
